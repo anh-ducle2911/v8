@@ -1,0 +1,11 @@
+{
+  "price": 30020,
+  "currency": "VND",
+  "product": "Dầu DO 0,05S-II (diesel)",
+  "source": "Giá dự phòng (cấu hình hệ thống)",
+  "status": "fallback",
+  "epoch": 1781781538.51029,
+  "fetched_at": "2026-06-18T18:18:58",
+  "fetched_display": "18/06/2026 18:18",
+  "note": "Chưa cấu hình nguồn giá hoặc không có mạng — đang dùng giá dự phòng. Đặt FUEL_PRICE_URL trong .env để bật cập nhật trực tuyến."
+}

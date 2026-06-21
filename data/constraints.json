@@ -1,0 +1,30 @@
+[
+  {
+    "ghi_chu": "Cấm xe tải > 1.25 tấn giờ cao điểm sáng.",
+    "gio_bat_dau": "06:00",
+    "gio_ket_thuc": "09:00",
+    "hieu_luc": true,
+    "id": "RB-HN-INNER-AM",
+    "khu_vuc": "Nội thành Hà Nội (vành đai trong)",
+    "loai_xe": "Xe tải > 1.25 tấn",
+    "ngay_ap_dung": "Tất cả các ngày",
+    "ngay_hieu_luc": "Đang áp dụng",
+    "nguon_quy_dinh": "Phương án phân luồng giờ cao điểm — Sở GTVT Hà Nội",
+    "tai_trong_cam": "> 1.25 tấn",
+    "tuyen": "Trong vành đai 1 (các trục nội đô)"
+  },
+  {
+    "ghi_chu": "Cấm xe tải > 1.25 tấn giờ cao điểm chiều.",
+    "gio_bat_dau": "16:30",
+    "gio_ket_thuc": "19:30",
+    "hieu_luc": true,
+    "id": "RB-HN-INNER-PM",
+    "khu_vuc": "Nội thành Hà Nội (vành đai trong)",
+    "loai_xe": "Xe tải > 1.25 tấn",
+    "ngay_ap_dung": "Tất cả các ngày",
+    "ngay_hieu_luc": "Đang áp dụng",
+    "nguon_quy_dinh": "Phương án phân luồng giờ cao điểm — Sở GTVT Hà Nội",
+    "tai_trong_cam": "> 1.25 tấn",
+    "tuyen": "Trong vành đai 1 (các trục nội đô)"
+  }
+]

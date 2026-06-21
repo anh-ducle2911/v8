@@ -1,0 +1,10 @@
+# Hòa Phát Logistics — Trung tâm điều phối & tối ưu tuyến
+Flask>=2.3
+openpyxl>=3.1
+gunicorn>=21.2
+
+# Tối ưu hóa định tuyến (khuyến nghị; nếu thiếu, engine tự dùng heuristic gán theo preset)
+ortools>=9.6
+
+# Gọi Gemini API + tải tuyến đường bộ (OSRM). Bắt buộc nếu bật AI tạo sinh.
+requests>=2.31

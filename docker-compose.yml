@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  hpl-dispatcher:
+    build: .
+    container_name: hpl-dispatcher
+    ports:
+      - "8000:8000"
+    volumes:
+      # Lưu nhật ký sự cố ra ngoài container (không mất khi restart)
+      - ./data:/app/data
+    environment:
+      # Cấu hình key Gemini trong file .env (xem .env.example) để bật AI tạo sinh
+      # - GEMINI_API_KEY=AIza...
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

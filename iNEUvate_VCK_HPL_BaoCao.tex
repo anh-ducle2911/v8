@@ -1,0 +1,304 @@
+% !TEX program = xelatex
+% =============================================================
+%  BÁO CÁO DỰ THI - Đội iNEUvate
+%  Biên dịch trên Overleaf: Menu -> Settings -> Compiler -> XeLaTeX (hoặc LuaLaTeX).
+%  Hỗ trợ tiếng Việt qua fontspec + babel. Phối màu navy + ghi vàng theo mẫu.
+% =============================================================
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage{fontspec}
+\usepackage[vietnamese]{babel}
+% Font Latin Modern (phong cách học thuật như mẫu), nạp qua tên tệp OTF để chạy
+% được trên tectonic lẫn Overleaf. Trên Overleaf cũng có thể dùng:
+%   \setmainfont{Latin Modern Roman}
+\setmainfont{lmroman10-regular.otf}[
+  BoldFont = lmroman10-bold.otf,
+  ItalicFont = lmroman10-italic.otf,
+  BoldItalicFont = lmroman10-bolditalic.otf,
+  Ligatures = TeX ]
+
+\usepackage{geometry}
+\geometry{a4paper,top=2.6cm,bottom=2.6cm,left=3cm,right=2.6cm}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+
+% --- Bảng màu lấy theo mẫu: navy đậm và ghi vàng (ochre) ---
+\definecolor{navy}{HTML}{14406B}
+\definecolor{deepnavy}{HTML}{0C2F5E}
+\definecolor{gold}{HTML}{A8660C}
+\definecolor{boxblue}{HTML}{EEF3FB}
+\definecolor{boxline}{HTML}{C7D6EC}
+\definecolor{hplred}{HTML}{B71C1C}
+
+% --- Đoạn văn căn hai bên, kiểu khối (parskip), giãn dòng thoáng cho dễ đọc ---
+\setlength{\parindent}{0pt}
+\linespread{1.13}
+
+% --- Tiêu đề chương: nhãn CHƯƠNG màu ghi vàng + tên chương navy lớn, căn trái ---
+\titleformat{\chapter}[display]
+  {\normalfont\filright}
+  {\normalfont\large\bfseries\color{gold}{\addfontfeatures{LetterSpace=8.0}\MakeUppercase{\chaptertitlename}\ \thechapter}}
+  {2pt}
+  {\normalfont\Huge\bfseries\color{deepnavy}}
+\titlespacing*{\chapter}{0pt}{6pt}{20pt}
+
+\titleformat{\section}{\normalfont\large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt}{5pt}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\color{navy}}{\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% --- Mục lục: tiêu đề navy căn trái, các mục màu navy, có dấu chấm dẫn ---
+\renewcommand{\cfttoctitlefont}{\Huge\bfseries\color{deepnavy}}
+\renewcommand{\cftchapfont}{\bfseries\color{navy}}
+\renewcommand{\cftchappagefont}{\bfseries\color{navy}}
+\renewcommand{\cftsecfont}{\color{navy}}
+\renewcommand{\cftsecpagefont}{\color{navy}}
+\renewcommand{\cftchapleader}{\color{boxline}\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+\setlength{\cftbeforechapskip}{2.4pt}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{16pt}
+
+% --- Tiện ích ---
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\spaced}[1]{{\addfontfeatures{LetterSpace=14.0}#1}}
+% Tiêu đề trang đầu (lời cảm ơn, cam đoan): căn giữa, nội dung căn hai bên.
+\newcommand{\frontheading}[2]{%
+  \clearpage\thispagestyle{plain}%
+  \addcontentsline{toc}{chapter}{#1}%
+  \vspace*{0.4cm}%
+  {\centering\Huge\bfseries\color{deepnavy} #2\par}%
+  \vspace{0.9cm}}
+
+\begin{document}
+
+% ===================== TRANG BÌA =====================
+\begin{titlepage}
+\centering
+\thispagestyle{empty}
+\vspace*{1.4cm}
+
+% --- Khối định danh ---
+{\addfontfeatures{LetterSpace=1.5}\large\bfseries\color{navy} CÔNG TY CỔ PHẦN TIẾP VẬN HÒA PHÁT}\\[6pt]
+{\itshape\color{black!62} Cuộc thi “Bứt phá quản trị cùng AI”}
+
+\vspace{1.9cm}
+
+% --- Nhãn nhỏ (eyebrow) ---
+{\spaced{\bfseries\color{gold} BÁO CÁO ĐỀ ÁN \;\textbullet\; VÒNG CHUNG KẾT}}\\[20pt]
+
+% --- Tên đề tài (hero), kẹp giữa hai đường kẻ mảnh ---
+{\color{navy}\rule{0.86\textwidth}{0.9pt}}\\[18pt]
+{\addfontfeatures{LetterSpace=2.0}\fontsize{29}{35}\selectfont\bfseries\color{deepnavy} AI DISPATCHING\\[2pt] \& ROUTING ENGINE}\\[18pt]
+{\color{navy}\rule{0.86\textwidth}{0.9pt}}\\[20pt]
+
+% --- Phụ đề ---
+{\itshape\large\color{black!74} Nền tảng điều phối xe thông minh nhằm tối ưu lộ trình tuyến đường\\ và giảm thiểu xe chạy rỗng tại Công ty Cổ phần Tiếp vận Hòa Phát}
+
+\vfill
+
+% --- Đội thi & thành viên ---
+{\large
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{r@{\hspace{1.4em}}l}
+{\bfseries\color{navy} Đội thi} & iNEUvate\\
+{\bfseries\color{navy} Thành viên} & Phạm Trần Thanh Hà\\
+ & Hà Thu Hà\\
+ & Phạm Lan Phương\\
+ & Trần Kỳ Anh\\
+ & Lê Anh Đức\\
+\end{tabular}}
+
+\vspace{1.5cm}
+{\color{gold}\rule{3.2cm}{0.9pt}}\\[9pt]
+{\bfseries\color{navy} HÀ NỘI \;\textbullet\; THÁNG 06/2026}
+\vspace*{0.4cm}
+\end{titlepage}
+
+% ===================== LỜI CẢM ƠN =====================
+\frontheading{Lời cảm ơn}{Lời cảm ơn}
+Chúng em xin dành lời tri ân trang trọng nhất tới Công ty Cổ phần Tiếp vận Hòa Phát. Khi mở ra một sân chơi công nghệ dựa trên một bài toán điều phối có thật, công ty không chỉ giao cho chúng em một đề bài mà còn cho chúng em cơ hội nhìn ngành logistics từ bên trong, với những ràng buộc, những con số và những tình huống mà sách vở khó truyền tải trọn vẹn. Bộ dữ liệu mô phỏng cùng các kịch bản vận hành mà cuộc thi cung cấp chính là chất liệu để chúng em định hình đúng vấn đề và xây dựng giải pháp trong báo cáo này.
+
+Chúng em cũng cảm ơn ban tổ chức đã đồng hành và tạo điều kiện trong suốt quá trình, cùng các thầy cô và bạn bè đã góp ý để chúng em hoàn thiện sản phẩm. Báo cáo hẳn còn chỗ chưa trọn vẹn, và chúng em thành thật mong nhận được nhận xét từ hội đồng để tiếp tục làm tốt hơn.
+
+% ===================== LỜI CAM ĐOAN =====================
+\frontheading{Lời cam đoan}{Lời cam đoan}
+Chúng em xin cam đoan rằng toàn bộ ý tưởng, mô hình thuật toán và mã nguồn trình bày trong báo cáo là sản phẩm do chính nhóm nghiên cứu và xây dựng. Những kiến thức tham khảo từ tài liệu khoa học hay công cụ mã nguồn mở đều được dùng đúng mục đích và nêu rõ ở phần tương ứng. Sản phẩm chưa từng được công bố tại bất kỳ cuộc thi hay ấn phẩm nào khác và không sao chép từ công trình của người khác. Mọi dữ liệu do quý công ty cung cấp chỉ được sử dụng cho mục đích nghiên cứu trong khuôn khổ cuộc thi.
+
+Chúng em cũng cam kết rằng sau khi cuộc thi khép lại, nhóm sẽ tiếp tục theo đuổi dự án một cách nghiêm túc và bền bỉ cho tới khi sản phẩm đạt phiên bản hoàn chỉnh nhất, sẵn sàng cho triển khai thực tế. Với chúng em, cuộc thi là điểm khởi đầu chứ không phải đích đến của giải pháp này.
+
+\vspace{1.4cm}
+\begin{center}
+Đại diện đội thi iNEUvate
+
+\vspace{1.6cm}
+\rule{5cm}{0.4pt}
+\end{center}
+
+% ===================== MỤC LỤC =====================
+\clearpage
+{\linespread{1.0}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+
+% ===================== CHƯƠNG 1 =====================
+\chapter{Lời nói đầu}
+
+Mỗi chuyến xe quay về kho với thùng rỗng là một khoản lỗ đã được báo trước. Doanh nghiệp vẫn trả đủ tiền nhiên liệu, khấu hao và công tài xế cho quãng đường ấy, nhưng không thu về đồng doanh thu nào. Với một đội xe liên tỉnh, nơi chặng giao có thể dài hàng trăm ki-lô-mét, phần chi phí chìm này đủ sức bào mòn biên lợi nhuận vốn đã mỏng của ngành vận tải hợp đồng. Đó là lý do chúng em, đội iNEUvate, chọn lấy việc cắt giảm xe chạy rỗng làm sợi chỉ đỏ xuyên suốt giải pháp, thay vì chỉ dừng ở mục tiêu rút ngắn quãng đường thường thấy.
+
+\section{Bối cảnh và động lực}
+Công việc của một điều phối viên thực chất là giải liên tục một bài toán tổ hợp. Trong cùng một thời điểm, người đó phải quyết định đơn nào giao trước, xe nào nhận đơn nào, làm sao kịp khung giờ giao mà vẫn né được giờ cấm tải nội đô, và phía sau tất cả là câu hỏi mỗi chuyến có còn lãi hay không. Khi số đơn và số xe còn nhỏ, kinh nghiệm và trực giác đủ để xoay xở. Nhưng quy mô tăng lên thì không gian lựa chọn bùng nổ theo cấp số, lời giải thủ công nhanh chóng đuối sức, vừa khó tối ưu vừa dễ sai sót. Bài toán này, trong tài liệu chuyên ngành, thuộc lớp định tuyến phương tiện có ràng buộc khung giờ, vốn đã được chứng minh là thuộc nhóm khó về độ phức tạp tính toán.
+
+Thực tế tại Hòa Phát Logistics còn đặt thêm những lớp ràng buộc rất đặc thù. Đội xe không đồng nhất về tải trọng, mỗi loại hàng yêu cầu một hạng xe tối thiểu, các điểm giao có khung giờ riêng, và xe quá tải trọng cho phép bị cấm vào vành đai trong của Hà Nội đúng vào hai khung giờ cao điểm. Một lời giải chỉ có giá trị khi tôn trọng đồng thời tất cả những điều kiện ấy, chứ không phải chỉ là tuyến ngắn nhất trên bản đồ.
+
+\section{Mục tiêu và đóng góp}
+Chúng em đặt mục tiêu xây dựng một trung tâm điều phối dạng web, vận hành như một phòng điều hành thu nhỏ, đưa người dùng đi trọn vẹn từ lúc nạp dữ liệu cho tới khi có kế hoạch tuyến tối ưu, ghép được chuyến quay đầu, theo dõi tài chính theo thời gian thực và xử lý sự cố phát sinh trong ngày. Để hiện thực hóa mục tiêu đó, báo cáo này có năm đóng góp chính.
+
+Thứ nhất là một bộ máy định tuyến lai, nơi một heuristic chèn tham lam dựng nhanh lời giải khả thi rồi giao cho metaheuristic tìm kiếm cục bộ có hướng dẫn của OR-Tools cải thiện, kèm nhiều lớp dự phòng để bộ máy luôn cho ra kết quả. Thứ hai là cơ chế ghép chuyến quay đầu đa tiêu chí, biến quãng chạy rỗng thành quãng có hàng. Thứ ba là một mô hình tài chính bóc tách chi phí theo hạng mục, được hiệu chỉnh để phản ánh biên lợi nhuận thực tế của ngành. Thứ tư là quy trình điều phối động xử lý sự cố với điều phối viên giữ quyền quyết định cuối cùng. Thứ năm là một trợ lý trực tuyến bám đúng ngữ cảnh phiên làm việc, giúp người điều phối tra cứu và diễn giải kết quả ngay trong lúc thao tác. Toàn bộ được kiểm thử trên ba kịch bản dữ liệu thật do cuộc thi cung cấp.
+
+% ===================== CHƯƠNG 2 =====================
+\chapter{Cơ sở lý thuyết và phát biểu bài toán}
+
+\section{Lớp bài toán định tuyến}
+Nền tảng lý thuyết của giải pháp là bài toán định tuyến phương tiện có ràng buộc khung giờ, quen gọi theo tên viết tắt tiếng Anh là VRPTW. Đặc thù của Hòa Phát Logistics buộc chúng em bổ sung ba lớp mở rộng lên bài toán gốc. Đội xe không đồng nhất khiến mỗi xe có năng lực và hạng khác nhau. Mỗi đơn là một cặp điểm lấy và điểm giao phải do cùng một xe đảm nhận theo đúng thứ tự lấy trước giao sau. Và mục tiêu không chỉ là phục vụ hết đơn mà còn là tận dụng chiều về để sinh thêm lợi nhuận. Chúng em mô hình hóa bài toán thành hai phiên bản bổ trợ, một phiên bản tĩnh phục vụ lập kế hoạch trước ngày và một phiên bản động phục vụ tái điều phối ngay trong ngày khi có biến cố, cả hai dùng chung một bộ ràng buộc và một nguồn dữ liệu.
+
+\section{Hệ ràng buộc vận hành}
+Một phương án được coi là khả thi khi thỏa mãn đồng thời các ràng buộc cứng. Tổng khối lượng và tổng thể tích các đơn xếp lên một xe không vượt quá tải trọng và dung tích của xe đó. Một đơn chỉ được giao bằng xe có hạng từ mức tối thiểu trở lên, theo bậc thang loại xe đã định. Mỗi điểm lấy và điểm giao gắn với một cửa sổ thời gian, xe đến sớm thì được phép chờ còn đến muộn thì vi phạm. Riêng ràng buộc cấm tải nội đô thay đổi theo từng địa bàn, theo cấu hình mặc định, xe trên 1,25 tấn không được vào vành đai trong khung giờ 06:00 đến 09:00 và 16:30 đến 19:30. Điểm chúng em đặc biệt lưu tâm là toàn bộ khung giờ cấm này không bị viết cứng trong mã nguồn mà được đưa ra một bảng cấu hình cho người dùng xem và chỉnh theo khu vực, loại xe và ngày áp dụng, sau đó hệ thống tự nạp lại vào cả bước kiểm định lẫn bước lập tuyến.
+
+\section{Hàm mục tiêu}
+Mục tiêu tổng quát là sắp xếp đơn vào xe và định thứ tự điểm dừng sao cho tổng lợi nhuận của cả kế hoạch lớn nhất, điều này tương đương với việc kéo giảm tổng chi phí và đặc biệt là quãng chạy rỗng. Gọi tập tuyến của một phương án là $K$, doanh thu của tuyến $k$ là $R_k$ và chi phí của tuyến đó là $C_k$, bài toán được viết cô đọng như sau.
+\begin{equation}
+\max \sum_{k \in K} \bigl( R_k - C_k \bigr)
+\end{equation}
+Chi phí $C_k$ gộp chi phí nhiên liệu trên quãng có tải, phí cầu đường trên quãng liên tỉnh, chi phí tài xế, chi phí cố định và khấu hao của xe, chi phí bốc xếp theo đơn, chi phí cho quãng chạy rỗng vượt ngưỡng và chi phí quản lý phân bổ theo doanh thu. Chương về mô hình kinh tế sẽ làm rõ từng thành phần.
+
+\section{Khoảng cách và thời gian}
+Khoảng cách giữa hai điểm được tính theo công thức Haversine trên mặt cầu rồi nhân với hệ số quy đổi 1,30, một hệ số chúng em chọn để xấp xỉ quãng đường thực trên đường bộ thay cho đường chim bay, bởi đường thực luôn dài hơn do địa hình và mạng lưới giao thông. Với hai điểm có tọa độ $(\varphi_1,\lambda_1)$ và $(\varphi_2,\lambda_2)$ cùng bán kính Trái Đất $\rho$, khoảng cách đường bộ ước lượng $d$ được tính theo
+\begin{equation}
+d = 1{,}30 \cdot 2\rho \cdot \arcsin\!\sqrt{\sin^2\!\frac{\Delta\varphi}{2} + \cos\varphi_1\cos\varphi_2\sin^2\!\frac{\Delta\lambda}{2}}.
+\end{equation}
+Thời gian di chuyển suy ra từ khoảng cách và vận tốc trung bình của xe, cộng thêm thời gian phục vụ tại mỗi điểm. Nhờ đó, khi mô phỏng một tuyến, hệ thống ước lượng được giờ dự kiến đến từng điểm và kiểm tra ngay được tính khả thi của khung giờ.
+
+% ===================== CHƯƠNG 3 =====================
+\chapter{Kiến trúc hệ thống và công nghệ}
+
+\section{Trung tâm điều phối tám phân hệ}
+Hệ thống được tổ chức thành tám phân hệ nối tiếp theo đúng dòng chảy công việc của người điều phối, từ nhập dữ liệu và ánh xạ cột, kiểm định dữ liệu và năng lực đội xe, lập kế hoạch tuyến kèm bản đồ, ghép chuyến quay đầu, theo dõi tài chính, phát hiện và xử lý sự cố trong ngày, lưu nhật ký và truy vết, cho tới trợ lý hỏi đáp thông minh. Bao quanh tám phân hệ là khu vực cấu hình ràng buộc cấm tải và bản đồ điều phối toàn mạng. Cách chia này có chủ đích, mỗi phân hệ tương ứng với một bước ra quyết định thật sự, nên người dùng lần đầu vẫn đoán được mình đang ở đâu trong quy trình.
+
+\section{Nguyên tắc tách lớp}
+Quyết định kiến trúc mà chúng em xem là quan trọng nhất là tách bạch dứt khoát hai lớp xử lý. Lớp thứ nhất là bộ máy định tuyến và tối ưu, nơi diễn ra mọi tính toán gán xe, lập tuyến, tính chi phí và kiểm tra ràng buộc. Lớp này hoàn toàn xác định, không phụ thuộc vào mô hình ngôn ngữ, nên kết quả luôn ổn định và có thể kiểm chứng từng con số. Lớp thứ hai là trợ lý tạo sinh, lo việc đọc hiểu ngữ cảnh, diễn giải kết quả và trò chuyện bằng ngôn ngữ tự nhiên. Mục đích của việc tách lớp là giữ cho kết quả tối ưu luôn ổn định và kiểm chứng được từng con số. Một con số điều phối sai có thể khiến cả một chuyến hàng thất bại, nên chúng em không để bất kỳ phần nào của lời giải phụ thuộc vào suy đoán của mô hình ngôn ngữ.
+
+\section{Công nghệ và khả năng vận hành liên tục}
+Phần máy chủ được viết bằng Python với khung Flask, giao diện là một trang web dùng JavaScript thuần kết hợp thư viện bản đồ Leaflet và thư viện biểu đồ. Phần tối ưu định tuyến dựa trên OR-Tools của Google, một bộ giải bài toán định tuyến ở mức công nghiệp. Dữ liệu vào ra giữ ở định dạng bảng tính quen thuộc để doanh nghiệp dễ tiếp nhận. Một nguyên tắc thiết kế xuyên suốt là hệ thống phải chạy được ngay cả khi thiếu vài thư viện không bắt buộc, bởi khi đó nó tự lui về phương án nhẹ hơn nhưng vẫn tôn trọng đủ ràng buộc, thay vì dừng lại báo lỗi.
+
+% ===================== CHƯƠNG 4 =====================
+\chapter{Thuật toán định tuyến lai ghép giữa heuristic tham lam và metaheuristic}
+
+\section{Vì sao cần một thuật toán hai pha}
+Không có một thuật toán đơn lẻ nào vừa nhanh vừa cho lời giải gần tối ưu cho lớp bài toán này. Một heuristic tham lam dựng được lời giải hợp lệ trong chớp mắt nhưng dễ kẹt ở phương án xoàng. Một bộ giải tối ưu mạnh có thể tinh chỉnh lời giải tới mức rất tốt nhưng cần điểm xuất phát hợp lý và thời gian để hội tụ. Chúng em ghép hai thế mạnh này thành một quy trình hai pha, lấy tốc độ của pha thứ nhất làm bệ phóng cho chất lượng của pha thứ hai.
+
+\section{Pha một: dựng tuyến bằng heuristic chèn tham lam}
+Ở pha thứ nhất, hệ thống chạy một heuristic chèn tham lam gán lần lượt từng đơn vào xe theo bộ trọng số ưu tiên mà người dùng chọn, chẳng hạn ưu tiên đúng giờ, tiết kiệm chi phí, giảm chạy rỗng hay xử lý đơn gấp. Mỗi lần chèn đều kiểm tra đủ ràng buộc về loại xe, tải trọng, dung tích và cấm tải theo khung giờ, đồng thời ưu tiên gom các đơn cùng hành lang vào một xe để nâng tỷ lệ sử dụng tải. Kết quả là một lời giải ban đầu khả thi, sinh ra gần như tức thời, đóng vai trò hạt giống cho pha sau.
+
+\section{Pha hai: cải thiện bằng metaheuristic tìm kiếm cục bộ có hướng dẫn}
+Ở pha thứ hai, lời giải hạt giống được nạp vào OR-Tools làm nghiệm khởi tạo, rồi hệ thống chạy chiến lược tìm kiếm cục bộ có hướng dẫn để cải thiện dần. Chiến lược này, gọi theo tiếng Anh là Guided Local Search, hoạt động bằng cách áp một khoản phạt lên những lựa chọn lặp đi lặp lại, nhờ vậy lời giải thoát được khỏi điểm tối ưu cục bộ mà các bước hoán đổi thông thường hay mắc kẹt. Toàn bộ mô hình ràng buộc về cặp điểm lấy giao đi cùng xe, cửa sổ thời gian, tải trọng, dung tích, hạng xe và cấm tải đều được khai báo đầy đủ trong bộ giải. Bộ giải còn được phép tạm bỏ một đơn kèm một mức phạt rất lớn, một thủ pháp giúp nó vẫn trả ra lời giải hợp lệ khi năng lực đội xe không đủ, thay vì thất bại.
+
+\section{Một chi tiết kỹ thuật quyết định thành bại của việc nạp hạt giống}
+Việc nạp nghiệm khởi tạo được thực hiện qua cơ chế đọc nghiệm theo tuyến của OR-Tools. Đây là nơi chúng em gặp một cạm bẫy ít ai để ý và đã khắc phục dứt điểm. Cơ chế này hoạt động theo nguyên tắc trọn gói, hoặc nhận toàn bộ nghiệm khởi tạo, hoặc loại bỏ tất cả, nghĩa là chỉ cần một tuyến trong hạt giống không khả thi về khung giờ thì cả nghiệm khởi tạo bị bỏ, và bộ giải lặng lẽ khởi động lại từ con số không. Trong khi đó, heuristic tham lam gom nhiều đơn vào một xe mà chưa kiểm tra tính khả thi của lịch trình thời gian, nên một số tuyến hạt giống có thể vi phạm khung giờ. Hệ quả là pha cải thiện tưởng như có hạt giống nhưng thực chất luôn chạy nguội, đánh mất đúng lợi ích mà cách tiếp cận lai đáng lẽ mang lại.
+
+Lời giải của chúng em là chỉ nạp những tuyến đã được kiểm tra là khả thi về khung giờ và để bộ giải tự sắp xếp lại các tuyến còn lại. Sau khi sửa, trên cả ba kịch bản dữ liệu thật, pha cải thiện thực sự khởi động từ hạt giống thay vì chạy nguội, với số tuyến hạt giống hợp lệ lần lượt là mười lăm, hai mươi hai và hai mươi tư. Riêng kịch bản nhu cầu ổn định, pha tham lam ban đầu dùng mười bảy xe và phục vụ hai mươi hai đơn, còn sau khi metaheuristic cải thiện, chỉ mười ba xe phục vụ được hai mươi chín đơn. Con số ấy cho thấy giá trị thực của pha hai, vừa giảm số xe phải huy động vừa phục vụ thêm đơn.
+
+\section{Lớp dự phòng và khả năng cấu hình}
+Yêu cầu cao nhất chúng em đặt ra là bộ máy không bao giờ rơi vào trạng thái không có lời giải. Vì vậy hệ thống cài nhiều lớp lui an toàn. Khi thư viện tối ưu không sẵn có, khi bộ giải gặp lỗi hoặc vượt thời gian cho phép, hay khi kết quả của bộ giải kém hơn chính hạt giống tham lam, hệ thống dùng lại nghiệm tham lam. Nhãn hiển thị về bộ máy đang chạy cũng được làm cho trung thực, phản ánh đúng việc hạt giống có thực sự được nạp hay không, để nhật ký phản ánh trung thực việc bộ máy đã chạy ra sao. Người dùng chỉ thao tác qua một nút duy nhất để chạy kế hoạch, nhưng bên trong hệ thống vẫn giữ ba chế độ gồm chỉ tham lam, chỉ bộ giải và phương án lai, phục vụ kiểm thử và so sánh. Giới hạn thời gian cho pha cải thiện có thể điều chỉnh, mặc định ở mức vừa phải và nâng lên được theo khuyến nghị của OR-Tools cho bài toán lớn, còn một hạt giống ngẫu nhiên cố định giúp các lần chạy cho kết quả lặp lại ổn định.
+
+% ===================== CHƯƠNG 5 =====================
+\chapter{Tự động tối ưu, kiểm soát trạng thái tuyến và truy vết}
+
+\section{Tối ưu lại khi dữ liệu thay đổi}
+Đơn hàng trong thực tế không đến cùng lúc mà rải ra suốt ngày, nên một kế hoạch lập một lần rồi để yên sẽ nhanh chóng lạc hậu. Hệ thống vì thế tự động chạy lại bộ máy mỗi khi người điều phối thêm một đơn, xóa một đơn hay nạp thêm đơn từ bảng tính, với điều kiện tính năng này đang bật và kế hoạch đã được lập trước đó. Người điều phối có thể bật hoặc tắt cơ chế tùy nhu cầu, nên quyền chủ động vẫn nằm trong tay con người.
+
+\section{Trạng thái tuyến và nguyên tắc tối ưu lại từng phần}
+Một hệ thống tự động tối ưu mà không có hãm sẽ thay đổi kế hoạch liên tục, gây nhiễu cho vận hành thực địa. Để tránh điều đó, mỗi tuyến mang một trong các trạng thái gồm đã gán, đã khóa, đang chạy và đã hoàn thành. Chỉ những tuyến chưa khóa và chưa khởi hành mới được phép tối ưu lại. Khi một tuyến đã khóa hoặc đang chạy, hệ thống đóng băng nguyên trạng tuyến đó cùng xe và các đơn của nó, chỉ tối ưu phần còn lại rồi ghép lại thành kế hoạch hoàn chỉnh. Đây chính là tinh thần tối ưu lại từng phần, chỉ tính lại phần chưa khóa và giữ nguyên các tuyến đã chốt. Trong quá trình kiểm thử, chúng em phát hiện và khắc phục một lỗi khó thấy là tuyến đã khóa của kịch bản này có thể lẫn sang kế hoạch của kịch bản khác khi người dùng chuyển kịch bản, và đã ràng buộc lại để việc đóng băng chỉ áp dụng trong đúng kịch bản đang lập.
+
+\section{Nhật ký tối ưu phục vụ kiểm toán}
+Mỗi lần bộ máy chạy, hệ thống ghi một bản ghi đầy đủ gồm thời điểm, lý do chạy, bộ máy được dùng kèm lý do lui dự phòng nếu có, số đơn được tối ưu, số đơn chưa gán kèm nguyên nhân, danh sách tuyến bị thay đổi và danh sách tuyến giữ nguyên do đã khóa, cùng thời gian chạy. Bản ghi này biến mỗi quyết định điều phối thành một dấu vết có thể truy lại, một điều kiện cần để hệ thống được tin dùng trong môi trường doanh nghiệp.
+
+% ===================== CHƯƠNG 6 =====================
+\chapter{Mô hình kinh tế: chi phí, lợi nhuận và chống chạy rỗng}
+
+\section{Bóc tách chi phí và biên lợi nhuận}
+Mỗi tuyến được tính lợi nhuận theo cách bám sát thực tế của vận tải hợp đồng, với nguyên tắc cốt lõi là tránh tính trùng. Doanh thu một tuyến là tổng cước các đơn cộng các khoản phụ phí thu được. Về chi phí, nhiên liệu và bảo dưỡng chỉ tính trên quãng có tải, phí cầu đường chỉ tính trên quãng liên tỉnh vì nội thành không qua trạm thu phí, còn quãng chạy rỗng quay về kho được tính riêng theo đơn giá vận hành chiều rỗng và chỉ tính phần vượt quá quãng điều xe miễn phí. Lợi nhuận và biên lợi nhuận theo đó được xác định bởi
+\begin{align}
+\text{Lợi nhuận} &= \text{Doanh thu} - \text{Tổng chi phí}, \\
+\text{Biên lợi nhuận} &= \frac{\text{Lợi nhuận}}{\text{Doanh thu}} \times 100\%.
+\end{align}
+Tổng chi phí gộp nhiên liệu, phí cầu đường, chi phí tài xế gồm lương phụ cấp và tăng ca, chi phí xe gồm khấu hao bảo dưỡng và bảo hiểm, chi phí bốc xếp, chi phí chạy rỗng và chi phí quản lý phân bổ theo tỷ lệ doanh thu. Mô hình được hiệu chỉnh để một kế hoạch tối ưu cho biên lợi nhuận rơi vào vùng thực tế của vận tải nội địa, khoảng 17 đến 22 phần trăm, và hệ thống hiển thị một thước đo trực quan chia vùng để người điều phối nhìn một lần là biết kế hoạch đang đứng ở đâu.
+
+\section{Giá nhiên liệu lấy từ dữ liệu thật}
+Giá nhiên liệu biến động mạnh và ảnh hưởng trực tiếp tới chi phí, nên hệ thống tự lấy giá mới nhất từ nguồn cấu hình, lưu kèm thời điểm và trạng thái, và có giá dự phòng khi mất kết nối. Giá này được đẩy thẳng vào mục chi phí vận hành và tự điều chỉnh các phép tính, người dùng vẫn chỉnh tay được khi cần. Chúng em chủ động loại bỏ hoàn toàn việc để mô hình ngôn ngữ tự ước tính giá nhiên liệu, bởi một con số tài chính phải đến từ nguồn dữ liệu thật chứ không phải từ suy đoán.
+
+\section{Ghép chuyến quay đầu để thu hồi quãng rỗng}
+Sau khi giao xong ở điểm cuối, xe thường ở xa kho và phải chạy rỗng quay về. Nếu trong vùng lân cận có một đơn cần vận chuyển theo hướng về kho, hệ thống đề xuất ghép đơn đó vào chiều về, biến quãng vô ích thành quãng có doanh thu. Việc ghép không dựa thuần vào khoảng cách mà cân nhắc đồng thời độ gần giữa điểm lấy của đơn quay đầu và điểm xe vừa rảnh, mức tải còn trống, sự tương thích hạng xe, ràng buộc cấm tải chiều về, phần km rỗng tiết kiệm được và lợi nhuận bổ sung sau khi trừ chi phí đi lệch. Một phương án chỉ được chấp nhận khi không vi phạm ràng buộc cứng và có lợi nhuận bổ sung dương, ước lượng theo
+\begin{equation}
+\text{Lợi nhuận bổ sung} = \text{Doanh thu đơn} + \text{Giá trị tiết kiệm chạy rỗng} - \text{Chi phí đi ghép}.
+\end{equation}
+Để minh họa, chúng em sinh ba tệp dữ liệu đơn quay đầu tương ứng ba kịch bản, mỗi đơn đặt bám sát điểm kết thúc các tuyến thật. Khi chạy, hệ thống ổn định tìm được lời ghép cho khoảng 46 đến 52 phần trăm số tuyến tùy kịch bản, phần còn lại để điều phối viên ghép tay, và quan trọng là không bao giờ rơi vào cảnh không tìm được kết quả nhờ luôn có sẵn cơ chế sinh đơn mẫu theo kế hoạch hiện tại.
+
+% ===================== CHƯƠNG 7 =====================
+\chapter{Điều phối động và xử lý sự cố}
+
+\section{Quy trình tám bước}
+Trong ngày vận hành, sự cố là điều khó tránh, từ xe hỏng, tài xế báo trễ, tắc đường, cấm tải phát sinh cho tới khách đổi giờ hay đổi địa điểm giao. Hệ thống xử lý theo một quy trình tám bước, đi từ phát hiện, phân loại, phân tích tác động, sinh phương án, để người điều phối quyết định, rồi định tuyến lại phần còn lại, thông báo các bên và cuối cùng đóng sự cố kèm lưu vết. Quy trình này giữ cho việc xử lý vừa nhanh vừa có kỷ luật, tránh tình trạng mỗi người làm một kiểu.
+
+\section{Chấm điểm xe thay thế}
+Khi cần điều xe thay thế, hệ thống quét các xe trong bán kính cho phép quanh điểm sự cố và chấm điểm từng xe trên thang một trăm theo bốn yếu tố là độ gần, năng lực tải, khả năng kịp giờ và việc có nằm trong bán kính hay không, theo công thức
+\begin{equation}
+\text{Điểm} = 40\,f_{\text{kc}} + 30\,f_{\text{tải}} + 20\,f_{\text{giờ}} + 10\,f_{\text{bk}},
+\end{equation}
+trong đó các hệ số phù hợp về khoảng cách và thời gian được chuẩn hóa về đoạn từ không tới một. Xe khả thi nhất, tức xe nằm trong bán kính, đủ tải và kịp phục hồi, được đề xuất đầu tiên.
+
+\section{Giữ con người ở vị trí quyết định}
+Triết lý xuyên suốt là hệ thống chỉ đề xuất, còn điều phối viên mới là người chốt phương án. Bên cạnh các phương án mẫu sinh sẵn cho từng loại sự cố kèm gợi ý xử lý mềm khi nói chuyện với khách và tài xế, hệ thống còn để điều phối viên tự điền phương án theo ý mình thay vì bắt buộc chọn từ danh sách, và mọi quyết định đều được lưu vết để rà soát và rút kinh nghiệm về sau. Khi mở phân hệ sự cố, hệ thống nạp toàn bộ các tình huống có trong tệp dữ liệu động, còn nếu tệp chưa có thì tự sinh một số tình huống từ các đơn đang bị gắn cờ để điều phối viên luyện tập.
+
+% ===================== CHƯƠNG 8 =====================
+\chapter{Trợ lý thông minh, giao diện và xuất báo cáo}
+
+\section{Trợ lý trực tuyến bám ngữ cảnh}
+Trợ lý đóng vai cầu nối giữa con người và dữ liệu. Nó hoạt động trực tuyến và tra cứu được thông tin từ Internet, nên người điều phối có thể hỏi từ những câu bám sát dữ liệu phiên như tuyến nào chạy rỗng nhiều nhất hay biên lợi nhuận hiện tại bao nhiêu, cho tới những câu kiến thức chung về logistics. Với các câu liên quan điều phối, trợ lý luôn trả lời dựa trên dữ liệu thật của phiên và kết quả thuật toán, không tự bịa ra con số. Trợ lý còn đưa được gợi ý bám đúng phân hệ người dùng đang mở, sát với việc người dùng đang làm thay vì những câu trả lời chung chung. Về hình thức, trợ lý là một cửa sổ nổi nhỏ ở góc dưới bên phải, luôn nằm trên bản đồ, không che hay đẩy lệch bố cục, và giữ lại nội dung trò chuyện khi mở lại.
+
+\section{Giao diện và bản đồ}
+Giao diện dùng nền sáng với phối màu xanh và đỏ theo nhận diện thương hiệu, bố cục sạch và mạch lạc. Sau mỗi lần chạy kế hoạch, người dùng thấy ngay các chỉ số then chốt gồm bộ máy đang chạy, thời gian chạy, số xe sử dụng, số đơn được gán và chưa gán, tổng quãng đường và quãng chạy rỗng, cùng doanh thu, chi phí và lợi nhuận, đủ để đánh giá nhanh chất lượng kế hoạch. Bản đồ vẽ tuyến theo đường bộ thực tế khi có mạng, các điểm được đánh số theo thứ tự dừng, và chúng em tinh chỉnh để các điểm có kích thước vừa phải, dịu mắt, hợp với một giao diện doanh nghiệp.
+
+\section{Xuất báo cáo bảng tính}
+Toàn bộ kết quả của phiên có thể xuất ra một tệp bảng tính gồm nhiều trang dữ liệu đã chuẩn hóa kèm trang hướng dẫn, các trang được định dạng thành bảng có thể lọc và sẵn sàng để người dùng tự dựng bảng tổng hợp. Chúng em chủ động không nhúng các bảng biểu trang trí phức tạp vào tệp xuất, bởi chúng dễ vỡ định dạng khi mở trên các phiên bản phần mềm khác nhau, và với một báo cáo vận hành, tính ổn định khi mở trên nhiều máy quan trọng hơn hình thức bắt mắt.
+
+% ===================== CHƯƠNG 9 =====================
+\chapter{Thực nghiệm, kiểm thử và thảo luận}
+\enlargethispage{2\baselineskip}
+
+\section{Phương pháp kiểm thử}
+Chúng em kiểm thử ở nhiều lớp. Ở lớp thuật toán, bộ máy được chạy trên cả ba kịch bản dữ liệu thật và kết quả của phương án tham lam được đối chiếu với phương án lai để xác nhận pha cải thiện thực sự có tác dụng. Ở lớp giao diện và máy chủ, chúng em chạy thử trọn các luồng nghiệp vụ, từ nạp dữ liệu, lập kế hoạch, khóa tuyến, thêm đơn để kích hoạt tự động tối ưu, cho tới ghép chuyến, tính tài chính và xuất báo cáo.
+
+\section{Rà soát đối kháng và những lỗi đã khắc phục}
+Để nâng độ tin cậy, chúng em tổ chức một vòng rà soát đối kháng đa chiều trên toàn bộ thay đổi, trong đó nhiều tác nhân kiểm tra độc lập rồi xác minh chéo từng phát hiện. Vòng rà soát này chỉ ra bốn vấn đề thực sự, và tất cả đều đã được khắc phục. Nghiêm trọng nhất là việc hạt giống tham lam chưa thực sự được nạp vào bộ giải do một số tuyến vi phạm khung giờ, khiến pha cải thiện âm thầm chạy nguội, đã xử lý bằng cách chỉ nạp các tuyến khả thi. Kế đến, tuyến đã khóa của một kịch bản có thể lẫn sang kế hoạch của kịch bản khác, đã ràng buộc lại theo đúng kịch bản. Thứ ba, cơ chế tự động tối ưu trước đây có thể chạy nhầm kịch bản của đơn vừa chỉnh, đã làm cho nó nhận biết đúng kịch bản. Cuối cùng là một lỗi nhỏ ở giao diện khiến gợi ý theo phân hệ bị lệch ngữ cảnh trong lần tải đầu, đã sửa bằng cách khởi tạo đúng trạng thái. Theo chúng em, việc chủ động phát hiện và sửa những lỗi này cho thấy sản phẩm đã được kiểm thử nghiêm túc.
+
+\section{Kết quả và giới hạn}
+Trên dữ liệu thử nghiệm, phương án lai cho lời giải tốt hơn hẳn tham lam đơn thuần, phục vụ nhiều đơn hơn mà vẫn dùng ít xe hơn. Ghép chuyến quay đầu giảm đáng kể quãng chạy rỗng và bổ sung lợi nhuận thật cho từng kịch bản, đưa biên lợi nhuận vào vùng mục tiêu thực tế. Cơ chế khóa tuyến và tự động tối ưu chạy đúng thiết kế, giữ nguyên tuyến đã chốt và chỉ cập nhật phần còn lại khi có đơn mới. Chúng em cũng thẳng thắn nhìn nhận các giới hạn hiện tại, khi thời gian di chuyển còn ước lượng từ khoảng cách thay vì dữ liệu giao thông thời gian thực và quy mô thử nghiệm mới gói trong ba kịch bản của cuộc thi, cũng là những điểm chúng em tập trung ở giai đoạn sau.
+
+% ===================== CHƯƠNG 10 =====================
+\chapter{Kết luận và hướng phát triển}
+
+Qua đề tài này, chúng em đã hiện thực hóa một trung tâm điều phối hoàn chỉnh, đi từ nạp dữ liệu tới lập kế hoạch tối ưu, ghép chuyến quay đầu, theo dõi tài chính, xử lý sự cố và hỏi đáp thông minh. Giá trị cốt lõi nằm ở bộ máy định tuyến lai vừa nhanh vừa cho lời giải tốt và luôn có kết quả, đặt trong một triết lý nhất quán là minh bạch, kiểm chứng được và lấy việc giảm xe chạy rỗng làm trọng tâm. Điều củng cố niềm tin của chúng em vào hướng đi này là tính giải thích được, khi mỗi quyết định của hệ thống đều có thể truy lại nguồn gốc.
+
+Hướng phát triển tiếp theo của chúng em đã khá rõ ràng. Chúng em dự định kết nối hệ thống với dữ liệu giao thông và bản đồ thời gian thực để ước lượng thời gian di chuyển sát hơn, mở rộng sang nhiều kho và nhiều vùng vận hành, bổ sung khả năng học từ lịch sử điều phối để gợi ý ngày một thông minh, và hoàn thiện phần phân quyền cùng lưu trữ cho quy mô doanh nghiệp. Như đã cam kết, sau cuộc thi chúng em sẽ tiếp tục phát triển dự án cho tới khi sản phẩm đạt phiên bản hoàn chỉnh nhất.
+
+\vspace{0.6cm}
+\begin{center}
+\itshape Chúng em trân trọng cảm ơn quý hội đồng đã dành thời gian theo dõi báo cáo.
+\end{center}
+
+\end{document}

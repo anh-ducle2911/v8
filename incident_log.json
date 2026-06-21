@@ -1,0 +1,24 @@
+[
+  {
+    "case_id": "SC-151904-2",
+    "source": "Đơn kế hoạch tĩnh",
+    "order_id": "S3-ORD-005",
+    "event_type": "Tắc đường",
+    "decision": "Mở phiên xử lý sự cố",
+    "vehicle": "HPL-T033",
+    "status": "Đang xử lý",
+    "ts": "20/06/2026 15:19:04",
+    "user": "Điều phối viên"
+  },
+  {
+    "case_id": "SC-151504-1",
+    "source": "Đơn kế hoạch tĩnh",
+    "order_id": "S1-ORD-006",
+    "event_type": "Thiếu xe",
+    "decision": "Mở phiên xử lý sự cố",
+    "vehicle": "—",
+    "status": "Đang xử lý",
+    "ts": "20/06/2026 15:15:04",
+    "user": "Điều phối viên"
+  }
+]

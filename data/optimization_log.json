@@ -1,0 +1,6795 @@
+[
+  {
+    "ts": "20/06/2026 15:16:15",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.08,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 15:09:13",
+    "scenario": "S3",
+    "reason": "import_excel",
+    "reason_vi": "Nhập đơn từ Excel",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.07,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 14:42:22",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 14:06:34",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 28.64,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 09:38:23",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 30.08,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 04:30:05",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 04:16:43",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 04:16:24",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 04:07:20",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.08,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:59:16",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (23 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 43,
+    "n_unassigned": 16,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V004",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V024",
+      "V025",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V002",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:59:11",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 44,
+    "n_seed_assigned": 44,
+    "n_unassigned": 16,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V024",
+      "V025",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:59:06",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V026",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 03:59:01",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.44,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V023",
+      "V024",
+      "V029",
+      "V030",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 12
+  },
+  {
+    "ts": "20/06/2026 03:58:43",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.34,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:58:42",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.51,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V023",
+      "V024",
+      "V029",
+      "V030",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 12
+  },
+  {
+    "ts": "20/06/2026 03:55:26",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.06,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:51:45",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 24.14,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:45:54",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (23 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 43,
+    "n_unassigned": 16,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V004",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V024",
+      "V025",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V002",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:45:49",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.13,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 44,
+    "n_seed_assigned": 44,
+    "n_unassigned": 16,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V024",
+      "V025",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:45:44",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V026",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 03:45:39",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 13.17,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V023",
+      "V024",
+      "V029",
+      "V030",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 12
+  },
+  {
+    "ts": "20/06/2026 03:44:45",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:44:14",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V026",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 03:43:44",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 22.25,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V026",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 03:31:20",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V026",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 03:30:31",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 21.67,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:22:06",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.31,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 45,
+    "n_seed_assigned": 44,
+    "n_unassigned": 15,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 28
+  },
+  {
+    "ts": "20/06/2026 03:13:12",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.06,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:10:37",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.06,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V025",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 03:10:29",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:08:15",
+    "scenario": "S1",
+    "reason": "delete_order",
+    "reason_vi": "Xóa đơn khỏi danh sách",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.01,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 21,
+    "n_seed_assigned": 21,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V024",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:08:12",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.03,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:07:55",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.09,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:01:54",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.12,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 03:01:44",
+    "scenario": "S1",
+    "reason": "delete_order",
+    "reason_vi": "Xóa đơn khỏi danh sách",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.01,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 20,
+    "n_seed_assigned": 20,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V008",
+      "V001",
+      "V013",
+      "V029",
+      "V023",
+      "V019",
+      "V014",
+      "V009"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V007",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 16
+  },
+  {
+    "ts": "20/06/2026 03:01:24",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.29,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 03:01:07",
+    "scenario": "S1",
+    "reason": "delete_order",
+    "reason_vi": "Xóa đơn khỏi danh sách",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.02,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 20,
+    "n_seed_assigned": 20,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V008",
+      "V001",
+      "V013",
+      "V029",
+      "V023",
+      "V019",
+      "V014",
+      "V009"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V007",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 16
+  },
+  {
+    "ts": "20/06/2026 03:00:47",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.24,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 03:00:10",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (constructive)",
+    "mode": "greedy",
+    "time_limit_sec": 20,
+    "elapsed_sec": 0.0,
+    "improved": false,
+    "fallback": null,
+    "n_orders_optimized": 37,
+    "n_seed_assigned": 37,
+    "n_unassigned": 7,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-027",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-004",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S2-ORD-018",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-044",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-015",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S2-ORD-035",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V035",
+      "V034",
+      "V030",
+      "V023",
+      "V029",
+      "V007",
+      "V012",
+      "V008",
+      "V013",
+      "V002",
+      "V018",
+      "V001",
+      "V024",
+      "V026",
+      "V014",
+      "V009",
+      "V006",
+      "V015",
+      "V010",
+      "V003",
+      "V036",
+      "V019",
+      "V020",
+      "V025",
+      "V016",
+      "V032"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 26
+  },
+  {
+    "ts": "20/06/2026 02:59:58",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.24,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:59:36",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 5,
+    "elapsed_sec": 5.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:59:08",
+    "scenario": "S1",
+    "reason": "import_excel",
+    "reason_vi": "Nhập đơn từ Excel",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.03,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:58:47",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.41,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:58:16",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 4.33,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:57:40",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.01,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 18,
+    "n_seed_assigned": 18,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V002",
+      "V026",
+      "V039",
+      "V012",
+      "V014",
+      "V018",
+      "V029",
+      "V023",
+      "V019",
+      "V013",
+      "V009"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V007",
+        "status": "locked"
+      },
+      {
+        "vehicle_id": "V008",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 15
+  },
+  {
+    "ts": "20/06/2026 02:57:37",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.21,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:56:58",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V025",
+      "V026",
+      "V029",
+      "V030",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 20
+  },
+  {
+    "ts": "20/06/2026 02:56:40",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.11,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:56:12",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.11,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V025",
+      "V026",
+      "V029",
+      "V030",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 20
+  },
+  {
+    "ts": "20/06/2026 02:55:41",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (constructive)",
+    "mode": "greedy",
+    "time_limit_sec": 20,
+    "elapsed_sec": 0.0,
+    "improved": false,
+    "fallback": null,
+    "n_orders_optimized": 44,
+    "n_seed_assigned": 44,
+    "n_unassigned": 16,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-048",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-038",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-043",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-056",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-028",
+        "reason": "Vi phạm giờ cấm tải"
+      },
+      {
+        "order_id": "S3-ORD-005",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-047",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-011",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-016",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-053",
+        "reason": "Tuyến dài, cần kiểm tra chiều về"
+      },
+      {
+        "order_id": "S3-ORD-060",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-010",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-034",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V029",
+      "V039",
+      "V023",
+      "V022",
+      "V002",
+      "V008",
+      "V014",
+      "V037",
+      "V007",
+      "V012",
+      "V034",
+      "V030",
+      "V033",
+      "V021",
+      "V036",
+      "V026",
+      "V001",
+      "V035",
+      "V040",
+      "V031",
+      "V024",
+      "V032",
+      "V019",
+      "V025",
+      "V020",
+      "V006",
+      "V013",
+      "V018",
+      "V009",
+      "V015",
+      "V003"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 31
+  },
+  {
+    "ts": "20/06/2026 02:55:19",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.11,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:54:43",
+    "scenario": "S1",
+    "reason": "delete_order",
+    "reason_vi": "Xóa đơn khỏi danh sách",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.01,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 20,
+    "n_seed_assigned": 20,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V008",
+      "V001",
+      "V013",
+      "V029",
+      "V023",
+      "V019",
+      "V014",
+      "V009"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V007",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 16
+  },
+  {
+    "ts": "20/06/2026 02:54:23",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.12,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:54:03",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.01,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V023",
+      "V024",
+      "V025",
+      "V026",
+      "V029",
+      "V030",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 20
+  },
+  {
+    "ts": "20/06/2026 02:54:00",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.41,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:53:36",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (13 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.01,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 27,
+    "n_seed_assigned": 20,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V013",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [
+      {
+        "vehicle_id": "V007",
+        "status": "locked"
+      }
+    ],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:53:33",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:53:18",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 3,
+    "elapsed_sec": 3.52,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V012",
+      "V014",
+      "V018",
+      "V019",
+      "V024",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:50:58",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:50:23",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:50:20",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:50:19",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 20,
+    "elapsed_sec": 20.34,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:46:19",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V025",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:46:01",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V025",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:45:13",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:45:13",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:44:38",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:44:38",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.02,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:44:36",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:39:56",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V015",
+      "V016",
+      "V020",
+      "V021",
+      "V024",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V036",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:39:32",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V025",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:38:05",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:37:44",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:37:43",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:37:25",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.07,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:36:45",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.07,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:34:57",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V023",
+      "V024",
+      "V025",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:34:23",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.01,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:34:12",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:34:05",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.02,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:33:49",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.07,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:32:10",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Greedy theo preset (OR-Tools kém lợi nhuận hơn → fallback)",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": false,
+    "fallback": "ortools_less_profit",
+    "n_orders_optimized": 22,
+    "n_seed_assigned": 22,
+    "n_unassigned": 8,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-024",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-007",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S1-ORD-014",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-026",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-028",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-022",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S1-ORD-008",
+        "reason": "Không đủ thời gian giao hàng"
+      }
+    ],
+    "routes_changed": [
+      "V024",
+      "V030",
+      "V012",
+      "V002",
+      "V026",
+      "V039",
+      "V018",
+      "V007",
+      "V008",
+      "V013",
+      "V001",
+      "V014",
+      "V029",
+      "V023",
+      "V019",
+      "V009",
+      "V015"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 17
+  },
+  {
+    "ts": "20/06/2026 02:31:57",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:31:57",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:31:56",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.01,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:31:55",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.02,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:31:39",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.26,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 58,
+    "n_seed_assigned": 44,
+    "n_unassigned": 2,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V025",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:20:08",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:20:08",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.07,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:20:07",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:20:05",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.16,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:19:39",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:19:37",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:19:37",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:19:37",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.05,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:19:35",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.11,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:06:28",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.03,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:06:28",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.12,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:06:24",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:06:00",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.22,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:05:59",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.13,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:05:58",
+    "scenario": "S3",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (24 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.09,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 57,
+    "n_seed_assigned": 44,
+    "n_unassigned": 3,
+    "unassigned_reasons": [
+      {
+        "order_id": "S3-ORD-008",
+        "reason": "Không có xe phù hợp"
+      },
+      {
+        "order_id": "S3-ORD-036",
+        "reason": "Không đủ thời gian giao hàng"
+      },
+      {
+        "order_id": "S3-ORD-045",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V002",
+      "V003",
+      "V007",
+      "V009",
+      "V013",
+      "V014",
+      "V015",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V023",
+      "V024",
+      "V026",
+      "V027",
+      "V028",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V033",
+      "V034",
+      "V035",
+      "V036",
+      "V037",
+      "V038",
+      "V039",
+      "V040"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 29
+  },
+  {
+    "ts": "20/06/2026 02:05:57",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.11,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V037"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 20
+  },
+  {
+    "ts": "20/06/2026 02:05:57",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.06,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V025",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V037"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 20
+  },
+  {
+    "ts": "20/06/2026 02:05:53",
+    "scenario": "S1",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (15 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.1,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 29,
+    "n_seed_assigned": 22,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S1-ORD-006",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V008",
+      "V009",
+      "V010",
+      "V014",
+      "V018",
+      "V019",
+      "V020",
+      "V021",
+      "V022",
+      "V030",
+      "V031",
+      "V035",
+      "V039"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 13
+  },
+  {
+    "ts": "20/06/2026 02:05:41",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.04,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  },
+  {
+    "ts": "20/06/2026 02:05:37",
+    "scenario": "S2",
+    "reason": "manual",
+    "reason_vi": "Người dùng bấm tối ưu thủ công",
+    "engine": "Hybrid: Greedy seed (22 xe) → OR-Tools GUIDED_LOCAL_SEARCH",
+    "mode": "hybrid",
+    "time_limit_sec": 30,
+    "elapsed_sec": 30.13,
+    "improved": true,
+    "fallback": null,
+    "n_orders_optimized": 43,
+    "n_seed_assigned": 37,
+    "n_unassigned": 1,
+    "unassigned_reasons": [
+      {
+        "order_id": "S2-ORD-029",
+        "reason": "Không có xe phù hợp"
+      }
+    ],
+    "routes_changed": [
+      "V007",
+      "V008",
+      "V009",
+      "V010",
+      "V011",
+      "V012",
+      "V013",
+      "V014",
+      "V016",
+      "V019",
+      "V021",
+      "V023",
+      "V029",
+      "V030",
+      "V031",
+      "V032",
+      "V034",
+      "V035",
+      "V036"
+    ],
+    "routes_kept_frozen": [],
+    "n_routes_total": 19
+  }
+]

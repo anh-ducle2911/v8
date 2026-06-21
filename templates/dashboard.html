@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hòa Phát Logistics — Trung tâm điều phối & tối ưu tuyến</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<!-- Q12/A4.8: defer Leaflet (chỉ dùng khi mở bản đồ) — bỏ render-blocking khỏi <head> -->
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Q12/A4.8: Chart.js LAZY-LOAD — chỉ tải khi mở Module 5 (xem ensureChart()) -->
+<style>
+:root{
+  /* Màu thương hiệu HPL — GIỮ NGUYÊN nhận diện (navy #0B3D91 / đỏ #E2231A) */
+  --navy:#0B3D91; --navy-d:#072a66; --blue:#1565C0; --blue-l:#EAF1FB;
+  --red:#E2231A; --red-d:#B71C1C; --red-l:#FCEDEC;
+  --bg:#F4F7FB; --card:#FFFFFF; --ink:#16203A; --muted:#5B6678; --line:#E2E8F2;
+  --green:#1B7A2F; --green-l:#E8F5EC;
+  --amber:#B07A00; --amber-l:#FFF6E2; --amber-d:#8A5E00; /* Q3/A3.11: amber tối đạt AA (5.31:1) cho chữ trên nền sáng */
+  /* Q1/C7 — Thang typography 8 cấp (h2 trang = --fs-2xl 24px, card h3 = --fs-lg 16px) */
+  --fs-2xs:10px; --fs-xs:11px; --fs-sm:12px; --fs-md:13px; --fs-base:14px;
+  --fs-lg:16px; --fs-xl:20px; --fs-2xl:24px;
+  /* Q1/Conflict#3 — Thang bo góc 4 cấp (GIỮ 12px nền cho card/kpi) */
+  --r-sm:8px; --r-md:10px; --radius:12px; --r-lg:14px; --r-xl:16px;
+  /* Q7/A6.2 — Z-index phân tầng: dock < fullscreen < overlay < modal < toast */
+  --z-dock:1000; --z-fs:1080; --z-overlay:1100; --z-modal:1200; --z-toast:1300;
+  /* Q1/Conflict#4 — Elevation 2 lớp ám navy nhẹ (tách khối, vẫn tinh tế) */
+  --shadow:0 1px 3px rgba(11,61,145,.06),0 4px 12px rgba(11,61,145,.05);
+  --shadow-l:0 12px 40px rgba(11,61,145,.20);
+  /* Q1/A3.8 — Chuyển động + focus ring nhất quán (Q3/A4.6) */
+  --ease:cubic-bezier(.4,0,.2,1); --dur:.18s; --focus-ring:0 0 0 3px rgba(21,101,192,.45);
+  /* RWD — chiều cao topbar dùng chung cho mọi phép tính layout */
+  --topbar-h:58px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Be Vietnam Pro',system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:var(--blue);text-decoration:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#c8d3e4;border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#aebdd6}
+
+.topbar{height:var(--topbar-h);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 clamp(12px,2.5vw,20px);position:sticky;top:0;z-index:60}
+.nav-toggle{display:none;align-items:center;justify-content:center;width:38px;height:38px;flex-shrink:0;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--navy);cursor:pointer}
+.nav-toggle:hover{background:var(--blue-l)}
+.sidebar-backdrop{display:none}
+.brand{display:flex;align-items:center;gap:11px}
+/* Logo: nền navy có chiều sâu nhẹ; accent đỏ thương hiệu được làm TRẦM + MẢNH + DỊU lại
+   (1.5px, đỏ sẫm ~55% thay cho 2px đỏ tươi) để bớt gắt, sang hơn mà vẫn giữ nhận diện. */
+.logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(145deg,#0e478f,#082c69);display:grid;place-items:center;font-weight:800;color:#fff;font-size:13px;letter-spacing:-.5px;box-shadow:inset 0 0 0 1.5px rgba(201,32,27,.72),0 1px 2px rgba(7,42,102,.22)}
+.brand h1{font-size:15px;font-weight:700;color:var(--navy);line-height:1.15}
+.brand .sub{font-size:11px;color:var(--muted);font-weight:500}
+.topbar .spacer{flex:1}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--blue-l);border:1px solid #d3e1f6;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;color:var(--navy)}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:#37d67a;animation:pls 1.8s infinite}
+.chip.on .dot{background:#37d67a}
+.btn{font-family:inherit;font-weight:600;border:1px solid transparent;border-radius:9px;padding:9px 15px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:7px;transition:.13s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-d)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-d)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--navy)}
+.btn-soft{background:var(--blue-l);color:var(--navy);border-color:#d3e1f6}.btn-soft:hover{background:#dde9fb}
+.btn-line{background:#fff;color:var(--navy);border-color:var(--line)}.btn-line:hover{background:#f5f8fd}
+.btn-sm{padding:6px 11px;font-size:12px;border-radius:7px}
+.btn[disabled]{opacity:1;background:#E2E8F2;color:#5B6678;border-color:#E2E8F2;cursor:not-allowed}
+
+.app{display:flex;height:calc(100vh - var(--topbar-h));height:calc(100dvh - var(--topbar-h))}
+.sidebar{width:250px;background:var(--card);border-right:1px solid var(--line);padding:12px 10px;overflow-y:auto;flex-shrink:0}
+.nav-group{font-size:var(--fs-2xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:14px 10px 6px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;cursor:pointer;font-weight:600;color:#3a465e;margin-bottom:2px;transition:.12s;position:relative;font-size:13px}
+.nav-item:hover{background:var(--blue-l)}
+.nav-item.active{background:var(--navy);color:#fff}
+.nav-item .num{width:22px;height:22px;border-radius:6px;background:var(--blue-l);color:var(--navy);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0}
+.nav-item.active .num{background:rgba(255,255,255,.22);color:#fff}
+.nav-item.alert .num{background:var(--red-l);color:var(--red)}
+.nav-item.active.alert{background:var(--red)}
+.nav-badge{position:absolute;right:9px;background:var(--red);color:#fff;border-radius:9px;font-size:var(--fs-2xs);padding:1px 7px;font-weight:700}
+.nav-item.active .nav-badge{background:#fff;color:var(--red)}
+
+.content{flex:1;min-width:0;overflow-x:hidden;overflow-y:auto;padding:clamp(12px,2.5vw,20px) clamp(12px,3vw,24px) 80px}
+.view{display:none}
+.view.show{display:block}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.page-head h2{font-size:var(--fs-2xl);font-weight:800;color:var(--navy);letter-spacing:-.3px;line-height:1.2}
+.page-head .desc{color:var(--muted);font-size:13px;margin-top:3px;max-width:720px}
+.step-tag{font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-l);padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:7px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:15px}
+.card h3{font-size:var(--fs-lg);font-weight:700;color:var(--navy);margin-bottom:3px}
+.card .hint{color:var(--muted);font-size:var(--fs-sm);margin-bottom:12px}
+.grid{display:grid;gap:14px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+/* Lưới responsive được gom trong mục RESPONSIVE WEB DESIGN ở cuối stylesheet */
+
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:box-shadow var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(11,61,145,.12)}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue)}
+.kpi.red::before{background:var(--red)}.kpi.green::before{background:var(--green)}.kpi.amber::before{background:var(--amber)}.kpi.navy::before{background:var(--navy)}
+.kpi .lbl{font-size:var(--fs-xs);color:var(--muted);font-weight:600}
+.kpi .val{font-size:23px;font-weight:800;color:var(--navy);margin-top:3px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi.red .val{color:var(--red-d)}.kpi.green .val{color:var(--green)}
+.kpi .vsub{font-size:var(--fs-xs);color:var(--muted);margin-top:2px;font-weight:500}
+
+.tbl-wrap{overflow-x:auto;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:10px;max-height:480px}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-md)}
+thead th{background:#f1f5fb;color:var(--navy);font-weight:700;text-align:left;padding:10px 11px;border-bottom:2px solid #e1e9f4;white-space:normal;position:sticky;top:0;z-index:1}
+tbody td{padding:8px 11px;border-bottom:1px solid #eef2f8;white-space:normal;word-break:break-word}
+tbody tr:hover{background:#f6faff}
+tbody tr.clickable{cursor:pointer}
+tbody tr.row-err{background:var(--red-l)}
+tbody tr.row-rev{background:#fff8e8}
+tfoot td{padding:10px 11px;font-weight:800;background:#fbeceb;border-top:2px solid #f3c9c6;color:var(--navy)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+td .edit{border:1px solid transparent;border-radius:6px;padding:3px 6px;min-width:60px;cursor:text;display:inline-block}
+td .edit:hover{border-color:#cdd9ec;background:#fff}
+td .edit:focus{outline:0;border-color:var(--blue);background:#fff;box-shadow:var(--focus-ring)}
+
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700}
+.b-ok{background:var(--green-l);color:var(--green)}
+.b-rev{background:var(--amber-l);color:var(--amber-d)}
+.b-err{background:var(--red-l);color:var(--red-d)}
+.b-blue{background:var(--blue-l);color:var(--navy)}
+.b-gray{background:#eef1f6;color:#5b6678}
+.tag{display:inline-block;padding:2px 8px;border-radius:5px;background:#eef1f6;font-size:11px;font-weight:600;color:#475168;margin:1px 2px}
+.tag.red{background:var(--red-l);color:var(--red-d)}
+.tag.blue{background:var(--blue-l);color:var(--navy)}
+
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:11px}
+.field{border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-family:inherit;font-size:13px;background:#fff}
+.field:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+select.field{cursor:pointer}
+label.lab{font-size:12px;font-weight:600;color:#3a465e;display:block;margin-bottom:4px}
+
+#map,#bk-map,#inc-map{height:430px;width:100%;background:#dfe7f1;border-radius:10px}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 4px 0;font-size:12px;color:var(--muted);font-weight:600}
+.leg{display:inline-flex;align-items:center;gap:6px}.leg .sw{width:12px;height:12px;border-radius:50%}
+
+.drop{border:2px dashed #c6d4ea;border-radius:11px;padding:20px;text-align:center;background:#fafcff;transition:.13s;cursor:pointer}
+.drop:hover,.drop.drag{border-color:var(--blue);background:var(--blue-l)}
+.drop.tall{min-height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.file-pill{display:flex;align-items:center;gap:8px;background:var(--blue-l);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:var(--fs-sm);font-weight:600;color:var(--navy)}
+
+.ai-box{background:#f7faff;border:1px solid #dce6f5;border-left:3px solid var(--blue);border-radius:10px;padding:13px 15px}
+.ai-box .ai-h{font-weight:700;color:var(--navy);font-size:13px;margin-bottom:5px}
+
+.banner{border-radius:10px;padding:13px 16px;font-weight:600;display:flex;align-items:center;gap:14px}
+.banner .big{font-size:16px;font-weight:800}
+.bn-s1{background:var(--green-l);color:var(--green);border:1px solid #bfe6c8}
+.bn-s2{background:var(--blue-l);color:var(--navy);border:1px solid #c6dbf6}
+.bn-s3{background:var(--red-l);color:var(--red-d);border:1px solid #f3c9c6}
+
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.preset{padding:9px 14px;border-radius:var(--r-sm);background:#fff;border:1px solid var(--line);cursor:pointer;font-weight:600;font-size:var(--fs-sm);color:#3a465e;transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.preset:hover{border-color:var(--blue);transform:translateY(-1px)}
+.preset.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.slider-row{margin-bottom:13px}
+.slider-row .top{display:flex;justify-content:space-between;font-size:var(--fs-sm);font-weight:600;color:#3a465e}
+.slider-row .ex{font-size:var(--fs-xs);color:var(--muted);margin-top:2px}
+input[type=range]{width:100%;margin-top:6px;accent-color:var(--navy)}
+
+.indicator{position:relative;height:30px;border-radius:8px;display:flex;overflow:hidden;border:1px solid var(--line)}
+.indicator .seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 1.5px rgba(0,0,0,.5)}
+.indicator .needle{position:absolute;top:-4px;bottom:-4px;width:3px;background:#111;border-radius:2px;box-shadow:0 0 0 2px #fff}
+.ind-scale{display:flex;justify-content:space-between;font-size:var(--fs-2xs);color:var(--muted);margin-top:4px;font-weight:600}
+
+.formula{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:15px 17px;font-size:13px;line-height:1.9}
+.formula .row{display:flex;justify-content:space-between;gap:14px;padding:3px 0;border-bottom:1px dashed #e6ecf5}
+.formula .row:last-child{border-bottom:0}
+.formula .lbl{color:#3a465e}.formula .lbl b{color:var(--navy)}
+.formula .res{font-weight:800;color:var(--green)}
+
+.opt{border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:.12s}
+.opt:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,61,145,.08)}
+.opt.sel{border-color:var(--green);background:var(--green-l);box-shadow:0 0 0 1px var(--green)}
+.opt .ot{font-weight:700;font-size:var(--fs-md);color:var(--navy);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.opt .od{font-size:var(--fs-sm);color:var(--muted);margin:5px 0}
+.opt .metrics{display:flex;gap:8px;flex-wrap:wrap;font-size:var(--fs-xs)}
+.metric{background:#f1f5fb;border-radius:6px;padding:3px 8px;font-weight:600;color:#3a465e}
+.play{border-left:3px solid var(--blue);background:#f7faff;border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:9px}
+.play .sit{font-weight:700;font-size:var(--fs-sm);color:var(--navy)}
+.play .act{font-size:12px;margin-top:2px}
+.play .script{font-size:12px;color:#3a465e;font-style:italic;background:#fff;border:1px dashed #cdd9ec;border-radius:7px;padding:7px 10px;margin-top:6px}
+
+.ov{position:fixed;inset:0;background:rgba(10,22,48,.45);z-index:var(--z-overlay);display:none}
+.ov.show{display:block}
+.modal{position:fixed;top:40px;left:50%;transform:translateX(-50%);width:min(1000px,95vw);max-height:90vh;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow-l);z-index:var(--z-modal);display:none;flex-direction:column;overflow:hidden;border:1px solid #d6e0f0}
+.modal.show{display:flex}
+.modal-head{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.modal-head .mt{font-weight:800;font-size:15px;flex:1}
+.modal-x{background:rgba(255,255,255,.18);border:0;color:#fff;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:15px;font-weight:700}
+.modal-body{padding:18px;overflow-y:auto}
+.modal-foot{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fafcff;flex-wrap:wrap}
+.split{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+@media(max-width:920px){.split{grid-template-columns:1fr}}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #eef2f8;font-size:var(--fs-md)}
+.kv .k{color:var(--muted);font-weight:600}.kv .v{font-weight:700;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.empty{text-align:center;color:var(--muted);padding:30px 16px;font-size:13px}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:var(--r-md);box-shadow:var(--shadow-l);z-index:var(--z-toast);font-weight:600;font-size:13px;display:none;max-width:460px}
+.toast.show{display:block}
+.toast.ok{background:var(--green)}.toast.err{background:var(--red)}
+.spin{width:15px;height:15px;border:2.5px solid rgba(127,127,127,.3);border-top-color:currentColor;border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{display:grid;place-items:center;padding:36px;color:var(--muted);gap:10px}
+
+/* Trợ lý AI: cửa sổ NỔI nhỏ góc dưới phải, overlay z-index cao, KHÔNG đẩy layout */
+.dock{position:fixed;right:22px;bottom:22px;z-index:var(--z-dock)}
+.dock-btn{background:var(--navy);color:#fff;border:0;border-radius:27px;padding:13.5px 23.4px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:var(--shadow-l);font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:.13s}
+.dock-btn:hover{background:var(--navy-d);transform:translateY(-1px)}
+.dock-btn .pulse{width:8px;height:8px;border-radius:50%;background:#37d67a;animation:pls 1.8s infinite}
+@keyframes pls{0%{box-shadow:0 0 0 0 rgba(55,214,122,.55)}70%{box-shadow:0 0 0 9px rgba(55,214,122,0)}100%{box-shadow:0 0 0 0 rgba(55,214,122,0)}}
+.dock-panel{position:fixed;right:22px;bottom:88px;width:394px;max-width:94vw;height:min(70vh,580px);background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow-l);z-index:var(--z-dock);display:none;flex-direction:column;overflow:hidden}
+.dock-panel.show{display:flex}
+@media(max-width:560px){.dock-panel{right:3vw;left:3vw;width:auto}}
+.dock-head{background:var(--navy);color:#fff;padding:12px 15px;display:flex;align-items:center;justify-content:space-between}
+.dock-head .t{font-weight:700;font-size:var(--fs-md)}
+.dock-head .s{font-size:11px;opacity:.85}
+.dock-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#f7faff}
+.msg{max-width:88%;padding:9px 12px;border-radius:11px;font-size:var(--fs-md);line-height:1.5;white-space:pre-wrap}
+.msg.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:3px}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:3px}
+.msg .src{font-size:10px;color:var(--muted);margin-top:4px}
+.dock-quick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--line);background:#fff}
+.qchip{font-size:11px;background:var(--blue-l);color:var(--navy);border:1px solid #d3e1f6;border-radius:14px;padding:4px 9px;cursor:pointer;font-weight:600}
+.dock-input{display:flex;gap:7px;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+.dock-input input{flex:1;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13px}
+.dock-input input:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.hl{background:linear-gradient(transparent 60%,#ffe680 60%);padding:0 2px;font-weight:700}
+.mini{font-size:var(--fs-sm)}
+
+/* ===== Q2/A4.4 — Skip-link & sr-only ===== */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:var(--z-toast);background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 var(--r-sm) 0;font-weight:700}
+.skip-link:focus{left:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===== Q3/A4.6 — Focus ring nhất quán 3px ===== */
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+tr.clickable:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;box-shadow:none}
+
+/* ===== A3.8 — Fade-in khi đổi module ===== */
+.view.show{animation:viewIn var(--dur) var(--ease)}
+@keyframes viewIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.nav-item{transition:background var(--dur) var(--ease)}
+
+/* ===== A3.13 — Sidebar active: dải đỏ trái (chữ ký brand) ===== */
+.nav-item.active::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:0 3px 3px 0;background:var(--red)}
+
+/* ===== Q4/A3.9/A4.9 — Tôn trọng prefers-reduced-motion ===== */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .view.show{animation:none}
+  .dock-btn .pulse{animation:none}
+  .kpi:hover,.opt:hover,.preset:hover{transform:none}
+}
+
+/* ===== Q8/C6 — Fullscreen phủ kín toàn màn ===== */
+.fs{position:fixed!important;inset:0!important;z-index:var(--z-fs)!important;background:#fff;margin:0!important;border-radius:0!important;max-height:none!important;display:flex;flex-direction:column;padding:14px 18px 18px;overflow:auto;box-shadow:none}
+.fs .tbl-wrap,.fs #map,.fs #bk-map{max-height:none!important;height:calc(100vh - 96px)!important;flex:1}
+
+/* ===== L2/A2.3 — Nhãn cụm KPI + thẻ hero ===== */
+.sec-label{font-size:var(--fs-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:2px 2px 0;grid-column:1/-1}
+.kpi.hero{border:1.5px solid #bfe0c8;background:linear-gradient(180deg,#fbfffc,#f1faf3)}
+.kpi.hero::before{width:5px;background:var(--green)}
+.kpi.hero .val{font-size:30px}
+.kpi.hero.neg{border-color:#f2c4c0;background:linear-gradient(180deg,#fffbfb,#fdeeed)}
+.kpi.hero.neg::before{background:var(--red)}
+.kpi.hero.neg .val{color:var(--red-d)}
+
+/* ===== L2/A2.5 — Mini progress bar tỷ lệ tải ===== */
+.barwrap{height:7px;background:#e8eef7;border-radius:5px;overflow:hidden;margin-top:6px}
+.barwrap .bar{height:100%;border-radius:5px;background:var(--green);transition:width var(--dur) var(--ease)}
+.barwrap .bar.mid{background:var(--amber)} .barwrap .bar.low{background:var(--red)}
+
+/* ===== Q10/A1.1 — Thanh quy trình (stepper) bấm-được, KHÔNG khóa ===== */
+.stepper{display:flex;flex-wrap:wrap;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;box-shadow:var(--shadow);margin-bottom:14px}
+.step{flex:1;min-width:118px;display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent;background:#f6f9fd;transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.step:hover{background:var(--blue-l)}
+.step.cur{border-color:var(--navy);background:var(--blue-l)}
+.step .sdot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:var(--fs-xs);font-weight:700;color:#fff;background:var(--blue)}
+.step.cur .sdot{background:var(--navy)}
+.step .sname{font-size:var(--fs-sm);font-weight:700;color:#3a465e;line-height:1.15}
+@media(max-width:900px){.step .stxt{display:none}.step{min-width:0;flex:0 0 auto}}
+
+/* ===== Q6/A6.9 — Trạng thái ô sửa ===== */
+.edit.saving{border-color:var(--amber)!important;background:#fffaf0!important}
+.edit.cell-err{border-color:var(--red)!important;background:var(--red-l)!important}
+.edit.cell-ok{border-color:var(--green)!important}
+
+/* ===== Q13/C12 — Badge nguồn AI / giá nhiên liệu ===== */
+.srcbadge{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-2xs);font-weight:600;color:var(--muted);background:#f1f5fb;border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-top:5px}
+.srcbadge .sd{width:7px;height:7px;border-radius:50%;background:#37d67a}
+.srcbadge.offline .sd{background:#9aa7bd}
+
+/* ===== A6.8 — Empty-state có CTA ===== */
+.empty-cta{text-align:center;padding:26px 16px;color:var(--muted)}
+.empty-cta .ei{font-size:26px;margin-bottom:6px}
+.empty-cta .btn{margin-top:10px}
+
+/* ===== L4/A6.7 — Undo-toast (hành động khả hồi) ===== */
+.toast .undo{margin-left:12px;background:rgba(255,255,255,.22);border:0;color:#fff;font-weight:700;border-radius:var(--r-sm);padding:4px 10px;cursor:pointer;font-family:inherit;font-size:var(--fs-sm)}
+.toast .undo:hover{background:rgba(255,255,255,.34)}
+
+/* ===== L4 — Confirm modal RIÊNG (thao tác nặng/không hồi) ===== */
+#confirm-modal{width:min(440px,92vw)}
+#confirm-modal .cm-msg{font-size:var(--fs-base);color:var(--ink);line-height:1.55}
+#confirm-modal .cm-warn{font-size:var(--fs-sm);color:var(--red-d);font-weight:600;margin-top:8px}
+
+/* ===== L1 — Drawer chi tiết trượt phải (thu bảng + xem chi tiết khi bấm dòng) ===== */
+.drawer{position:fixed;top:0;right:0;height:100vh;width:min(480px,96vw);background:#fff;border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(11,61,145,.18);z-index:var(--z-modal);transform:translateX(102%);transition:transform var(--dur) var(--ease);display:flex;flex-direction:column}
+.drawer.show{transform:none}
+.drawer .dw-head{background:var(--navy);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px}
+.drawer .dw-head .t{font-weight:800;font-size:var(--fs-lg);flex:1;line-height:1.2}
+.drawer .dw-body{padding:15px 16px 24px;overflow-y:auto;flex:1}
+.dw-sec{font-size:var(--fs-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 7px}
+.dw-sec:first-child{margin-top:0}
+tbody tr.clickable:hover{background:#eef5ff}
+
+/* ===== L3 — Tab nội bộ (Vận hành trong ngày) ===== */
+.tabbar{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.tabbtn{font-family:inherit;font-weight:700;font-size:var(--fs-md);color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-2px;padding:9px 14px;cursor:pointer;transition:color var(--dur) var(--ease)}
+.tabbtn:hover{color:var(--navy)}
+.tabbtn.active{color:var(--navy);border-bottom-color:var(--navy)}
+.tabbtn:focus-visible{box-shadow:var(--focus-ring);border-radius:var(--r-sm) var(--r-sm) 0 0}
+
+/* ===== L6 — Command palette ===== */
+.pal-item{padding:9px 15px;cursor:pointer;border-bottom:1px solid #f0f4fa;font-size:var(--fs-md);display:flex;align-items:center;gap:8px}
+.pal-item.sel,.pal-item:hover{background:var(--blue-l)}
+.pal-item .pk{font-size:var(--fs-2xs);font-weight:700;color:var(--muted);background:#eef1f6;border-radius:5px;padding:1px 6px;flex-shrink:0}
+
+/* ============================================================
+   RESPONSIVE WEB DESIGN — bổ sung có hệ thống (KHÔNG phá layout desktop hiện có)
+   Desktop là nền; các lớp dưới thu nhỏ dần xuống tablet → mobile.
+   Mốc chính: ≥1700 (ultra-wide) · 1024 (sidebar off-canvas) · 768 (mobile) · 640 · 480 · 360
+   ============================================================ */
+
+/* Ultra-wide: giới hạn bề ngang nội dung để cân đối, không kéo card rộng quá */
+@media(min-width:1700px){ .view{max-width:1700px;margin-inline:auto} }
+
+/* Lưới KPI/card co giãn theo bậc (4/3 cột → 2 cột tablet → 1 cột mobile) */
+@media(max-width:1024px){ .g4,.g3{grid-template-columns:repeat(2,1fr)} .g2{grid-template-columns:1fr} }
+@media(max-width:640px){ .g4,.g3,.g2{grid-template-columns:1fr} }
+
+/* ≤1024 — TABLET & nhỏ hơn: sidebar trượt (off-canvas) + nút hamburger */
+@media(max-width:1024px){
+  .nav-toggle{display:inline-grid}
+  .sidebar{position:fixed;top:var(--topbar-h);left:0;bottom:0;width:min(280px,82vw);
+    z-index:var(--z-overlay);transform:translateX(-100%);
+    transition:transform var(--dur) var(--ease);box-shadow:var(--shadow-l)}
+  body.nav-open .sidebar{transform:none}
+  .sidebar-backdrop{display:block;position:fixed;inset:var(--topbar-h) 0 0 0;
+    background:rgba(10,22,48,.42);z-index:calc(var(--z-overlay) - 1);
+    opacity:0;visibility:hidden;transition:opacity var(--dur) var(--ease),visibility var(--dur)}
+  body.nav-open .sidebar-backdrop{opacity:1;visibility:visible}
+}
+
+/* ≤768 — MOBILE ngang / tablet nhỏ */
+@media(max-width:768px){
+  .brand .sub{display:none}
+  .chip{display:none}   /* chip trạng thái AI nhường chỗ cho thương hiệu + nút chính trên topbar hẹp */
+  .brand h1{font-size:13.5px;max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .page-head{flex-direction:column;align-items:stretch;gap:12px}
+  .page-head>div{width:100%;min-width:0}
+  /* CHỈ nhóm điều khiển (có ≥2 con) mới xếp dọc — KHÔNG đụng vào khối tiêu đề đứng một mình */
+  .page-head>div:last-child:not(:only-child){flex-direction:column;align-items:stretch;gap:8px}
+  .page-head select.field,.page-head .btn{width:100%}
+  /* Form controls 16px: chống iOS auto-zoom khi focus + dễ chạm */
+  .field,select.field,textarea.field,.dock-input input,.edit{font-size:16px}
+  .toolbar{gap:8px}
+  .toolbar>.field{flex:1 1 150px;min-width:0}
+  .btn{min-height:38px}
+  /* Bảng dữ liệu: cuộn ngang thông minh thay vì ép chữ chồng nhau */
+  .tbl-wrap table{min-width:600px}
+  #pv-tbl,#val-tbl,#una-tbl,#bk-tbl,#inc-tbl,#optlog-tbl,#log-tbl,#cons-tbl{min-width:860px}
+  #map{height:340px}
+  .stepper{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .step{flex:0 0 auto}
+  .modal-body{padding:14px}
+}
+
+/* ≤640 — MOBILE dọc */
+@media(max-width:640px){
+  .brand h1{display:none}   /* chỉ còn logo HPL — giữ nhận diện, tối đa không gian cho nút */
+  .card{padding:14px 15px}
+  .kpi{padding:12px 14px}
+  .kpi .val{font-size:20px}
+  .kpi.hero .val{font-size:24px}
+  .formula .row{flex-wrap:wrap;gap:2px}
+  /* Modal lớn phủ gần toàn màn cho dễ thao tác trên điện thoại */
+  #modal,#route-modal{top:0;left:0;right:0;bottom:0;transform:none;width:100%;max-width:100%;max-height:100dvh;border-radius:0}
+  .dock{right:14px;bottom:14px}
+  .dock-btn{padding:11px 16px;font-size:13px}
+  .dock-panel{right:10px;left:10px;width:auto;bottom:74px;height:min(72vh,560px)}
+}
+
+/* ≤480 — MOBILE nhỏ (iPhone SE…) */
+@media(max-width:480px){
+  .topbar{gap:8px;padding:0 12px}
+  .topbar .btn{padding:7px 10px;font-size:12px}
+  .page-head h2{font-size:var(--fs-xl)}
+  .indicator .seg{font-size:0}   /* gauge giữ dải màu; nhãn đọc ở thang số bên dưới */
+  .content{padding-bottom:72px}
+}
+
+/* ≤360 — MOBILE rất nhỏ: gọn topbar để không tràn */
+@media(max-width:360px){
+  .topbar{gap:6px}
+  .topbar .btn{padding:6px 8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Bỏ qua tới nội dung chính</a>
+
+<div class="topbar">
+  <button class="nav-toggle" aria-label="Mở/đóng menu điều hướng" aria-expanded="false" aria-controls="main-nav" onclick="toggleSidebar()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  </button>
+  <div class="brand">
+    <div class="logo">HPL</div>
+    <div>
+      <h1>Hòa Phát Logistics — Trung tâm điều phối</h1>
+      <div class="sub">Hệ thống điều phối &amp; tối ưu tuyến vận tải</div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <span class="chip" id="chip-ai"><span class="dot"></span> Trợ lý AI: đang kiểm tra…</span>
+  <button class="btn btn-line btn-sm" onclick="loadDemo()">Nạp dữ liệu mẫu</button>
+  <button class="btn btn-line btn-sm" onclick="exportExcel()" aria-label="Xuất báo cáo Excel">Xuất Excel</button>
+</div>
+
+<div class="app">
+  <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebar()" aria-hidden="true"></div>
+  <nav class="sidebar" id="main-nav" aria-label="Điều hướng module">
+    <div class="nav-group">Lập kế hoạch</div>
+    <div class="nav-item active" data-view="import" role="button" tabindex="0" aria-current="page"><span class="num">1</span> Nhập dữ liệu &amp; ánh xạ</div>
+    <div class="nav-item" data-view="validate" role="button" tabindex="0"><span class="num">2</span> Kiểm định dữ liệu</div>
+    <div class="nav-item" data-view="plan" role="button" tabindex="0"><span class="num">3</span> Kế hoạch tuyến &amp; bản đồ</div>
+    <div class="nav-item" data-view="backhaul" role="button" tabindex="0"><span class="num">4</span> Ghép chuyến quay đầu</div>
+    <div class="nav-item" data-view="finance" role="button" tabindex="0"><span class="num">5</span> Tài chính P&amp;L</div>
+    <div class="nav-group">Điều phối trong ngày</div>
+    <div class="nav-item" data-view="ops" role="button" tabindex="0"><span class="num">6</span> Vận hành trong ngày <span class="nav-badge" id="nav-inc" style="display:none">0</span></div>
+    <div class="nav-group">Cài đặt</div>
+    <div class="nav-item" data-view="constraints" role="button" tabindex="0"><span class="num">⚙</span> Ràng buộc vận hành</div>
+  </nav>
+
+  <main class="content" id="main">
+  <div class="stepper" id="stepper" role="navigation" aria-label="Quy trình điều phối — bấm để nhảy bước"></div>
+
+  <!-- ===== MODULE 1: IMPORT ===== -->
+  <section class="view show" id="view-import">
+    <div class="page-head"><div>
+      <span class="step-tag">Bước 1 · Nạp dữ liệu</span>
+      <h2>Nhập dữ liệu &amp; ánh xạ</h2>
+      <div class="desc">Tải Excel (tĩnh · động · đơn bổ sung), ánh xạ cột tự động, xem trước &amp; sửa trực tiếp.</div>
+    </div></div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Dữ liệu lập kế hoạch</h3>
+        <div class="hint">Đơn hàng · đội xe · tài xế · depot · chi phí · ràng buộc.</div>
+        <div class="drop tall" onclick="document.getElementById('f-static').click()">
+          <div style="font-weight:700">Kéo thả hoặc bấm để chọn file .xlsx</div>
+          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Định dạng .xlsx hoặc .xlsm</div>
+        </div>
+        <input type="file" id="f-static" accept=".xlsx,.xlsm" hidden onchange="upload(this,'static')">
+        <div id="info-static"></div>
+      </div>
+      <div class="card">
+        <h3>Dữ liệu điều phối trong ngày</h3>
+        <div class="hint">Case sự cố · xe đang hoạt động · ứng viên thay thế.</div>
+        <div class="drop tall" onclick="document.getElementById('f-dynamic').click()">
+          <div style="font-weight:700">Kéo thả hoặc bấm để chọn file .xlsx</div>
+          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Định dạng .xlsx hoặc .xlsm</div>
+        </div>
+        <input type="file" id="f-dynamic" accept=".xlsx,.xlsm" hidden onchange="upload(this,'dynamic')">
+        <div id="info-dynamic"></div>
+      </div>
+    </div>
+    <div class="card" id="card-pv" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Xem trước &amp; chỉnh sửa dữ liệu đơn hàng</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-pv',this)" aria-label="Mở rộng bảng dữ liệu đơn hàng">⤢ Mở rộng</button>
+      </div>
+      <div class="hint">Sửa trực tiếp từng ô (bấm vào ô để sửa), không cần chỉnh lại Excel rồi tải lên.</div>
+      <div class="toolbar">
+        <input class="field" id="pv-search" placeholder="Nhập mã đơn" oninput="dPreview()" aria-label="Nhập mã đơn">
+        <button class="btn btn-soft btn-sm" onclick="toggleAddForm()">Thêm đơn thủ công</button>
+      </div>
+      <div id="add-form" style="display:none" class="card">
+        <div class="grid g4">
+          <div><label class="lab">Mã đơn</label><input class="field" id="ad-id" style="width:100%"></div>
+          <div><label class="lab">Khách hàng</label><input class="field" id="ad-cust" style="width:100%"></div>
+          <div><label class="lab">Tuyến</label><input class="field" id="ad-cor" style="width:100%"></div>
+          <div><label class="lab">Loại xe yêu cầu</label><input class="field" id="ad-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
+          <div><label class="lab">Điểm lấy</label><input class="field" id="ad-pn" style="width:100%"></div>
+          <div><label class="lab">Vĩ độ / kinh độ lấy</label><div style="display:flex;gap:6px"><input class="field" id="ad-plat" placeholder="lat" style="width:50%"><input class="field" id="ad-plon" placeholder="lon" style="width:50%"></div></div>
+          <div><label class="lab">Điểm trả</label><input class="field" id="ad-dn" style="width:100%"></div>
+          <div><label class="lab">Vĩ độ / kinh độ trả</label><div style="display:flex;gap:6px"><input class="field" id="ad-dlat" placeholder="lat" style="width:50%"><input class="field" id="ad-dlon" placeholder="lon" style="width:50%"></div></div>
+          <div><label class="lab">Khối lượng (kg)</label><input class="field" id="ad-w" type="number" style="width:100%"></div>
+          <div><label class="lab">Thể tích (m³)</label><input class="field" id="ad-vol" type="number" style="width:100%"></div>
+          <div><label class="lab">Giao từ - đến</label><div style="display:flex;gap:6px"><input class="field" id="ad-tws" placeholder="08:00" style="width:50%"><input class="field" id="ad-twe" placeholder="12:00" style="width:50%"></div></div>
+          <div><label class="lab">Doanh thu (đ)</label><input class="field" id="ad-rev" type="number" style="width:100%"></div>
+        </div>
+        <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addOrder()">Lưu đơn mới</button></div>
+      </div>
+      <div class="tbl-wrap"><table id="pv-tbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ===== MODULE 2: VALIDATE ===== -->
+  <section class="view" id="view-validate">
+    <div class="page-head"><div>
+      <span class="step-tag">Bước 2 · Kiểm định</span>
+      <h2>Kiểm định dữ liệu &amp; năng lực</h2>
+    </div>
+      <div><select class="field" id="sel-scenario" onchange="loadValidate()"></select></div>
+    </div>
+    <div id="cap-banner"></div>
+    <div class="grid g4" id="val-kpis" style="margin:14px 0"></div>
+    <div class="card" id="card-val">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Danh sách đơn — Kịch bản <span id="val-sid"></span></h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-val',this)" aria-label="Mở rộng bảng danh sách đơn">⤢ Mở rộng</button>
+      </div>
+      <div class="toolbar">
+        <input class="field" id="val-search" placeholder="Tìm theo mã đơn" oninput="dValidate()" aria-label="Tìm đơn theo mã">
+        <select class="field" id="val-filter" onchange="renderValidate();saveUIPref()" aria-label="Lọc theo trạng thái kiểm định">
+          <option value="">Tất cả trạng thái</option>
+          <option value="Hợp lệ">Hợp lệ</option>
+          <option value="Cần rà soát">Cần rà soát</option>
+          <option value="Không thể xử lý">Không thể xử lý</option>
+        </select>
+      </div>
+      <div class="tbl-wrap" style="max-height:560px"><table id="val-tbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ===== MODULE 3: PLAN ===== -->
+  <section class="view" id="view-plan">
+    <div class="page-head">
+      <div>
+        <span class="step-tag">Bước 3 · Lập tuyến</span>
+        <h2>Kế hoạch tuyến &amp; bản đồ</h2>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select class="field" id="plan-scenario" onchange="onPlanScenario(this.value)"></select>
+        <button class="btn btn-navy" onclick="runOptimize()">Chạy kế hoạch tuyến</button>
+      </div>
+    </div>
+
+    <div class="grid g4" id="plan-kpis"></div>
+    <div class="card" id="engine-info" style="display:none"></div>
+    <div class="grid g2">
+      <div class="card" id="card-plan-tbl">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Kế hoạch tuyến</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-tbl',this)" aria-label="Mở rộng bảng kế hoạch toàn màn hình">⤢ Mở rộng</button>
+        </div>
+        <div class="hint" id="plan-engine">Bấm “Timeline” để xem trình tự thời gian; bấm dòng để xem trên bản đồ. Khóa tuyến đã chốt để giữ nguyên khi tối ưu lại.</div>
+        <div class="tbl-wrap" style="max-height:470px"><table id="plan-tbl"></table></div>
+      </div>
+      <div class="card" id="card-plan-map">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Bản đồ tuyến · toàn mạng</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-map',this,'map')" aria-label="Mở rộng bản đồ toàn màn hình">⤢ Mở rộng</button>
+        </div>
+        <div class="toolbar"><select class="field" id="map-filter" onchange="drawPlanMap()"><option value="">Tất cả tuyến</option></select>
+          <button class="btn btn-line btn-sm" onclick="document.getElementById('map-filter').value='';drawPlanMap()">Toàn bộ</button></div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span class="leg"><span class="sw" style="background:#0B3D91;border-radius:3px"></span>Depot</span>
+          <span class="leg"><span class="sw" style="background:#1565C0"></span>Điểm lấy</span>
+          <span class="leg"><span class="sw" style="background:#E2231A"></span>Điểm trả</span>
+          <span class="leg"><span class="sw" style="background:#9AA7BD"></span>Đơn chưa gán</span>
+          <span class="leg" style="color:var(--muted)">Số trên điểm = thứ tự dừng</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" id="card-una">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Đơn chưa gán</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-una',this)" aria-label="Mở rộng bảng đơn chưa gán">⤢ Mở rộng</button>
+        </div>
+        <div class="tbl-wrap"><table id="una-tbl"></table></div>
+      </div>
+      <div class="card" id="card-noreturn3">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Đơn chưa có chuyến quay đầu</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn3',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu">⤢ Mở rộng</button>
+        </div>
+        <div class="hint">Đơn bổ sung chưa được ghép chiều về — sang Module 4 để ghép.</div>
+        <div class="tbl-wrap"><table id="noreturn3-tbl"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MODULE 4: BACKHAUL ===== -->
+  <section class="view" id="view-backhaul">
+    <div class="page-head">
+      <div>
+        <span class="step-tag">Bước 4 · Ghép chiều về</span>
+        <h2>Ghép chuyến quay đầu</h2>
+        <div class="desc">Ghép đơn chiều về sau chiều đi: giảm chạy rỗng · tăng fill-rate · ưu tiên backhaul.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-navy" onclick="runBackhaul()">Tối ưu ghép chuyến</button>
+      </div>
+    </div>
+    <div id="bk-status" class="hint" style="margin:-4px 0 12px"></div>
+    <div class="grid g4" id="bk-kpis"></div>
+    <div class="grid g2">
+      <div>
+        <div class="card">
+          <h3>Nguồn đơn bổ sung (chiều về)</h3>
+          <div class="hint">Đơn mới để ghép chiều về — chống chạy rỗng. Chọn <b>1 trong 3 cách</b>:</div>
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:10px 0 5px">Cách 1 — Nhập file 3PL</div>
+          <div class="drop" id="bk-drop" onclick="document.getElementById('f-bk4').click()">
+            <div style="font-weight:700">Kéo thả / bấm để chọn file .xlsx</div>
+            <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Mẫu: data/module4_backhaul_orders_template.xlsx · bắt buộc có vĩ độ/kinh độ lấy &amp; trả</div>
+          </div>
+          <input type="file" id="f-bk4" accept=".xlsx,.xlsm" hidden onchange="upload(this,'backhaul')">
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px">Cách 2 — Dùng đơn mẫu</div>
+          <button class="btn btn-soft btn-sm" onclick="loadBackhaulSample()">Nạp đơn quay đầu mẫu (bám kế hoạch hiện tại)</button>
+          <div id="info-backhaul"></div>
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px">Cách 3 — Nhập tay một đơn</div>
+          <details>
+            <summary style="cursor:pointer;font-weight:600;color:var(--blue);font-size:var(--fs-sm)">⤢ Mở rộng / thu gọn</summary>
+            <div class="grid g2" style="margin-top:10px">
+              <div><label class="lab">Mã đơn</label><input class="field" id="bk-id" style="width:100%"></div>
+              <div><label class="lab">Khách hàng</label><input class="field" id="bk-cust" style="width:100%"></div>
+              <div><label class="lab">Điểm lấy</label><input class="field" id="bk-pn" style="width:100%"></div>
+              <div><label class="lab">Lat/Lon lấy</label><div style="display:flex;gap:6px"><input class="field" id="bk-plat" placeholder="lat" style="width:50%"><input class="field" id="bk-plon" placeholder="lon" style="width:50%"></div></div>
+              <div><label class="lab">Điểm trả</label><input class="field" id="bk-dn" style="width:100%"></div>
+              <div><label class="lab">Lat/Lon trả</label><div style="display:flex;gap:6px"><input class="field" id="bk-dlat" placeholder="lat" style="width:50%"><input class="field" id="bk-dlon" placeholder="lon" style="width:50%"></div></div>
+              <div><label class="lab">Khối lượng (kg)</label><input class="field" id="bk-w" type="number" style="width:100%"></div>
+              <div><label class="lab">Doanh thu (đ)</label><input class="field" id="bk-rev" type="number" style="width:100%"></div>
+              <div><label class="lab">Loại xe</label><input class="field" id="bk-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
+            </div>
+            <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addBackhaul()">Thêm đơn bổ sung</button></div>
+          </details>
+          <div id="card-bkorders"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px">
+            <div class="hint" style="margin:0">Danh sách đơn bổ sung đang có:</div>
+            <button class="btn btn-line btn-sm" onclick="toggleFs('card-bkorders',this)" aria-label="Mở rộng bảng đơn bổ sung">⤢ Mở rộng</button></div>
+          <div class="tbl-wrap" style="max-height:220px;margin-top:6px"><table id="bk-orders-tbl"></table></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="card-bktbl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Gợi ý ghép chiều về</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-bktbl',this)" aria-label="Mở rộng bảng gợi ý ghép chiều về">⤢ Mở rộng</button></div>
+          <div class="hint">Xét khoảng cách · khung giờ · tải · loại xe · cấm tải · lợi nhuận · km rỗng.</div>
+          <div class="tbl-wrap" style="max-height:320px"><table id="bk-tbl"></table></div></div>
+        <div class="card"><h3>Bản đồ chiều đi &amp; chiều về</h3>
+          <div id="bk-map" style="height:300px"></div>
+          <div class="map-legend">
+            <span class="leg"><span class="sw" style="background:#E2231A"></span>Xe rảnh cuối chiều đi</span>
+            <span class="leg"><span class="sw" style="background:#1565C0"></span>Lấy đơn về</span>
+            <span class="leg"><span class="sw" style="background:#1B7A2F"></span>Trả đơn về</span>
+          </div></div>
+      </div>
+    </div>
+    <div class="card" id="card-noreturn4">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Đơn chưa có chuyến quay đầu</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn4',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu">⤢ Mở rộng</button>
+      </div>
+      <div class="hint">Đơn bổ sung chưa ghép được vẫn ở lại đây để tiếp tục tìm/ghép ở lượt sau.</div>
+      <div class="tbl-wrap" style="max-height:260px"><table id="noreturn4-tbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ===== MODULE 5: FINANCE ===== -->
+  <section class="view" id="view-finance">
+    <div class="page-head">
+      <div>
+        <span class="step-tag">Bước 5 · Tài chính</span>
+        <h2>Tài chính P&amp;L</h2>
+        <div class="desc">Doanh thu · chi phí theo hạng mục · biên lợi nhuận; tự cập nhật theo giá nhiên liệu, sự cố &amp; ghép chiều về.</div>
+      </div>
+      <div><button class="btn btn-navy" onclick="runFinancial()">Tính tài chính</button></div>
+    </div>
+    <div class="grid g4" id="fin-kpis"></div>
+    <div class="card">
+      <h3>Chỉ báo biên lợi nhuận</h3>
+      <div id="indicator-wrap"></div>
+      <div id="uplift-line" style="margin-top:14px"></div>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h3>Công thức tài chính</h3>
+        <div class="formula" id="formula"></div></div>
+      <div class="card"><h3>Cơ cấu chi phí kế hoạch</h3>
+        <div style="max-width:420px;margin:0 auto"><canvas id="costChart" height="130"></canvas></div></div>
+    </div>
+    <div class="card"><h3>P&amp;L từng tuyến</h3>
+      <div class="tbl-wrap" style="max-height:430px"><table id="fin-tbl"></table></div></div>
+    <div class="card"><h3>Chi phí vận hành &amp; nhiên liệu</h3>
+      <div class="hint">Giá nhiên liệu &amp; các đơn giá vận hành — chỉnh tay, P&amp;L tự tính lại ngay.</div>
+      <div id="fin-params"></div></div>
+  </section>
+
+  <!-- ===== MODULE 6+7: VẬN HÀNH TRONG NGÀY (L3 — gộp Sự cố + Nhật ký, tab nội bộ) ===== -->
+  <section class="view" id="view-ops">
+    <div class="page-head"><div>
+      <span class="step-tag">Điều phối trong ngày</span>
+      <h2>Vận hành trong ngày</h2>
+    </div></div>
+
+    <div class="tabbar" role="tablist" aria-label="Vận hành trong ngày" onkeydown="opsTabKey(event)">
+      <button class="tabbtn active" id="tab-incident" role="tab" aria-selected="true" aria-controls="ops-incident" tabindex="0" onclick="logTab('incident')">Xử lý sự cố</button>
+      <button class="tabbtn" id="tab-log" role="tab" aria-selected="false" aria-controls="ops-log" tabindex="-1" onclick="logTab('log')">Nhật ký &amp; lưu vết</button>
+    </div>
+
+    <div id="ops-incident" role="tabpanel" aria-labelledby="tab-incident" tabindex="0">
+      <div class="card">
+        <h3>Mở phiên xử lý sự cố</h3>
+        <div class="toolbar">
+          <select class="field" id="inc-type" aria-label="Loại sự cố"></select>
+          <input class="field" id="inc-order" placeholder="Mã đơn (tùy chọn)" aria-label="Mã đơn (tùy chọn)">
+          <button class="btn btn-red btn-sm" onclick="createIncident()">Mở xử lý sự cố</button>
+        </div>
+      </div>
+      <div class="card" id="card-inc">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3>Danh sách sự cố đang theo dõi</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-inc',this)" aria-label="Mở rộng bảng sự cố">⤢ Mở rộng</button>
+        </div>
+        <div class="hint" id="inc-note">Tải toàn bộ sự cố từ file Excel đã nhập; nếu file chưa có sự cố, hệ thống tự sinh.</div>
+        <div class="tbl-wrap"><table id="inc-tbl"></table></div>
+      </div>
+    </div>
+
+    <div id="ops-log" role="tabpanel" aria-labelledby="tab-log" tabindex="0" style="display:none">
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px">
+        <button class="btn btn-line btn-sm" onclick="loadLog();loadOptLog()">Làm mới</button>
+        <button class="btn btn-soft btn-sm" onclick="clearLog()">Xóa toàn bộ</button>
+      </div>
+      <div class="card" id="card-optlog"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Nhật ký tối ưu</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-optlog',this)" aria-label="Mở rộng bảng nhật ký tối ưu">⤢ Mở rộng</button></div>
+        <div class="tbl-wrap" style="max-height:280px"><table id="optlog-tbl"></table></div>
+      </div>
+      <div class="card" id="card-log"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Nhật ký điều phối &amp; sự cố</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-log',this)" aria-label="Mở rộng bảng nhật ký điều phối">⤢ Mở rộng</button></div>
+        <div class="toolbar">
+          <input class="field" id="log-search" placeholder="Mã đơn" oninput="dLog()" aria-label="Tìm nhật ký theo mã đơn">
+          <select class="field" id="log-filter" onchange="renderLog();saveUIPref()" aria-label="Lọc nhật ký theo trạng thái"><option value="">Tất cả trạng thái</option></select>
+        </div>
+        <div class="tbl-wrap" style="max-height:520px"><table id="log-tbl"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONSTRAINTS ===== -->
+  <section class="view" id="view-constraints">
+    <div class="page-head"><div>
+      <h2>Quy định cấm đường / cấm tải</h2>
+      <div class="desc">Cập nhật ràng buộc theo khu vực · loại xe · tải trọng · khung giờ · nguồn quy định; áp dụng ngay cho kiểm định &amp; lập tuyến.</div>
+    </div>
+      <div style="display:flex;gap:8px"><button class="btn btn-soft btn-sm" onclick="addConstraint()">Thêm quy định</button><button class="btn btn-navy btn-sm" onclick="saveConstraints()">Lưu thay đổi</button></div>
+    </div>
+    <div class="card" id="card-cons">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h3>Quy định cấm đường / cấm tải</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-cons',this)" aria-label="Mở rộng bảng quy định cấm tải">⤢ Mở rộng</button>
+      </div>
+      <div class="tbl-wrap"><table id="cons-tbl"></table></div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<!-- Incident modal -->
+<div class="ov" id="ov" onclick="closeModal();closeRouteModal();closeDrawer();closePalette()"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal-head"><div class="mt" id="m-title">Xử lý sự cố</div>
+    <button class="modal-x" onclick="closeModal()" aria-label="Đóng cửa sổ xử lý sự cố">×</button></div>
+  <div class="modal-body" id="m-body"></div>
+  <div class="modal-foot">
+    <div class="mini" id="m-status" style="color:var(--muted)"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-line btn-sm" onclick="closeModal()">Đóng</button>
+      <button class="btn btn-navy btn-sm" id="m-apply" onclick="applyResolve()" disabled>Xác nhận áp dụng</button>
+      <button class="btn btn-soft btn-sm" id="m-complete" onclick="completeIncident()" style="display:none">Đánh dấu hoàn tất</button>
+    </div>
+  </div>
+</div>
+
+<!-- Route timeline modal -->
+<div class="modal" id="route-modal" role="dialog" aria-modal="true" aria-labelledby="rm-title">
+  <div class="modal-head"><div class="mt" id="rm-title">Chi tiết tuyến</div>
+    <button class="modal-x" onclick="closeRouteModal()" aria-label="Đóng cửa sổ chi tiết tuyến">×</button></div>
+  <div class="modal-body" id="rm-body"></div>
+</div>
+
+<!-- L1: Drawer chi tiết trượt phải (dùng chung cho tuyến & P&L) -->
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dw-title" aria-hidden="true">
+  <div class="dw-head"><div class="t" id="dw-title">Chi tiết</div>
+    <button class="modal-x" onclick="closeDrawer()" aria-label="Đóng bảng chi tiết">×</button></div>
+  <div class="dw-body" id="dw-body"></div>
+</aside>
+
+<!-- L6: Command palette ⌘/Ctrl+K -->
+<div class="modal" id="palette" role="dialog" aria-modal="true" aria-label="Bảng lệnh nhanh" style="top:78px;width:min(560px,94vw)">
+  <div style="padding:12px 14px;border-bottom:1px solid var(--line)">
+    <input id="pal-input" class="field" style="width:100%;border:0;font-size:var(--fs-lg)" placeholder="Tìm module · xe · đơn · lệnh…  (Esc để đóng)" oninput="buildPalette(this.value)" onkeydown="palKey(event)" role="combobox" aria-expanded="true" aria-controls="pal-list" autocomplete="off">
+  </div>
+  <div class="modal-body" id="pal-list" role="listbox" aria-label="Kết quả lệnh" style="max-height:52vh;padding:4px 0"></div>
+  <div class="modal-foot" style="justify-content:flex-end"><span class="mini" style="color:var(--muted)">↑↓ chọn · Enter mở · phím 1–7 nhảy module · ⌘/Ctrl+K mở bảng lệnh</span></div>
+</div>
+
+<!-- L4: Confirm modal RIÊNG cho thao tác NẶNG/không hoàn tác -->
+<div class="ov" id="cov" onclick="closeConfirm()"></div>
+<div class="modal" id="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="cm-title" aria-describedby="cm-msg">
+  <div class="modal-head"><div class="mt" id="cm-title">Xác nhận</div>
+    <button class="modal-x" onclick="closeConfirm()" aria-label="Hủy thao tác">×</button></div>
+  <div class="modal-body">
+    <div class="cm-msg" id="cm-msg"></div>
+    <div class="cm-warn" id="cm-warn"></div>
+  </div>
+  <div class="modal-foot">
+    <div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-line btn-sm" onclick="closeConfirm()">Hủy</button>
+      <button class="btn btn-red btn-sm" id="cm-ok" onclick="confirmOK()">Xác nhận</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI dock (cửa sổ nổi, trực tuyến) -->
+<div class="dock"><button class="dock-btn" onclick="toggleDock(true)"><span class="pulse"></span> Trợ lý AI</button></div>
+<div class="dock-panel" id="dock">
+  <div class="dock-head"><div><div class="t">Trợ lý AI · Trực tuyến</div><div class="s" id="dock-src">Truy cập dữ liệu phiên &amp; Internet — hỏi mọi chủ đề</div></div>
+    <button class="modal-x" onclick="toggleDock(false)" aria-label="Đóng trợ lý AI">×</button></div>
+  <div class="dock-msgs" id="dock-msgs"></div>
+  <div class="dock-quick" id="dock-quick"></div>
+  <div class="dock-input"><input id="dock-q" placeholder="Hỏi bất cứ điều gì…" onkeydown="if(event.key==='Enter')askAI()">
+    <button class="btn btn-navy btn-sm" onclick="askAI()">Gửi</button></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const fmtV=n=>(n==null||isNaN(n))?'—':Math.round(n).toLocaleString('vi-VN')+' đ';
+const fmtN=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString('vi-VN');
+const fmtPct=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const REDUCE_MOTION=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+let STATE={view:'import',scenarios:[],scenario:null,routes:null,unassigned:null,preview:[],pvcols:[],validate:[],
+  log:[],incident:null,selOption:null,maps:{},backhaul:null,presets:[],weights:{},preset:'can_bang',plan:null,status:null,autoRunning:false,dataLoaded:false};
+
+/* Q5/A6.4 — toast: ok/info=polite, err=assertive; hỗ trợ nút Hoàn tác (L4) */
+function toast(msg,type,opt){opt=opt||{};const t=$('#toast');t.setAttribute('aria-live',type==='err'?'assertive':'polite');
+  let html=msg;if(opt.undo)html+=`<button class="undo" type="button">Hoàn tác</button>`;
+  t.className='toast show '+(type||'');t.innerHTML=html;clearTimeout(t._t);
+  if(opt.undo){const u=t.querySelector('.undo');if(u)u.onclick=()=>{clearTimeout(t._t);t.className='toast';opt.undo();};}
+  const dur=opt.undo?5200:3400;t._t=setTimeout(()=>{t.className='toast';if(opt.onTimeout)opt.onTimeout();},dur);}
+
+/* Q5/A6.4 — tách lỗi MẠNG vs lỗi NGHIỆP VỤ */
+async function api(url,opt){let r;
+  try{r=await fetch(url,opt);}catch(_){throw new Error('Mất kết nối máy chủ. Kiểm tra mạng rồi thử lại.');}
+  if(!r.ok){let e='Máy chủ trả lỗi ('+r.status+').';try{e=(await r.json()).error||e}catch(_){}throw new Error(e);}
+  return r.json();}
+function kpi(l,v,sub,cls){return `<div class="kpi ${cls||''}"><div class="lbl">${esc(l)}</div><div class="val">${v}</div><div class="vsub">${esc(sub||'')}</div></div>`;}
+const debounce=(fn,ms)=>{let h;return(...a)=>{clearTimeout(h);h=setTimeout(()=>fn(...a),ms);};};
+var dPreview=debounce(()=>renderPreview(),120),dValidate=debounce(()=>renderValidate(),120),dLog=debounce(()=>renderLog(),120);
+
+/* Q6/A6.9 — chỉ báo đồng bộ topbar */
+function setSync(){}  /* Chỉ báo đồng bộ đã gỡ khỏi thanh công cụ */
+
+/* L5 — localStorage CHỈ cho UI-preference (KHÔNG cache dữ liệu nghiệp vụ — C1) */
+const UIPREF='hpl_ui_pref_v1';
+function saveUIPref(){try{localStorage.setItem(UIPREF,JSON.stringify({view:STATE.view,scenario:STATE.scenario,
+  valFilter:($('#val-filter')||{}).value||'',logFilter:($('#log-filter')||{}).value||''}));}catch(_){}}
+function loadUIPref(){try{return JSON.parse(localStorage.getItem(UIPREF))||{};}catch(_){return{};}}
+
+/* Q12/A4.8 — lazy-load Chart.js chỉ khi mở Module 5 */
+let _chartLoading;
+function ensureChart(){
+  if(window.Chart)return Promise.resolve();
+  if(_chartLoading)return _chartLoading;
+  _chartLoading=new Promise((res,rej)=>{const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+    s.onload=()=>res();s.onerror=()=>rej(new Error('Không tải được thư viện biểu đồ'));document.head.appendChild(s);});
+  return _chartLoading;
+}
+
+/* Q2/A4.2 — Esc đóng lớp nổi + focus-trap + trả focus */
+let _lastFocus=null;
+/* A11y — ẩn nền khỏi screen reader khi có lớp nổi (aria-modal đúng nghĩa) */
+function setBgInert(on){['.app','.topbar'].forEach(s=>{const el=document.querySelector(s);if(el){if(on)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden');}});}
+function anyOverlayOpen(){return ['#modal','#route-modal','#confirm-modal','#drawer','#palette'].some(s=>{const e=$(s);return e&&e.classList.contains('show');});}
+function syncBgInert(){setBgInert(anyOverlayOpen());}
+function trapFocus(modal){_lastFocus=document.activeElement;setBgInert(true);
+  const sel='button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  const f=[...modal.querySelectorAll(sel)].filter(x=>x.offsetParent!==null);
+  if(f.length)setTimeout(()=>{try{f[0].focus();}catch(_){}},30);
+  modal._trap=e=>{if(e.key!=='Tab')return;const els=[...modal.querySelectorAll(sel)].filter(x=>x.offsetParent!==null);
+    if(!els.length)return;const first=els[0],last=els[els.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}};
+  modal.addEventListener('keydown',modal._trap);}
+function releaseFocus(modal){if(modal&&modal._trap)modal.removeEventListener('keydown',modal._trap);
+  if(_lastFocus&&_lastFocus.focus){try{_lastFocus.focus();}catch(_){}_lastFocus=null;}
+  syncBgInert();}
+
+/* L4 — confirmBox: thao tác NẶNG / không hoàn tác (custom modal RIÊNG) */
+let _confirmCb=null;
+function confirmBox(opt){_confirmCb=opt.onOK||null;
+  $('#cm-title').textContent=opt.title||'Xác nhận';
+  $('#cm-msg').textContent=opt.msg||'';
+  $('#cm-warn').textContent=opt.warn||'';
+  const ok=$('#cm-ok');ok.textContent=opt.okText||'Xác nhận';ok.className='btn btn-sm '+(opt.danger===false?'btn-navy':'btn-red');
+  $('#cov').classList.add('show');$('#confirm-modal').classList.add('show');trapFocus($('#confirm-modal'));}
+function closeConfirm(){$('#cov').classList.remove('show');$('#confirm-modal').classList.remove('show');releaseFocus($('#confirm-modal'));_confirmCb=null;}
+function confirmOK(){const cb=_confirmCb;closeConfirm();if(cb)cb();}
+
+/* nav (Q2: bàn phím + aria-current; Q9: bỏ nhánh map; Q10: stepper; Q11: auto-run M4/M5) */
+$$('.nav-item').forEach(it=>{
+  it.onclick=()=>nav(it.dataset.view);
+  it.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();nav(it.dataset.view);}};
+});
+/* RWD — Sidebar off-canvas cho tablet/mobile (≤1024px). Chỉ thêm đóng/mở, KHÔNG đổi logic điều hướng. */
+function setSidebar(open){
+  document.body.classList.toggle('nav-open',open);
+  const t=$('.nav-toggle');if(t)t.setAttribute('aria-expanded',open?'true':'false');
+  const sb=document.querySelector('.sidebar');
+  if(sb)sb.setAttribute('aria-hidden',(open||window.innerWidth>1024)?'false':'true');
+}
+function openSidebar(){setSidebar(true);}
+function closeSidebar(){setSidebar(false);}
+function toggleSidebar(){setSidebar(!document.body.classList.contains('nav-open'));}
+window.addEventListener('resize',()=>{if(window.innerWidth>1024)closeSidebar();});
+setSidebar(false);   /* trạng thái aria ban đầu đúng theo bề rộng màn */
+function nav(v){
+  STATE.view=v;closeSidebar();
+  $$('.nav-item').forEach(n=>{const on=n.dataset.view===v;n.classList.toggle('active',on);
+    if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  $$('.view').forEach(s=>s.classList.toggle('show',s.id==='view-'+v));
+  const c=$('.content');if(c)c.scrollTop=0;
+  renderStepper();saveUIPref();
+  if(v==='import')loadPreview();
+  if(v==='validate')loadValidate();
+  if(v==='backhaul')ensurePlanThen(loadBackhaulOrders);
+  if(v==='ops')logTab(STATE.opsTab||'incident');
+  if(v==='constraints')loadConstraints();
+  if(v==='finance'){ensurePlanThen(()=>{if(STATE.routes&&STATE.routes.length)runFinancial();else financeEmpty();});}
+  if(v==='plan'){setTimeout(()=>STATE.maps.map&&STATE.maps.map.invalidateSize(),80);loadNoReturn('noreturn3-tbl');}
+}
+
+/* Q11/C2 — Auto-run optimize NGẦM khi vào M4/M5 thiếu kế hoạch (KHÔNG khóa cứng) */
+async function ensurePlanThen(cb){
+  if(STATE.routes&&STATE.routes.length){if(cb)cb();return;}
+  if(!STATE.scenarios.length){if(cb)cb();return;}   // chưa có dữ liệu nền -> module tự hiện empty-state CTA
+  if(STATE.autoRunning){if(cb)cb();return;}
+  STATE.autoRunning=true;setSync('saving','Đang lập tuyến…');
+  toast('<span class="spin"></span> Đang lập tuyến ngầm để tính tiếp…');
+  try{
+    STATE.scenario=STATE.scenario||STATE.scenarios[0];
+    const d=await api('/api/optimize',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({scenario:STATE.scenario,preset:STATE.preset||'can_bang'})});
+    applyPlan(d);renderStepper();setSync('ok','Đã lập tuyến');
+    toast('Đã tự lập '+d.n_vehicles_used+' tuyến để tiếp tục.','ok');
+  }catch(e){setSync('err','Lỗi lập tuyến');toast('Chưa lập được tuyến: '+e.message,'err');}
+  finally{STATE.autoRunning=false;if(cb)cb();}
+}
+function financeEmpty(){
+  const el=$('#fin-kpis');if(el)el.innerHTML=`<div class="empty-cta" style="grid-column:1/-1"><div class="ei">📊</div>
+    <div>Chưa có kế hoạch tuyến để tính tài chính.</div>
+    <button class="btn btn-navy btn-sm" onclick="nav('plan')">Sang Lập kế hoạch tuyến</button></div>`;
+}
+
+/* ===== Q10/A1.1 — Thanh quy trình (stepper) bấm-được, KHÔNG khóa ===== */
+const STEPS=[
+  {k:'import',name:'Nạp dữ liệu'},{k:'validate',name:'Kiểm định'},{k:'plan',name:'Lập tuyến'},
+  {k:'backhaul',name:'Ghép chiều về'},{k:'finance',name:'Tài chính'},{k:'export',name:'Xuất báo cáo'},
+];
+function renderStepper(){
+  const el=$('#stepper');if(!el)return;
+  el.innerHTML=STEPS.map((st,i)=>{const cur=STATE.view===st.k;
+    return `<div class="step ${cur?'cur':''}" role="button" tabindex="0"
+      aria-label="${esc(st.name)}${cur?' (đang xem)':''}" onclick="stepGo('${st.k}')"
+      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();stepGo('${st.k}')}">
+      <span class="sdot">${i+1}</span><span class="stxt"><span class="sname">${esc(st.name)}</span></span></div>`;
+  }).join('');
+}
+function stepGo(k){if(k==='export'){exportExcel();return;}nav(k);}
+
+/* ===== Q8/C6 — Fullscreen phủ kín toàn màn (1 phần tử tại 1 thời điểm) + Esc ===== */
+function toggleFs(cardId,btn,mapId){
+  const card=document.getElementById(cardId);if(!card)return;
+  const on=!card.classList.contains('fs');
+  document.querySelectorAll('.fs').forEach(c=>{if(c!==card)exitFsEl(c);});
+  card.classList.toggle('fs',on);
+  if(btn){btn.textContent=on?'⤡ Thu nhỏ':'⤢ Mở rộng';btn.setAttribute('aria-pressed',on?'true':'false');}
+  card._fsBtn=btn;card._fsMap=mapId||null;
+  document.body.style.overflow=on?'hidden':'';
+  if(mapId&&STATE.maps[mapId])setTimeout(()=>STATE.maps[mapId].invalidateSize(),70);
+}
+function exitFsEl(card){card.classList.remove('fs');if(card._fsBtn){card._fsBtn.textContent='⤢ Mở rộng';card._fsBtn.setAttribute('aria-pressed','false');}
+  if(card._fsMap&&STATE.maps[card._fsMap])setTimeout(()=>STATE.maps[card._fsMap].invalidateSize(),70);}
+function exitFs(){document.querySelectorAll('.fs').forEach(exitFsEl);document.body.style.overflow='';}
+
+/* Q2/A4.2 — Esc đóng lớp nổi theo thứ tự ưu tiên */
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if($('#palette').classList.contains('show')){closePalette();return;}
+  if($('#confirm-modal').classList.contains('show')){closeConfirm();return;}
+  if($('#modal').classList.contains('show')){closeModal();return;}
+  if($('#route-modal').classList.contains('show')){closeRouteModal();return;}
+  if($('#drawer').classList.contains('show')){closeDrawer();return;}
+  if(document.body.classList.contains('nav-open')){closeSidebar();return;}
+  if(document.querySelector('.fs')){exitFs();return;}
+  if($('#dock').classList.contains('show'))toggleDock(false);
+});
+
+/* ===== L6 — Command palette ⌘/Ctrl+K + phím tắt 1–7 ===== */
+const PAL_MODULES=[['import','① Nhập dữ liệu'],['validate','② Kiểm định'],['plan','③ Kế hoạch tuyến'],['backhaul','④ Ghép chuyến quay đầu'],['finance','⑤ Tài chính P&L'],['ops','⑥ Vận hành (sự cố + nhật ký)'],['constraints','⚙ Ràng buộc cấm tải']];
+const PAL_ACTIONS=[
+  {label:'Chạy kế hoạch tuyến',run:()=>{nav('plan');runOptimize();}},
+  {label:'Tính tài chính P&L',run:()=>nav('finance')},
+  {label:'Tối ưu ghép chuyến quay đầu',run:()=>{nav('backhaul');setTimeout(()=>{if(STATE.routes&&STATE.routes.length)runBackhaul();},250);}},
+  {label:'Xuất Excel báo cáo',run:()=>exportExcel()},
+  {label:'Nạp dữ liệu mẫu',run:()=>loadDemo()},
+];
+let PAL=[],palIdx=0;
+function buildPalette(q){
+  q=(q||'').toLowerCase().trim();const items=[];
+  PAL_MODULES.forEach(m=>items.push({k:'Mở',label:m[1],run:()=>nav(m[0])}));
+  PAL_ACTIONS.forEach(a=>items.push({k:'Lệnh',label:a.label,run:a.run}));
+  (STATE.routes||[]).forEach(r=>items.push({k:'Xe',label:r.vehicle_id+' · '+(r.corridor||''),run:()=>{nav('plan');openRouteDrawer(r.vehicle_id);}}));
+  (STATE.preview||[]).slice(0,500).forEach(o=>items.push({k:'Đơn',label:o.order_id+' · '+(o.customer||''),run:()=>{toggleDock(true);const i=$('#dock-q');if(i)i.value='Chi tiết đơn '+o.order_id;askAI();}}));
+  PAL=items.filter(it=>!q||(it.label+' '+it.k).toLowerCase().includes(q));
+  palIdx=0;renderPalette();
+}
+function renderPalette(){
+  const el=$('#pal-list');if(!el)return;
+  el.innerHTML=PAL.slice(0,40).map((it,i)=>`<div class="pal-item${i===palIdx?' sel':''}" id="pal-opt-${i}" role="option" aria-selected="${i===palIdx}" onmousedown="event.preventDefault();palRun(${i})"><span class="pk">${esc(it.k)}</span><span>${esc(it.label)}</span></div>`).join('')||'<div class="empty">Không có kết quả.</div>';
+  const inp=$('#pal-input');if(inp)inp.setAttribute('aria-activedescendant',PAL.length?('pal-opt-'+palIdx):'');
+  const sel=el.querySelector('.pal-item.sel');if(sel)sel.scrollIntoView({block:'nearest'});   // WCAG: giữ mục đang chọn trong tầm nhìn
+}
+function palRun(i){const it=PAL[i];if(!it)return;closePalette();it.run();}
+function palKey(e){
+  if(e.key==='ArrowDown'){e.preventDefault();palIdx=Math.min(PAL.length-1,palIdx+1);renderPalette();}
+  else if(e.key==='ArrowUp'){e.preventDefault();palIdx=Math.max(0,palIdx-1);renderPalette();}
+  else if(e.key==='Enter'){e.preventDefault();palRun(palIdx);}
+}
+function openPalette(){buildPalette('');const inp=$('#pal-input');if(inp)inp.value='';
+  $('#ov').classList.add('show');$('#palette').classList.add('show');trapFocus($('#palette'));setTimeout(()=>{if(inp)inp.focus();},30);}
+function closePalette(){const p=$('#palette');if(!p)return;p.classList.remove('show');
+  if(!$('#modal').classList.contains('show')&&!$('#route-modal').classList.contains('show')&&!$('#drawer').classList.contains('show'))$('#ov').classList.remove('show');releaseFocus(p);}
+
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();openPalette();return;}
+  const tag=((e.target&&e.target.tagName)||'').toLowerCase();
+  const typing=tag==='input'||tag==='textarea'||tag==='select'||(e.target&&e.target.isContentEditable);
+  if(typing||e.metaKey||e.ctrlKey||e.altKey)return;
+  const map={'1':'import','2':'validate','3':'plan','4':'backhaul','5':'finance','6':'ops','7':'constraints'};
+  if(map[e.key]){e.preventDefault();nav(map[e.key]);}
+});
+
+/* status */
+async function refreshStatus(){
+  const s=await api('/api/status');
+  STATE.status=s;
+  const chip=$('#chip-ai');chip.classList.toggle('on',s.ai_online);
+  // Chỉ hiển thị trạng thái gọn (vd "Trực tuyến"), bỏ phần nhà cung cấp sau dấu "·".
+  const _prov=String(s.ai_provider||'Trực tuyến').split('·')[0].trim()||'Trực tuyến';
+  chip.innerHTML=`<span class="dot"></span> Trợ lý AI: ${esc(_prov)}`;
+  chip.setAttribute('aria-label','Trợ lý AI: '+_prov);
+  STATE.scenarios=s.scenarios||[];
+  buildScenarioSelects();
+  const _ni=$('#nav-inc');if(_ni){if(s.incident_count){_ni.style.display='inline-block';_ni.textContent=s.incident_count;_ni.setAttribute('aria-label',s.incident_count+' sự cố cần xử lý');}else _ni.style.display='none';}
+  const _nl=$('#nav-log');if(_nl&&s.log_count){_nl.style.display='inline-block';_nl.textContent=s.log_count;}
+  if(s.backhaul_orders)$('#info-backhaul').innerHTML=pill('Đã nạp đơn quay đầu',`${s.backhaul_orders} đơn ghép chiều về`);
+  renderStepper();
+}
+function pill(t,sub){return `<div class="file-pill"><div><b>${esc(t)}</b><div style="font-weight:500;color:var(--muted)">${esc(sub)}</div></div></div>`;}
+const SCEN_VI={S1:'Kịch bản 1 — Nhu cầu ổn định',S2:'Kịch bản 2 — Nhu cầu tăng cao',S3:'Kịch bản 3 — Phát sinh sự cố'};
+function scenarioVN(code){return SCEN_VI[code]||code;}
+function buildScenarioSelects(){
+  const opts=STATE.scenarios.map(s=>`<option value="${s}">${esc(SCEN_VI[s]||s)}</option>`).join('');
+  ['#sel-scenario','#plan-scenario'].forEach(id=>{const el=$(id);if(el)el.innerHTML=opts;});
+  if(!STATE.scenario)STATE.scenario=STATE.scenarios[0];
+  ['#sel-scenario','#plan-scenario'].forEach(id=>{const el=$(id);if(el)el.value=STATE.scenario||'';});
+}
+function onPlanScenario(v){STATE.scenario=v;const s=$('#sel-scenario');if(s)s.value=v;}
+
+/* ===== MODULE 1 ===== */
+async function upload(input,kind){
+  const f=input.files[0];if(!f)return;
+  const fd=new FormData();fd.append('file',f);fd.append('kind',kind);
+  try{toast('<span class="spin"></span> Đang đọc dữ liệu…');
+    const d=await api('/api/import',{method:'POST',body:fd});
+    if(d.kind==='static'){STATE.scenario=null;STATE.dataLoaded=true;}
+    else if(d.kind==='backhaul'){$('#info-backhaul').innerHTML=pill(d.filename,d.message);loadBackhaulOrders();}
+    await refreshStatus();if(d.kind==='static')loadPreview();
+    toast('Đã nạp: '+d.message,'ok');
+    if(d.reoptimized)refreshPlanAfterAuto();
+  }catch(e){toast(e.message,'err');}
+  input.value='';
+}
+async function loadDemo(){
+  try{toast('<span class="spin"></span> Đang nạp dữ liệu mẫu…');
+    const d=await api('/api/load_demo',{method:'POST'});
+    STATE.scenario=null;STATE.dataLoaded=true;await refreshStatus();loadPreview();toast('Đã nạp dữ liệu mẫu','ok');
+  }catch(e){toast(e.message,'err');}
+}
+async function loadPreview(){
+  const _pc=$('#card-pv');if(_pc)_pc.style.display=STATE.dataLoaded?'':'none';  // ẩn tới khi nạp dữ liệu
+  if(!STATE.scenarios.length){$('#pv-tbl').innerHTML='<tbody><tr><td class="empty">Chưa có dữ liệu. Hãy nạp dữ liệu tĩnh hoặc bấm “Nạp dữ liệu mẫu”.</td></tr></tbody>';return;}
+  const sid=STATE.scenario||STATE.scenarios[0];
+  try{const d=await api('/api/preview?scenario='+sid);STATE.preview=d.rows;STATE.pvcols=d.columns;renderPreview();}
+  catch(e){$('#pv-tbl').innerHTML='<tbody><tr><td class="empty">'+esc(e.message)+'</td></tr></tbody>';}
+}
+function renderPreview(){
+  const q=($('#pv-search').value||'').toLowerCase();
+  const cols=STATE.pvcols||[];
+  const rows=STATE.preview.filter(r=>!q||String(r.order_id).toLowerCase().includes(q)||String(r.customer||'').toLowerCase().includes(q));
+  let h='<thead><tr>'+cols.map(c=>`<th>${esc(c[1])}</th>`).join('')+'<th></th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    h+='<tr>'+cols.map(c=>{
+      const k=c[0];const editable=!['order_id','drop_tw_start','drop_tw_end'].includes(k);
+      const val=r[k]==null?'':r[k];
+      if(!editable)return `<td>${esc(val)}</td>`;
+      return `<td><span class="edit" contenteditable="true" role="textbox" aria-label="Sửa ${esc(c[1])} đơn ${esc(r.order_id)}" data-id="${esc(r.order_id)}" data-field="${k}" onblur="saveCell(this)">${esc(val)}</span></td>`;
+    }).join('')+`<td><button class="btn btn-line btn-sm" onclick="delOrder('${esc(r.order_id)}')">Xóa</button></td></tr>`;
+  });
+  if(!rows.length)h+='<tr><td colspan="'+(cols.length+1)+'" class="empty">Không có đơn phù hợp.</td></tr>';
+  $('#pv-tbl').innerHTML=h+'</tbody>';
+}
+async function saveCell(el){
+  const id=el.dataset.id,field=el.dataset.field,value=el.textContent.trim();
+  const row=STATE.preview.find(r=>String(r.order_id)===String(id));
+  const oldVal=row?row[field]:el.dataset.old;
+  if(value===String(oldVal==null?'':oldVal))return;   // không đổi -> bỏ qua
+  el.classList.remove('cell-err','cell-ok');el.classList.add('saving');setSync('saving','Đang lưu…');
+  try{await api('/api/order/update',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({scenario:STATE.scenario,order_id:id,field,value})});
+    if(row)row[field]=value;
+    el.classList.remove('saving');el.classList.add('cell-ok');setSync('ok','Đã lưu');
+    setTimeout(()=>el.classList.remove('cell-ok'),1200);
+    toast('Đã lưu thay đổi đơn '+id,'ok');
+  }catch(e){
+    el.classList.remove('saving');el.classList.add('cell-err');
+    el.textContent=(oldVal==null?'':oldVal);   // KHÔI PHỤC giá trị cũ — không để hiển thị nhầm là đã lưu
+    setSync('err','Lưu thất bại');toast('Không lưu được đơn '+id+': '+e.message,'err');
+  }
+}
+function toggleAddForm(){const f=$('#add-form');f.style.display=f.style.display==='none'?'block':'none';}
+async function addOrder(){
+  const body={scenario:STATE.scenario,order_id:$('#ad-id').value,customer:$('#ad-cust').value,corridor:$('#ad-cor').value,
+    min_vehicle:$('#ad-veh').value,pickup_name:$('#ad-pn').value,pickup_lat:$('#ad-plat').value,pickup_lon:$('#ad-plon').value,
+    delivery_name:$('#ad-dn').value,delivery_lat:$('#ad-dlat').value,delivery_lon:$('#ad-dlon').value,
+    weight_kg:$('#ad-w').value,volume_m3:$('#ad-vol').value,drop_tw_start:$('#ad-tws').value,drop_tw_end:$('#ad-twe').value,
+    revenue:$('#ad-rev').value,priority:'B'};
+  try{const d=await api('/api/order/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    toast('Đã thêm đơn '+d.order_id,'ok');toggleAddForm();loadPreview();
+    if(d.reoptimized)refreshPlanAfterAuto();
+  }catch(e){toast(e.message,'err');}
+}
+/* L4/A6.7 — Undo-toast cho thao tác NHẸ/khả hồi: hoãn cam kết 5s bằng timer độc lập */
+function undoToast(msg,commitFn,restoreFn){
+  let done=false;const timer=setTimeout(()=>{if(done)return;done=true;commitFn();},5000);
+  toast(msg,'ok',{undo:()=>{if(done)return;done=true;clearTimeout(timer);if(restoreFn)restoreFn();}});
+}
+function delOrder(id){
+  const idx=STATE.preview.findIndex(r=>String(r.order_id)===String(id));
+  const snap=idx>=0?STATE.preview[idx]:null;
+  if(idx>=0){STATE.preview.splice(idx,1);renderPreview();}   // ẩn NGAY (lạc quan); chưa gọi server tới khi hết 5s
+  undoToast('Đã xóa đơn '+id+'.',
+    async()=>{try{const d=await api('/api/order/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scenario:STATE.scenario,order_id:id})});
+        if(d.reoptimized)refreshPlanAfterAuto();}catch(e){toast('Không xóa được đơn '+id+': '+e.message,'err');}finally{loadPreview();}},
+    ()=>{if(snap&&idx>=0){STATE.preview.splice(idx,0,snap);renderPreview();}toast('Đã hoàn tác xóa đơn '+id,'ok');});
+}
+
+/* ===== MODULE 2 ===== */
+async function loadValidate(){
+  if(!STATE.scenarios.length){$('#cap-banner').innerHTML='<div class="empty">Chưa có dữ liệu tĩnh. Hãy nạp dữ liệu ở Module 1.</div>';$('#val-tbl').innerHTML='';return;}
+  STATE.scenario=$('#sel-scenario').value||STATE.scenario||STATE.scenarios[0];
+  $('#val-sid').textContent=STATE.scenario;
+  $('#cap-banner').innerHTML='<div class="loading"><span class="spin"></span>Đang kiểm định…</div>';
+  try{
+    const d=await api('/api/validate?scenario='+STATE.scenario);STATE.validate=d.orders;
+    const c=d.scenario;const cls=c.scenario.startsWith('S1')?'bn-s1':c.scenario.startsWith('S2')?'bn-s2':'bn-s3';
+    const scnTitle=c.scenario.replace('S1 —','Kịch bản 1 —').replace('S2 —','Kịch bản 2 —').replace('S3 —','Kịch bản 3 —');
+    $('#cap-banner').innerHTML=`<div class="banner ${cls}"><div><div class="big">${esc(scnTitle)}</div></div></div>`;
+    $('#val-kpis').innerHTML=
+      kpi('Tổng đơn',c.n_orders,'','navy')+
+      kpi('Không thể xử lý',d.summary.error_orders,'thiếu dữ liệu cứng','red')+
+      kpi('Cần rà soát',d.summary.review_orders,'cấm tải · tách đơn · chiều về','amber')+
+      kpi('Xe khả dụng',c.n_vehicles,'cần khoảng '+c.need,'green');
+    renderValidate();
+  }catch(e){$('#cap-banner').innerHTML='<div class="empty">'+esc(e.message)+'</div>';}
+}
+function renderValidate(){
+  const q=($('#val-search').value||'').toLowerCase(),f=$('#val-filter').value;
+  const rows=STATE.validate.filter(o=>(!q||String(o.order_id).toLowerCase().includes(q))&&(!f||o.status===f));
+  let h='<thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tuyến</th><th class="num">KL(kg)</th><th>Loại xe</th><th>Khung giao</th><th class="num">Doanh thu</th><th>Trạng thái</th><th>Lý do cần xem xét</th><th>Ghi chú điều phối</th><th></th></tr></thead><tbody>';
+  rows.forEach(o=>{
+    const rc=o.status==='Không thể xử lý'?'row-err':o.status==='Cần rà soát'?'row-rev':'';
+    const bd=o.status==='Không thể xử lý'?'b-err':o.status==='Cần rà soát'?'b-rev':'b-ok';
+    const issues=(o.issues||[]).length?(o.issues||[]).map(i=>`<span class="tag red">${esc(i)}</span>`).join(''):'<span class="tag" style="background:var(--green-l);color:var(--green)">Hợp lệ</span>';
+    const act=o.status!=='Hợp lệ'?`<button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint)}')">Xử lý sự cố</button>`:'';
+    h+=`<tr class="${rc}"><td><b>${esc(o.order_id)}</b>${o.inner_city?' <span class="tag">nội đô</span>':''}</td>
+      <td>${esc(o.customer)}</td><td>${esc(o.corridor)}</td><td class="num">${fmtN(o.weight_kg)}</td>
+      <td>${esc(o.min_vehicle)}</td><td>${esc(o.drop_tw)}</td><td class="num">${fmtN(o.revenue)}</td>
+      <td><span class="badge ${bd}">${esc(o.status)}</span></td><td>${issues}</td>
+      <td><span class="edit" contenteditable="true" role="textbox" aria-label="Ghi chú điều phối đơn ${esc(o.order_id)}" data-id="${esc(o.order_id)}" onblur="saveNote(this)">${esc(o.note||'')}</span></td>
+      <td>${act}</td></tr>`;
+  });
+  if(!rows.length)h+='<tr><td colspan="11" class="empty">Không có đơn phù hợp.</td></tr>';
+  $('#val-tbl').innerHTML=h+'</tbody>';
+}
+async function saveNote(el){
+  const id=el.dataset.id,value=el.textContent.trim();
+  const r=STATE.validate.find(o=>String(o.order_id)===String(id));const oldVal=r?(r.note||''):'';
+  if(value===oldVal)return;
+  el.classList.remove('cell-err','cell-ok');el.classList.add('saving');setSync('saving','Đang lưu…');
+  try{await api('/api/order/update',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({scenario:STATE.scenario,order_id:id,field:'note',value})});
+    if(r)r.note=value;el.classList.remove('saving');el.classList.add('cell-ok');setSync('ok','Đã lưu');
+    setTimeout(()=>el.classList.remove('cell-ok'),1200);toast('Đã lưu ghi chú đơn '+id,'ok');
+  }catch(e){el.classList.remove('saving');el.classList.add('cell-err');el.textContent=oldVal;setSync('err','Lưu thất bại');toast('Không lưu được ghi chú: '+e.message,'err');}
+}
+function quickIncident(id,hint){nav('ops');logTab('incident');setTimeout(()=>{$('#inc-order').value=id;if(hint)selectIncType(hint);createIncident();},180);}
+/* L3 — chuyển tab Vận hành (Xử lý sự cố / Nhật ký) */
+function logTab(which){STATE.opsTab=which;const isInc=which==='incident';
+  const oi=$('#ops-incident'),ol=$('#ops-log');if(oi)oi.style.display=isInc?'':'none';if(ol)ol.style.display=isInc?'none':'';
+  const ti=$('#tab-incident'),tl=$('#tab-log');
+  if(ti){ti.classList.toggle('active',isInc);ti.setAttribute('aria-selected',isInc?'true':'false');ti.tabIndex=isInc?0:-1;}
+  if(tl){tl.classList.toggle('active',!isInc);tl.setAttribute('aria-selected',!isInc?'true':'false');tl.tabIndex=!isInc?0:-1;}
+  if(isInc)loadIncidents();else{loadLog();loadOptLog();}
+}
+/* WAI-ARIA tab: ←/→/Home/End chuyển tab + focus (roving tabindex) */
+function opsTabKey(e){
+  if(['ArrowLeft','ArrowRight','Home','End'].indexOf(e.key)<0)return;
+  e.preventDefault();const next=(e.key==='ArrowRight'||e.key==='End')?'log':'incident';
+  logTab(next);const t=$('#tab-'+next);if(t)t.focus();
+}
+
+/* ===== MODULE 3 ===== */
+async function runOptimize(){
+  if(!STATE.scenarios.length){toast('Hãy nạp dữ liệu tĩnh trước','err');return;}
+  STATE.scenario=STATE.scenario||STATE.scenarios[0];
+  $('#plan-kpis').innerHTML='<div class="loading" style="grid-column:1/-1"><span class="spin"></span>Đang chạy Hybrid Engine (Greedy → OR-Tools)…</div>';
+  setSync('saving','Đang lập tuyến…');
+  try{
+    const d=await api('/api/optimize',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({scenario:STATE.scenario,preset:STATE.preset||'can_bang'})});
+    applyPlan(d);setSync('ok','Đã lập tuyến');
+    toast('Đã lập kế hoạch '+d.n_vehicles_used+' tuyến · '+(d.engine||''),'ok');
+  }catch(e){setSync('err','Lỗi lập tuyến');$('#plan-kpis').innerHTML='<div class="empty" style="grid-column:1/-1">'+esc(e.message)+'</div>';}
+}
+
+/* C8 — count-up CHỈ cho số đếm nguyên (không áp số tiền/biên) + tôn trọng reduced-motion */
+function countUp(el,to,suffix){to=Number(to)||0;suffix=suffix||'';
+  if(REDUCE_MOTION){el.textContent=fmtN(to)+suffix;return;}
+  const dur=600,t0=performance.now();
+  (function step(t){const p=Math.min(1,(t-t0)/dur);const v=Math.round(to*(1-Math.pow(1-p,3)));
+    el.textContent=fmtN(v)+suffix;if(p<1)requestAnimationFrame(step);})(t0);
+}
+function applyPlan(d){
+  STATE.routes=d.routes;STATE.unassigned=d.unassigned;STATE.plan=d;STATE.finComputed=false;
+  $('#plan-engine').textContent=(d.engine||'')+' · Bấm “Timeline” để xem ETA; khóa tuyến đã chốt để giữ khi tối ưu lại.';
+  const sbCls=d.standby_ok?'green':'amber',profitNeg=d.profit<0;
+  // L2/C3 — MỘT lưới KPI có nhãn cụm + thẻ Lợi nhuận HERO (số tiền hiện tức thì — C8)
+  $('#plan-kpis').innerHTML=
+    `<div class="sec-label">Kết quả gán</div>`+
+    kpi('Xe sử dụng',d.n_vehicles_used,'tuyến đang chạy','navy')+
+    `<div class="kpi green"><div class="lbl">Đơn được gán</div><div class="val"><span id="kpi-assigned">0</span>/${d.n_orders_total}</div><div class="vsub">trên tổng đơn hợp lệ</div></div>`+
+    kpi('Đơn chưa gán',d.n_unassigned,d.n_unassigned?'cần xử lý':'tất cả đã gán',d.n_unassigned?'red':'green')+
+    kpi('Xe chờ',d.n_standby,'mục tiêu 3–5 xe',sbCls)+
+    `<div class="sec-label">Quãng đường &amp; tải</div>`+
+    kpi('Tổng km',fmtN(d.total_km)+' km','có tải + rỗng','navy')+
+    kpi('Km rỗng',fmtN(d.empty_km)+' km',(d.empty_km_pct||0)+'% tổng quãng',d.empty_km_pct>20?'amber':'green')+
+    kpi('Doanh thu',fmtV(d.revenue_total),'cước + phụ phí','blue')+
+    kpi('Chi phí',fmtV(d.total_cost),'tổng vận hành','amber')+
+    `<div class="sec-label">Lợi nhuận</div>`+
+    `<div class="kpi hero${profitNeg?' neg':''}" style="grid-column:span 2"><div class="lbl">Lợi nhuận kế hoạch</div><div class="val">${fmtV(d.profit)}</div><div class="vsub">biên ${fmtPct(d.margin||0)}% · hiển thị tức thì</div></div>`+
+    kpi('Biên lợi nhuận',fmtPct(d.margin||0)+'%','',profitNeg?'red':'green');
+  const ka=$('#kpi-assigned');if(ka)countUp(ka,d.n_orders_assigned,'');
+  renderEngineInfo(d);
+  renderPlanTable();renderUnassigned();fillMapFilter();drawPlanMap();renderStepper();loadNoReturn('noreturn3-tbl');
+}
+function renderEngineInfo(d){
+  const el=$('#engine-info');if(!el)return;el.style.display='block';
+  const fb=d.fallback?`<span class="tag red">fallback: ${esc(d.fallback)}</span>`:'<span class="tag" style="background:var(--green-l);color:var(--green)">không fallback</span>';
+  const modeTag=`<span class="tag blue">chế độ: ${esc(d.engine_mode||'hybrid')}</span>`;
+  const auto=d.auto_optimize;
+  el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+      <b style="color:var(--navy)">Engine:</b> ${esc(d.engine||'—')} ${modeTag}
+      <span class="tag">thời gian chạy: ${d.elapsed_sec!=null?d.elapsed_sec+'s':'—'}</span>
+      <span class="tag">giới hạn: ${d.time_limit_sec||'—'}s</span>
+      ${d.improved?'<span class="tag" style="background:var(--green-l);color:var(--green)">OR-Tools đã cải thiện</span>':''} ${fb}
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <label class="lab" style="margin:0">Tự tối ưu khi có đơn mới</label>
+      <button class="btn btn-sm ${auto?'btn-navy':'btn-line'}" onclick="toggleAuto(${auto?'false':'true'})">${auto?'ĐANG BẬT':'ĐANG TẮT'}</button>
+      <button class="btn btn-line btn-sm" onclick="nav('ops');logTab('log')">Nhật ký tối ưu</button>
+    </div>
+  </div>`;
+}
+async function toggleAuto(on){
+  try{const d=await api('/api/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({auto_optimize:on})});
+    if(STATE.plan){STATE.plan.auto_optimize=d.auto_optimize;renderEngineInfo(STATE.plan);}
+    toast('Tự tối ưu khi có đơn mới: '+(d.auto_optimize?'BẬT':'TẮT'),'ok');
+  }catch(e){toast(e.message,'err');}
+}
+async function refreshPlanAfterAuto(){
+  try{const d=await api('/api/plan');if(d&&d.has_plan){applyPlan(d);toast('Đã tự tối ưu lại theo dữ liệu mới (giữ nguyên tuyến đã khóa).','ok');}}catch(_){}
+}
+function _firstEta(r,t){const s=(r.stops||[]).find(x=>x.type===t);return s&&s.eta?s.eta:'—';}
+function _lastEta(r,t){const a=(r.stops||[]).filter(x=>x.type===t);return a.length&&a[a.length-1].eta?a[a.length-1].eta:'—';}
+function fillBar(p){p=Number(p)||0;const cls=p>=80?'':p>=50?'mid':'low';
+  return `<div style="display:flex;align-items:center;gap:6px"><div class="barwrap" style="flex:1;min-width:40px"><div class="bar ${cls}" style="width:${Math.min(100,p)}%"></div></div><span style="font-variant-numeric:tabular-nums;font-size:var(--fs-xs);color:var(--muted)">${p}%</span></div>`;}
+function renderPlanTable(){
+  // L1: thu còn 8 cột thiết yếu; bấm dòng mở DRAWER chi tiết (tài xế/km/ETA/biên/timeline/hành động)
+  let h='<thead><tr><th>Mã xe</th><th>Loại</th><th>Tuyến</th><th class="num">Đơn</th><th>Tải%</th><th class="num">Km rỗng</th><th class="num">Lợi nhuận</th><th>Trạng thái</th></tr></thead><tbody>';
+  const ST=[['assigned','Đã gán'],['locked','Đã khóa'],['in_progress','Đang chạy'],['completed','Hoàn thành']];
+  STATE.routes.forEach(r=>{
+    const sel=`<select class="field" style="padding:4px 6px;font-size:var(--fs-xs)" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" onchange="setRouteStatus('${esc(r.vehicle_id)}',this.value)">`+
+      ST.map(s=>`<option value="${s[0]}"${(r.status||'assigned')===s[0]?' selected':''}>${s[1]}</option>`).join('')+'</select>';
+    const rowCls=r.locked?'clickable" style="background:#f1f7ff':'clickable';
+    const bh=r.has_backhaul?' <span title="Có ghép chiều về" style="color:var(--green)">●</span>':'';
+    h+=`<tr class="${rowCls}" tabindex="0" role="button" aria-label="Mở chi tiết tuyến xe ${esc(r.vehicle_id)}" onclick="openRouteDrawer('${esc(r.vehicle_id)}')" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target.tagName==='TR'){event.preventDefault();openRouteDrawer('${esc(r.vehicle_id)}')}"><td><b>${esc(r.vehicle_id)}</b>${r.locked?' 🔒':''}${bh}</td>
+      <td>${esc(r.vehicle_type)}</td><td>${esc(r.corridor)}</td>
+      <td class="num">${r.n_orders}</td><td>${fillBar(r.fill_weight_pct)}</td><td class="num">${fmtN(r.empty_km)}</td>
+      <td class="num" style="color:${r.profit<0?'var(--red)':'var(--green)'};font-weight:700">${fmtN(r.profit)}</td>
+      <td>${sel}</td></tr>`;
+  });
+  if(!STATE.routes.length)h+='<tr><td colspan="8" class="empty">Chưa có tuyến. Bấm “Chạy kế hoạch tuyến”.</td></tr>';
+  $('#plan-tbl').innerHTML=h+'</tbody>';
+}
+async function setRouteStatus(vid,status){
+  try{const d=await api('/api/route/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({vehicle_id:vid,status})});
+    const r=(STATE.routes||[]).find(x=>x.vehicle_id===vid);if(r){r.status=d.status;r.locked=d.locked;}
+    renderPlanTable();
+    const lbl={assigned:'Đã gán (cho phép tối ưu lại)',locked:'Đã khóa',in_progress:'Đang chạy',completed:'Hoàn thành'}[d.status];
+    toast('Tuyến '+vid+': '+lbl+(d.locked?' — sẽ KHÔNG bị đổi khi tối ưu lại':''),'ok');
+  }catch(e){toast(e.message,'err');}
+}
+/* L1 — Drawer trượt phải dùng chung */
+function openDrawer(title,html){$('#dw-title').textContent=title;$('#dw-body').innerHTML=html;
+  $('#ov').classList.add('show');const d=$('#drawer');d.classList.add('show');d.setAttribute('aria-hidden','false');trapFocus(d);}
+function closeDrawer(){const d=$('#drawer');if(!d)return;d.classList.remove('show');d.setAttribute('aria-hidden','true');
+  if(!$('#modal').classList.contains('show')&&!$('#route-modal').classList.contains('show'))$('#ov').classList.remove('show');releaseFocus(d);}
+function openRouteDrawer(vid){
+  const r=(STATE.routes||[]).find(x=>x.vehicle_id===vid);if(!r)return;
+  const cmap={depot:'#0B3D91',pickup:'#1565C0',delivery:'#E2231A',backhaul:'#1B7A2F',check:'#5B6678'};
+  const tl=(r.timeline||[]).map(s=>{const col=cmap[s.type]||'#5B6678';
+    return `<div style="display:flex;gap:12px;padding:8px 0;border-bottom:1px dashed #eef2f8">
+      <div style="min-width:50px;font-weight:800;color:${col};font-variant-numeric:tabular-nums">${esc(s.time)}</div>
+      <div><div style="font-weight:600">${esc(s.action)}</div>
+      <div style="color:var(--muted);font-size:var(--fs-sm)">${esc(s.name||'')}${s.order_id?(' · đơn '+esc(s.order_id)):''}</div></div></div>`;
+  }).join('')||'<div class="empty">Không có dữ liệu timeline.</div>';
+  const ST=[['assigned','Đã gán'],['locked','Đã khóa'],['in_progress','Đang chạy'],['completed','Hoàn thành']];
+  const sel=`<select class="field" style="width:100%" onchange="setRouteStatus('${esc(vid)}',this.value)">`+
+    ST.map(s=>`<option value="${s[0]}"${(r.status||'assigned')===s[0]?' selected':''}>${s[1]}</option>`).join('')+'</select>';
+  openDrawer(`Tuyến xe ${vid} · ${r.vehicle_type||''}`,
+    `<div class="grid g2" style="gap:10px">
+       ${kpi('Số đơn',r.n_orders,'','navy')}${kpi('Lợi nhuận',fmtV(r.profit),'biên '+fmtPct(r.margin)+'%',r.profit<0?'red':'green')}
+       ${kpi('Quãng đường',fmtN(r.distance_km)+' km','rỗng '+fmtN(r.empty_km)+' km','blue')}${kpi('Tỷ lệ tải',r.fill_weight_pct+'%','thể tích '+(r.fill_volume_pct||0)+'%','green')}
+     </div>
+     <div class="dw-sec">Thông tin tuyến</div>
+     <div class="kv"><span class="k">Tài xế</span><span class="v">${esc(r.driver||'—')}</span></div>
+     <div class="kv"><span class="k">Tuyến / hành lang</span><span class="v">${esc(r.corridor||'—')}</span></div>
+     <div class="kv"><span class="k">Điểm kết thúc</span><span class="v">${esc(r.end_name||'—')} → ${esc(r.depot_end||'depot')}</span></div>
+     <div class="kv"><span class="k">Đơn trong tuyến</span><span class="v">${(r.orders||[]).join(', ')||'—'}</span></div>
+     <div class="kv"><span class="k">Ghép chiều về</span><span class="v">${r.has_backhaul?'Có':'Chưa — xem Module 4'}</span></div>
+     <div class="dw-sec">Trạng thái tuyến</div>${sel}
+     <div class="dw-sec">Trình tự thời gian (ETA)</div>${tl}
+     <div style="margin-top:16px;display:flex;gap:8px"><button class="btn btn-navy btn-sm" onclick="closeDrawer();focusRoute('${esc(vid)}')">Xem trên bản đồ</button></div>`);
+}
+const openRouteTimeline=openRouteDrawer;   // tương thích lời gọi cũ
+function closeRouteModal(){$('#route-modal').classList.remove('show');if(!$('#modal').classList.contains('show'))$('#ov').classList.remove('show');}
+function renderUnassigned(){
+  let h='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th>Khung giờ</th><th class="num">Tải(kg)</th><th>Loại xe</th><th>Lý do chưa gán</th><th>Gợi ý xử lý</th><th></th></tr></thead><tbody>';
+  (STATE.unassigned||[]).forEach(o=>{
+    h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
+      <td>${esc(o.tw)}</td><td class="num">${fmtN(o.weight_kg)}</td><td>${esc(o.min_vehicle)}</td>
+      <td><span class="tag red">${esc(o.reason)}</span></td><td class="mini">${esc(o.suggestion)}</td>
+      <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick="askWhyUnassigned('${esc(o.order_id)}')" aria-label="Hỏi Trợ lý AI vì sao đơn ${esc(o.order_id)} chưa gán">✨ Hỏi AI lý do</button>
+      <button class="btn btn-line btn-sm" onclick="focusUnassigned('${esc(o.order_id)}')">Xem bản đồ</button>
+      <button class="btn btn-soft btn-sm" onclick="editFromUnassigned('${esc(o.order_id)}')">Chỉnh sửa</button>
+      <button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint||'')}')">Xử lý sự cố</button></td></tr>`;
+  });
+  if(!(STATE.unassigned||[]).length)h+='<tr><td colspan="9" class="empty">Tất cả đơn hợp lệ đã được gán xe.</td></tr>';
+  $('#una-tbl').innerHTML=h+'</tbody>';
+}
+function editFromUnassigned(id){nav('import');setTimeout(()=>{$('#pv-search').value=id;renderPreview();},120);}
+/* Q13/A5.2 — Hỏi AI lý do đơn chưa gán (mở dock + prefill + gửi) */
+function askWhyUnassigned(id){toggleDock(true);const q='Vì sao đơn '+id+' chưa được gán xe và nên xử lý thế nào?';const inp=$('#dock-q');if(inp)inp.value=q;askAI();}
+function fillMapFilter(){
+  const opts='<option value="">Tất cả tuyến</option>'+(STATE.routes||[]).map(r=>`<option value="${esc(r.vehicle_id)}">Xe ${esc(r.vehicle_id)} · ${esc(r.corridor||'')}</option>`).join('');
+  if($('#map-filter'))$('#map-filter').innerHTML=opts;
+}
+
+/* ===== MAP (OSRM real roads) ===== */
+function vIcon(color,size){size=size||9;return L.divIcon({className:'',html:`<div style="width:${size}px;height:${size}px;background:${color};border:1.5px solid #fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.3)"></div>`,iconSize:[size,size]});}
+function depotIcon(){return L.divIcon({className:'',html:`<div style="width:14px;height:14px;background:#0B3D91;border:2px solid #fff;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,iconSize:[14,14],iconAnchor:[7,7]});}
+function numIcon(color,num){return L.divIcon({className:'',html:`<div style="width:15px;height:15px;background:${color};border:1.5px solid #fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.32);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center">${num}</div>`,iconSize:[15,15],iconAnchor:[7.5,7.5]});}
+function bkIcon(){return L.divIcon({className:'',html:`<div style="width:16px;height:16px;background:#1B7A2F;border:2px solid #fff;transform:rotate(45deg);box-shadow:0 1px 3px rgba(0,0,0,.45)"></div>`,iconSize:[16,16],iconAnchor:[8,8]});}
+function baseTiles(){return L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap · © CARTO',subdomains:'abcd',maxZoom:19});}
+const _osrmCache=new Map();   // cache theo chuỗi tọa độ — CHỈ cache kết quả THÀNH CÔNG
+/* Lấy hình học tuyến đường bộ OSRM — bền bỉ để KHÔNG thiếu tuyến:
+   timeout 8s/lần, thử lại tối đa 2 lần (backoff) khi mạng/OSRM lỗi/bị giới hạn tốc độ;
+   CHỈ cache khi thành công (không cache null -> lần vẽ sau vẫn thử lại đến khi đủ). */
+async function osrmGeometry(coords,retries){
+  if(!coords||coords.length<2)return null;
+  const cs=coords.map(c=>c[1]+','+c[0]).join(';');
+  if(_osrmCache.has(cs))return _osrmCache.get(cs);
+  retries=(retries==null)?2:retries;
+  for(let attempt=0;attempt<=retries;attempt++){
+    const ctrl=new AbortController();const to=setTimeout(()=>ctrl.abort(),8000);
+    try{
+      const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${cs}?overview=full&geometries=geojson`,{signal:ctrl.signal});
+      const j=await r.json();
+      if(j&&j.code==='Ok'&&j.routes&&j.routes.length){
+        const g=j.routes[0].geometry.coordinates.map(p=>[p[1],p[0]]);
+        _osrmCache.set(cs,g);return g;
+      }
+    }catch(_){/* timeout/mạng -> thử lại lượt sau */}
+    finally{clearTimeout(to);}
+    if(attempt<retries)await new Promise(res=>setTimeout(res,400*(attempt+1)));
+  }
+  return null;
+}
+/* Chạy tác vụ async với GIỚI HẠN ĐỒNG THỜI (tránh public OSRM chặn tốc độ -> lấy đủ tuyến). */
+async function runPool(items,limit,worker){
+  let i=0;
+  async function next(){const idx=i++;if(idx>=items.length)return;await worker(items[idx],idx);return next();}
+  await Promise.all(Array.from({length:Math.max(1,Math.min(limit,items.length))},next));
+}
+function getMap(id){
+  let m=STATE.maps[id];
+  if(!m){m=L.map(id,{zoomControl:true}).setView([20.6,105.9],7);baseTiles().addTo(m);STATE.maps[id]=m;}
+  m.eachLayer(l=>{if(l instanceof L.Marker||l instanceof L.Polyline||l instanceof L.CircleMarker)m.removeLayer(l);});
+  return m;
+}
+async function drawRoutes(mapId,filterId,fitVehicle){
+  const m=getMap(mapId);
+  let data;try{data=await api('/api/map_data');}catch(_){return;}
+  const filter=filterId&&$(filterId)?$(filterId).value:'';
+  const bounds=[];
+  data.depots.forEach(dp=>{L.marker([dp.lat,dp.lon],{icon:depotIcon()}).addTo(m).bindPopup(`<b>Depot · ${esc(dp.name)}</b><br>${esc(dp.type)} · ${esc(dp.province)}`);bounds.push([dp.lat,dp.lon]);});
+  (data.unassigned||[]).forEach(o=>{L.marker([o.lat,o.lon],{icon:vIcon('#9AA7BD',10)}).addTo(m).bindPopup(`Đơn chưa gán: <b>${esc(o.order_id)}</b><br>${esc(o.name||'')}<br>Lý do: ${esc(o.reason)}`);});
+  const routes=data.routes.filter(r=>!filter||r.vehicle_id===filter);
+  // 1) Vẽ MARKER ngay (đồng bộ) để bản đồ hiện tức thì, không chờ OSRM.
+  routes.forEach(r=>{
+    let seq=0;
+    r.stops.forEach(s=>{
+      bounds.push([s.lat,s.lon]);
+      if(s.type==='depot'){L.marker([s.lat,s.lon],{icon:depotIcon()}).addTo(m).bindPopup(`<b>Depot</b><br>${esc(s.name||'')}${s.eta?('<br>Giờ '+esc(s.eta)):''}`);return;}
+      seq++;const col=s.type==='pickup'?'#1565C0':'#E2231A';const lbl=s.type==='pickup'?'Điểm lấy':'Điểm trả';
+      L.marker([s.lat,s.lon],{icon:numIcon(col,seq)}).addTo(m).bindPopup(`<b>${seq}. ${lbl}</b><br>${esc(s.name||'')}${s.order_id?('<br>Đơn '+esc(s.order_id)):''}${s.eta?('<br>ETA '+esc(s.eta)):''}<br>Xe ${esc(r.vehicle_id)}`);
+    });
+  });
+  let fb=bounds;
+  if(fitVehicle){const rv=data.routes.find(r=>r.vehicle_id===fitVehicle);if(rv)fb=rv.stops.map(s=>[s.lat,s.lon]);}
+  if(fb.length)m.fitBounds(fb,{padding:[30,30]});
+  setTimeout(()=>m.invalidateSize(),60);
+  // 2) Lấy TUYẾN ĐƯỜNG BỘ với giới hạn đồng thời + retry -> đầy đủ nhất; vẽ dần khi có.
+  let nFail=0;
+  await runPool(routes,6,async r=>{
+    const pts=r.stops.map(s=>[s.lat,s.lon]);
+    const geo=await osrmGeometry(pts);
+    if(geo)L.polyline(geo,{color:r.color,weight:4,opacity:.82}).addTo(m).bindPopup(`Xe ${esc(r.vehicle_id)} · ${esc(r.vehicle_type)}<br>${r.n_orders} đơn · ${r.distance_km} km${r.has_backhaul?' · có backhaul':''}`);
+    else{nFail++;L.polyline(pts,{color:r.color,weight:3,opacity:.55,dashArray:'7'}).addTo(m).bindPopup(`Xe ${esc(r.vehicle_id)} · tuyến tham chiếu (chưa lấy được tuyến đường bộ)`);}
+  });
+  if(nFail)toast(`Còn ${nFail}/${routes.length} tuyến chưa lấy được đường bộ (mạng/OSRM giới hạn) — bấm “Toàn bộ” để thử lại.`,'err');
+}
+function drawPlanMap(){drawRoutes('map','#map-filter');}
+function focusRoute(vid){if(STATE.view!=='plan')nav('plan');if($('#map-filter'))$('#map-filter').value=vid;drawRoutes('map','#map-filter',vid);const mc=document.getElementById('card-plan-map');if(mc)mc.scrollIntoView({behavior:'smooth',block:'nearest'});}
+async function focusUnassigned(id){if(STATE.view!=='plan')nav('plan');const mc=document.getElementById('card-plan-map');if(mc)mc.scrollIntoView({behavior:'smooth',block:'nearest'});const m=getMap('map');try{const d=await api('/api/map_data');const o=(d.unassigned||[]).find(x=>x.order_id===id);if(o){m.setView([o.lat,o.lon],13);L.marker([o.lat,o.lon],{icon:vIcon('#9AA7BD',13)}).addTo(m).bindPopup('Đơn chưa gán '+esc(id)+'<br>'+esc(o.reason)).openPopup();}}catch(_){}}
+
+/* ===== MODULE 4 ===== */
+/* Bảng "Đơn chưa có chuyến quay đầu" — đơn bổ sung chưa được ghép chiều về (dùng ở Module 3 & 4) */
+async function loadNoReturn(tblId){
+  const el=$('#'+tblId);if(!el)return;
+  const HEAD='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Tải</th><th class="num">Doanh thu</th></tr></thead>';
+  if(!STATE.routes||!STATE.routes.length){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty">Chưa có kế hoạch tuyến — hãy chạy Module 3 để có đơn ghép chiều về.</td></tr></tbody>';return;}
+  try{
+    const d=await api('/api/backhaul/orders');
+    const matched=new Set();((STATE.backhaul&&STATE.backhaul.results)||[]).forEach(r=>{if(r&&r.match)matched.add(String(r.match.order_id));});
+    const rows=(d.orders||[]).filter(o=>!matched.has(String(o.order_id)));
+    let h=HEAD+'<tbody>';
+    rows.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td><td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td></tr>`);
+    if(!rows.length)h+='<tr><td colspan="5" class="empty">Tất cả đơn bổ sung đã có chuyến quay đầu.</td></tr>';
+    el.innerHTML=h+'</tbody>';
+  }catch(_){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty">Chưa có đơn bổ sung.</td></tr></tbody>';}
+}
+async function loadBackhaulOrders(){
+  try{const d=await api('/api/backhaul/orders');
+    let h='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Tải</th><th class="num">Doanh thu</th><th>Nguồn</th><th></th></tr></thead><tbody>';
+    d.orders.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
+      <td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td><td>${esc(o.source)}</td>
+      <td><button class="btn btn-line btn-sm" onclick="delBackhaul('${esc(o.order_id)}')">Xóa</button></td></tr>`);
+    if(!d.orders.length)h+='<tr><td colspan="7" class="empty">Chưa có đơn bổ sung. Nhập tay hoặc “Nhập file 3PL”.</td></tr>';
+    $('#bk-orders-tbl').innerHTML=h+'</tbody>';loadNoReturn('noreturn4-tbl');
+    try{const s=await api('/api/status');
+      $('#bk-status').innerHTML=`Dữ liệu động: <b>${s.dynamic_loaded?'Đã nạp':'Chưa nạp'}</b> · Kịch bản điều phối: <b>${s.dynamic_cases||0} case</b> · Đơn quay đầu khả dụng: <b>${d.orders.length}</b> · Xe giữ standby: <b>${(s.standby||{}).count||0}</b>`;
+    }catch(_){}
+  }catch(_){}
+}
+async function loadBackhaulSample(){
+  if(!STATE.routes||!STATE.routes.length){
+    if(!STATE.scenarios.length){toast('Hãy nạp dữ liệu (Module 1) trước.','err');return;}
+    await ensurePlanThen(null);
+    if(!STATE.routes||!STATE.routes.length){toast('Chưa có kế hoạch tuyến để sinh đơn mẫu.','err');return;}
+  }
+  try{const d=await api('/api/backhaul/load_sample',{method:'POST'});
+    loadBackhaulOrders();refreshStatus();toast(d.message||('Đã nạp '+d.added+' đơn quay đầu mẫu.'),'ok');
+  }catch(e){toast(e.message,'err');}
+}
+async function addBackhaul(){
+  const body={order_id:$('#bk-id').value,customer:$('#bk-cust').value,pickup_name:$('#bk-pn').value,
+    pickup_lat:$('#bk-plat').value,pickup_lon:$('#bk-plon').value,delivery_name:$('#bk-dn').value,
+    delivery_lat:$('#bk-dlat').value,delivery_lon:$('#bk-dlon').value,weight_kg:$('#bk-w').value,
+    revenue:$('#bk-rev').value,min_vehicle:$('#bk-veh').value};
+  if(!body.pickup_lat||!body.delivery_lat){toast('Cần tọa độ điểm lấy và điểm trả','err');return;}
+  try{await api('/api/backhaul/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    ['bk-id','bk-cust','bk-pn','bk-plat','bk-plon','bk-dn','bk-dlat','bk-dlon','bk-w','bk-rev','bk-veh'].forEach(i=>$('#'+i).value='');
+    loadBackhaulOrders();refreshStatus();toast('Đã thêm đơn bổ sung','ok');}catch(e){toast(e.message,'err');}
+}
+async function delBackhaul(id){
+  try{await api('/api/backhaul/orders',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:id})});
+    loadBackhaulOrders();refreshStatus();}catch(e){toast(e.message,'err');}
+}
+async function runBackhaul(){
+  if(!STATE.routes){toast('Hãy chạy Kế hoạch tuyến (Module 3) trước','err');return;}
+  $('#bk-kpis').innerHTML='<div class="loading" style="grid-column:1/-1"><span class="spin"></span>Đang tối ưu ghép chuyến…</div>';
+  try{
+    const d=await api('/api/matcher/backhaul',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});STATE.backhaul=d;renderStepper();loadNoReturn('noreturn4-tbl');
+    $('#bk-kpis').innerHTML=
+      kpi('Xe ghép được',d.n_matched+'/'+d.n_routes,'có đơn chiều về','green')+
+      kpi('Đơn quay đầu khả dụng',d.n_new_orders,'để xét ghép','amber')+
+      kpi('Km rỗng giảm',fmtN(d.empty_km_avoided)+' km','chống chạy rỗng','blue')+
+      kpi('Lợi nhuận bổ sung',fmtV(d.total_gain),'sau khi trừ chi phí','navy');
+    let h='<thead><tr><th>Xe</th><th>Tuyến</th><th>Đơn ghép</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Lệch tuyến</th><th class="num">Chờ</th><th>Fill về</th><th class="num">Km rỗng giảm</th><th class="num">Lợi nhuận thêm</th><th class="num">Điểm</th><th>Quyết định</th><th></th></tr></thead><tbody>';
+    (d.results||[]).forEach(x=>{const m=x.match;
+      h+=`<tr title="${esc(m.reason||'')}"><td><b>${esc(x.vehicle_id)}</b></td><td>${esc(x.corridor||'')}</td><td><span class="tag blue">${esc(m.order_id)}</span></td>
+        <td>${esc(m.pickup_name||'')}</td><td>${esc(m.delivery_name||'')}</td>
+        <td class="num">${m.to_pickup_km}km</td><td class="num">${m.wait_min||0}'</td>
+        <td class="num">${m.fill_before}%→${m.fill_after}%</td>
+        <td class="num">${fmtN(m.empty_km_reduced)}</td><td class="num" style="color:var(--green)">+${fmtV(m.profit_add)}</td>
+        <td class="num"><b>${m.score}</b></td><td><span class="tag" style="background:var(--green-l);color:var(--green)">${esc(m.decision)}</span></td>
+        <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick='showReturn(${JSON.stringify(x).replace(/'/g,"&#39;")})'>Xem tuyến</button>
+        <button class="btn btn-navy btn-sm" onclick='acceptBackhaul(${JSON.stringify({vehicle_id:x.vehicle_id,order_id:m.order_id,gain:m.profit_add}).replace(/'/g,"&#39;")})'>Chấp nhận</button></td></tr>`;});
+    if(!(d.results||[]).length)h+=`<tr><td colspan="13" class="empty">Chưa có cặp ghép phù hợp. Hãy thêm đơn bổ sung hoặc “Nhập file 3PL”.</td></tr>`;
+    $('#bk-tbl').innerHTML=h+'</tbody>';
+    if(d.results&&d.results.length)showReturn(d.results[0]);
+    toast('Tìm được '+d.n_matched+' cặp ghép · giảm '+fmtN(d.empty_km_avoided)+' km rỗng','ok');
+  }catch(e){$('#bk-kpis').innerHTML='<div class="empty" style="grid-column:1/-1">'+esc(e.message)+'</div>';}
+}
+async function showReturn(x){
+  const m=getMap('bk-map');const m2=x.match;
+  const out=[[x.end_lat,x.end_lon],[m2.pickup_lat,m2.pickup_lon],[m2.delivery_lat,m2.delivery_lon],[x.depot_lat,x.depot_lon]];
+  L.marker([x.end_lat,x.end_lon],{icon:vIcon('#E2231A',12)}).addTo(m).bindPopup('Xe rảnh sau chiều đi: '+esc(x.end_name||''));
+  L.marker([m2.pickup_lat,m2.pickup_lon],{icon:vIcon('#1565C0',11)}).addTo(m).bindPopup('Lấy đơn bổ sung: '+esc(m2.pickup_name||''));
+  L.marker([m2.delivery_lat,m2.delivery_lon],{icon:vIcon('#1B7A2F',11)}).addTo(m).bindPopup('Trả: '+esc(m2.delivery_name||''));
+  const geo=await osrmGeometry(out);
+  if(geo)L.polyline(geo,{color:'#1B7A2F',weight:4,opacity:.85}).addTo(m);
+  else{L.polyline(out,{color:'#1B7A2F',weight:3,dashArray:'6'}).addTo(m);toast('Không tìm thấy tuyến đường bộ phù hợp cho chiều về. Vui lòng kiểm tra lại tọa độ.','err');}
+  m.fitBounds(out,{padding:[30,30]});setTimeout(()=>m.invalidateSize(),60);
+}
+async function acceptBackhaul(p){
+  try{await api('/api/backhaul/accept',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+    toast('Đã chấp nhận ghép chuyến cho xe '+p.vehicle_id+'. P&L sẽ phản ánh khi tính lại tài chính.','ok');loadLog();
+  }catch(e){toast(e.message,'err');}
+}
+
+/* ===== MODULE 5 ===== */
+const FIN_PARAMS=[
+  /* Chi phí theo quãng đường (vận hành) */
+  ['tieu_hao_lit_km','Mức tiêu hao nhiên liệu','lít/km'],['phi_cau_duong_km','Phí cầu đường','đ/km'],
+  ['bao_duong_km','Chi phí bảo dưỡng','đ/km'],['khau_hao_km','Chi phí khấu hao','đ/km'],
+  /* Nhân công */
+  ['luong_tai_xe_chuyen','Lương tài xế','đ/chuyến'],['phu_cap_chuyen','Phụ cấp chuyến','đ/chuyến'],
+  ['chi_phi_tang_ca_gio','Chi phí tăng ca','đ/giờ'],['chi_phi_boc_xep_don','Chi phí bốc xếp','đ/đơn'],
+  /* Theo đơn / sự cố */
+  ['chi_phi_cho_phut','Chi phí chờ','đ/phút'],['chi_phi_phat_tre','Chi phí phạt trễ','đ/đơn'],
+  ['chi_phi_thue_xe_ngoai','Chi phí thuê xe ngoài','đ/chuyến'],['chi_phi_chuyen_tai','Chi phí chuyển tải','đ/lần'],
+  /* Chi phí quản lý — chiếm trọn 1 dòng cho cân đối */
+  ['ty_le_quan_ly','Tỷ lệ chi phí quản lý','tỷ lệ 0–1'],
+];
+let FINVALS={};
+function renderFinParams(vals){
+  FINVALS=vals||FINVALS;
+  // Giá nhiên liệu là Ô ĐẦU TIÊN trong cùng lưới 2 cột -> cùng hàng với "Mức tiêu hao" (14 ô = 7 hàng × 2, cân đối).
+  const gia=(FINVALS.gia_nhien_lieu!=null&&FINVALS.gia_nhien_lieu!=='')?FINVALS.gia_nhien_lieu:27500;
+  let cells=`<div><label class="lab">Giá nhiên liệu đang áp dụng <span style="color:var(--muted);font-weight:500">(đ/lít)</span></label>
+    <input class="field" style="width:100%" id="fuel-price" type="number" step="any" value="${gia}"></div>`;
+  cells+=FIN_PARAMS.map(p=>`<div><label class="lab">${esc(p[1])} <span style="color:var(--muted);font-weight:500">(${esc(p[2])})</span></label>
+    <input class="field" style="width:100%" id="fp-${p[0]}" type="number" step="any" value="${FINVALS[p[0]]!=null?FINVALS[p[0]]:''}"></div>`).join('');
+  $('#fin-params').innerHTML='<div class="grid g2">'+cells+'</div>';
+}
+async function runFinancial(live){
+  if(!STATE.routes){financeEmpty();return;}
+  const params={};FIN_PARAMS.forEach(p=>{const v=$('#fp-'+p[0]);if(v&&v.value!=='')params[p[0]]=parseFloat(v.value);});
+  const fpv=$('#fuel-price');if(fpv&&fpv.value!=='')params.gia_nhien_lieu=parseFloat(fpv.value);
+  if(!live)$('#fin-kpis').innerHTML='<div class="loading" style="grid-column:1/-1"><span class="spin"></span>Đang tính P&L…</div>';
+  try{
+    const r=await api('/api/financial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({params})});
+    const t=r.financial.totals;const band=t.band;
+    if(!live){renderFinParams(r.params);if($('#fuel-price'))$('#fuel-price').value=r.params.gia_nhien_lieu;}
+    $('#fin-kpis').innerHTML=
+      kpi('Doanh thu dự kiến',fmtV(t.revenue_total),'cước + phụ phí','navy')+
+      kpi('Tổng chi phí',fmtV(t.total_cost),'','amber')+
+      kpi('Lợi nhuận gộp',fmtV(t.profit),'biên '+fmtPct(t.margin)+'%',t.profit>=0?'green':'red')+
+      kpi('Sau xử lý sự cố',fmtV(t.profit_after),'biên '+fmtPct(t.margin_after)+'%',(t.margin_after>=17?'green':'amber'));
+    drawIndicator(t.margin_after,band);
+    $('#uplift-line').innerHTML=`
+      <div class="kv"><span class="k">Biên sau tối ưu gom đơn theo tuyến</span><span class="v" style="color:var(--green)">${fmtPct(t.margin)}%</span></div>
+      <div class="kv"><span class="k">Tỷ lệ chạy rỗng</span><span class="v">${t.empty_km_pct}%</span></div>
+      <div class="kv"><span class="k">Lợi nhuận bổ sung từ ghép chiều về</span><span class="v" style="color:var(--green)">+${fmtV(t.backhaul_gain)}</span></div>
+      <div class="kv"><span class="k">Lợi nhuận trên mỗi km</span><span class="v" style="color:var(--navy)">${fmtV(t.profit_per_km)}</span></div>`;
+    drawCostChart(t);renderFormula(r.params,t);renderFinTable(r.financial);
+    STATE.finComputed=true;renderStepper();
+    if(!live)toast('Biên lợi nhuận sau xử lý: '+fmtPct(t.margin_after)+'%','ok');
+  }catch(e){if(!live)$('#fin-kpis').innerHTML='<div class="empty" style="grid-column:1/-1">'+esc(e.message)+'</div>';}
+}
+function drawIndicator(m,band){
+  const segs=[['Lỗ','#B71C1C',-10,0],['Thấp','#8A5E00',0,10],['Gần mục tiêu','#7A5200',10,17],['Mục tiêu','#1B7A2F',17,22],['Cao','#1565C0',22,30]];
+  const lo=-10,hi=30,pct=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
+  let h='<div class="indicator">';segs.forEach(s=>{const w=pct(s[3])-pct(s[2]);h+=`<div class="seg" style="flex:${w};background:${s[1]}">${s[0]}</div>`;});
+  h+=`<div class="needle" style="left:${pct(m)}%"></div></div>
+    <div class="ind-scale"><span>-10%</span><span>0%</span><span>10%</span><span>17%</span><span>22%</span><span>30%</span></div>
+    <div style="text-align:center;margin-top:9px;font-size:24px;font-weight:800;color:${band.color}">${fmtPct(m)}%</div>`;
+  $('#indicator-wrap').innerHTML=h;
+}
+let _costChart;
+async function drawCostChart(t){
+  try{await ensureChart();}catch(_){return;}   // Q12 — chỉ tải Chart.js khi cần
+  const ctx=$('#costChart');if(!ctx)return;if(_costChart)_costChart.destroy();
+  _costChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nhiên liệu','Cầu đường','Tài xế','Chi phí xe','Bốc xếp','Chạy rỗng','Quản lý'],
+    datasets:[{data:[t.fuel,t.toll,t.driver_cost,t.vehicle_cost,t.handling,t.empty_cost,t.overhead],
+    backgroundColor:['#0B3D91','#1565C0','#4F86D6','#9DBDEA','#B07A00','#E2231A','#9AA7BD'],borderWidth:2,borderColor:'#fff'}]},
+    options:{animation:REDUCE_MOTION?false:{duration:500},plugins:{legend:{position:'right',labels:{font:{family:'Be Vietnam Pro',size:11},boxWidth:12}}},cutout:'58%'}});
+}
+function renderFormula(p,t){
+  $('#formula').innerHTML=
+    `<div class="row"><span class="lbl"><b>Doanh thu tuyến</b> = tổng cước vận chuyển các đơn trên tuyến</span><span>${fmtV(t.revenue_total)}</span></div>
+     <div class="row"><span class="lbl">− Nhiên liệu = km có tải × ${fmtN(p.tieu_hao_lit_km)} lít/km × ${fmtN(p.gia_nhien_lieu)} đ</span><span>${fmtV(t.fuel)}</span></div>
+     <div class="row"><span class="lbl">− Cầu đường = km liên tỉnh × ${fmtN(p.phi_cau_duong_km)} đ/km</span><span>${fmtV(t.toll)}</span></div>
+     <div class="row"><span class="lbl">− Tài xế = lương phân bổ + phụ cấp + tăng ca</span><span>${fmtV(t.driver_cost)}</span></div>
+     <div class="row"><span class="lbl">− Chi phí xe = khấu hao + bảo dưỡng + bảo hiểm</span><span>${fmtV(t.vehicle_cost)}</span></div>
+     <div class="row"><span class="lbl">− Bốc xếp = bốc + dỡ theo đơn</span><span>${fmtV(t.handling)}</span></div>
+     <div class="row"><span class="lbl">− Chạy rỗng (ngoài quãng điều xe miễn phí)</span><span>${fmtV(t.empty_cost)}</span></div>
+     <div class="row"><span class="lbl">− Chi phí quản lý phân bổ = ${(p.ty_le_quan_ly*100).toFixed(0)}% × doanh thu</span><span>${fmtV(t.overhead)}</span></div>
+     <div class="row"><span class="lbl"><b>Lợi nhuận gộp</b> = doanh thu − tổng chi phí</span><span class="res">${fmtV(t.profit)} · ${fmtPct(t.margin)}%</span></div>`;
+}
+function renderFinTable(fin){
+  STATE.financial=fin;   // lưu để drawer P&L tra cứu cơ cấu chi phí
+  const t=fin.totals;
+  // L1: thu còn 6 cột; bấm dòng mở DRAWER cơ cấu chi phí đầy đủ
+  let h='<thead><tr><th>Mã xe</th><th>Loại</th><th class="num">Doanh thu</th><th class="num">Tổng CP</th><th class="num">Lợi nhuận</th><th class="num">Biên%</th></tr></thead><tbody>';
+  fin.per_route.forEach(p=>{const neg=p.profit<0;
+    h+=`<tr class="clickable" tabindex="0" role="button" aria-label="Chi tiết tài chính xe ${esc(p.vehicle_id)}" onclick="openPnlDrawer('${esc(p.vehicle_id)}')" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target.tagName==='TR'){event.preventDefault();openPnlDrawer('${esc(p.vehicle_id)}')}">
+      <td><b>${esc(p.vehicle_id)}</b></td><td>${esc(p.vehicle_type)}</td><td class="num">${fmtN(p.revenue_total)}</td>
+      <td class="num">${fmtN(p.total_cost)}</td>
+      <td class="num" style="color:${neg?'var(--red)':'var(--green)'};font-weight:700">${fmtN(p.profit)}</td>
+      <td class="num" style="color:${neg?'var(--red)':'var(--green)'};font-weight:700">${fmtPct(p.margin)}%</td></tr>`;});
+  h+=`</tbody><tfoot><tr><td colspan="2">TỔNG</td><td class="num">${fmtN(t.revenue_total)}</td><td class="num">${fmtN(t.total_cost)}</td><td class="num">${fmtN(t.profit)}</td><td class="num">${fmtPct(t.margin)}%</td></tr></tfoot>`;
+  $('#fin-tbl').innerHTML=h;
+}
+function openPnlDrawer(vid){
+  const fin=STATE.financial;if(!fin)return;
+  const p=(fin.per_route||[]).find(x=>x.vehicle_id===vid);if(!p)return;
+  const neg=p.profit<0,row=(k,v)=>`<div class="kv"><span class="k">${k}</span><span class="v">${fmtV(v)}</span></div>`;
+  openDrawer(`Tài chính xe ${vid} · ${p.vehicle_type||''}`,
+    `<div class="grid g2" style="gap:10px">
+       ${kpi('Doanh thu',fmtV(p.revenue_total),'cước + phụ phí','navy')}${kpi('Lợi nhuận',fmtV(p.profit),'biên '+fmtPct(p.margin)+'%',neg?'red':'green')}
+     </div>
+     <div class="dw-sec">Cơ cấu chi phí</div>
+     ${row('Nhiên liệu',p.fuel)}${row('Cầu đường',p.toll)}${row('Tài xế',p.driver_cost)}${row('Chi phí xe',p.vehicle_cost)}
+     ${row('Bốc xếp',p.handling)}${row('Chạy rỗng',p.empty_cost)}${row('Quản lý',p.overhead)}
+     <div class="kv" style="border-top:2px solid var(--line);margin-top:4px;padding-top:8px"><span class="k" style="font-weight:700">Tổng chi phí</span><span class="v">${fmtV(p.total_cost)}</span></div>
+     ${p.risk_late?('<div class="dw-sec">Cảnh báo</div><span class="tag red">Rủi ro trễ giờ — tăng ca '+fmtV(p.overtime||0)+'</span>'):''}`);
+}
+
+/* ===== MODULE 6 ===== */
+async function loadIncidents(){
+  try{const d=await api('/api/incidents');
+    if($('#inc-type')&&!$('#inc-type').options.length)$('#inc-type').innerHTML=d.types.map(t=>`<option>${esc(t)}</option>`).join('');
+    if($('#inc-note')){const ex=d.excel_total||0;$('#inc-note').textContent=
+      (ex?`Đang hiển thị ${d.shown} sự cố (gồm ${Math.min(ex,d.seed_cap||ex)}/${ex} sự cố từ file Excel).`
+         :`Đang hiển thị ${d.shown} sự cố (file chưa có sự cố — hệ thống tự sinh để xử lý).`)
+      +' Chọn “Tất cả” để hệ thống tự nhận loại sự cố theo đơn.';}
+    let h='<thead><tr><th>Mã sự cố</th><th>Mã đơn</th><th>Loại sự cố</th><th>Ưu tiên</th><th>Thời điểm</th><th>Xe</th><th>Tài xế</th><th>Tuyến</th><th>Trạng thái</th><th>Người phụ trách</th><th>Phương án</th><th></th></tr></thead><tbody>';
+    d.incidents.forEach(i=>{
+      const bd=i.status==='Đang xử lý'?'b-rev':'b-ok';
+      h+=`<tr><td><b>${esc(i.case_id)}</b></td><td>${esc(i.order_id)}</td><td>${esc(i.event_type)}</td>
+        <td><span class="tag ${i.priority==='Cao'?'red':''}">${esc(i.priority)}</span></td><td>${esc(i.ts)}</td>
+        <td>${esc(i.vehicle)}</td><td>${esc(i.driver||'—')}</td><td>${esc(i.route_id)}</td><td><span class="badge ${bd}">${esc(i.status)}</span></td>
+        <td>Điều phối viên</td><td class="mini">${esc(i.decision||'—')}</td>
+        <td style="white-space:nowrap"><button class="btn btn-navy btn-sm" onclick="openIncident('${esc(i.case_id)}')">Xem chi tiết</button>
+        <button class="btn btn-line btn-sm" onclick="completeFromList('${esc(i.case_id)}')">Hoàn tất</button></td></tr>`;});
+    if(!d.incidents.length)h+='<tr><td colspan="12" class="empty">Chưa có sự cố nào đang theo dõi. Tạo sự cố từ một đơn ở trên, hoặc từ Module 2/3.</td></tr>';
+    $('#inc-tbl').innerHTML=h+'</tbody>';
+  }catch(_){}
+}
+function selectIncType(hint){const map={'Traffic Congestion & Police Check':'Tắc đường','Vehicle Mismatch / Split':'Thiếu xe','Empty-run Risk':'Rủi ro trễ SLA'};
+  const v=map[hint]||hint;const sel=$('#inc-type');if(sel)for(const o of sel.options)if(o.value===v||o.value.indexOf(v)>=0){sel.value=o.value;break;}}
+async function createIncident(){
+  const id=$('#inc-order').value.trim();
+  let et=$('#inc-type').value;
+  if(et==='Tất cả')et='';   // để hệ thống tự nhận loại sự cố theo đơn
+  try{toast('<span class="spin"></span> Đang dựng phương án xử lý…');
+    const d=await api('/api/incident/from_order',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({order_id:id,event_type:et,scenario:STATE.scenario})});
+    loadIncidents();refreshStatus();openIncidentObj(d.incident);
+  }catch(e){toast(e.message,'err');}
+}
+async function openIncident(caseId){try{const d=await api('/api/incident/'+caseId);openIncidentObj(d.incident);}catch(e){toast(e.message,'err');}}
+function openIncidentObj(inc){
+  STATE.incident=inc;STATE.selOption=null;
+  const i=inc.incident||{};const rv=i.recommended_vehicle;
+  $('#m-title').textContent=`Xử lý sự cố · ${inc.case_id} · Đơn ${inc.order_id}`;
+  let cands=(i.candidates||[]).map(c=>{const best=c.engine_feasible;
+    return `<div class="kv"><span class="k">${esc(c.vehicle)} · ${esc(c.vehicle_type)} ${best?'<span class="badge b-ok">khuyến nghị</span>':''}</span>
+      <span class="v">cách ${c.dist_km}km · ETA ${c.eta_min}' · ${c.capacity_ok?'đủ tải':'thiếu tải'}</span></div>`;}).join('')||'<div class="mini" style="color:var(--muted)">Loại sự cố này thường không cần điều xe thay thế.</div>';
+  let opts=(inc.options||[]).map((o,idx)=>`<div class="opt" id="opt-${idx}" onclick="pickOption(${idx})">
+    <div class="ot"><span>${esc(o.ten)}</span><span class="badge ${o.khuyen_nghi==='Cao'?'b-ok':o.khuyen_nghi==='Thấp'?'b-gray':'b-rev'}">Khuyến nghị: ${esc(o.khuyen_nghi)}</span></div>
+    <div class="od">${esc(o.mo_ta)}</div>
+    <div class="metrics"><span class="metric">Thời gian: +${o.tac_dong_thoi_gian}'</span><span class="metric">Quãng đường: +${o.tac_dong_quang_duong}km</span>
+      <span class="metric">Chi phí: ${o.tac_dong_chi_phi>0?'+':''}${fmtN(o.tac_dong_chi_phi)} đ</span>
+      <span class="metric">Tác động P&L: ${fmtN(o.tac_dong_pnl)} đ</span><span class="metric">Rủi ro: ${esc(o.rui_ro)}</span></div></div>`).join('');
+  let soft=(inc.soft_skills||[]).map(s=>`<div class="play"><div class="sit">${esc(s.tinh_huong)}</div><div class="act">${esc(s.huong_dan)}</div>
+    ${s.mau_cau?`<div class="script">${esc(s.mau_cau)}</div>`:''}</div>`).join('');
+  $('#m-body').innerHTML=`
+    <div class="ai-box" style="margin-bottom:14px"><div class="ai-h">Phân tích tình huống (Trợ lý AI · ${esc(inc.analysis_source||'')})</div><div>${esc(inc.analysis||'')}</div></div>
+    <div class="split">
+      <div>
+        <div class="card"><h3>Phương án xử lý — chọn một phương án</h3>
+          <div class="hint">AI chỉ đề xuất. Điều phối viên là người quyết định.</div>${opts}</div>
+        <div class="card"><label class="lab">Ghi chú điều phối</label>
+          <textarea class="field" id="m-note" style="width:100%;min-height:70px" placeholder="Ghi chú, lưu ý xử lý, nguyên nhân…">${esc(inc.note||'')}</textarea></div>
+      </div>
+      <div>
+        <div class="card"><h3>Thông tin sự cố</h3>
+          <div class="kv"><span class="k">Loại sự cố</span><span class="v">${esc(inc.event_type)}</span></div>
+          <div class="kv"><span class="k">Khách hàng</span><span class="v">${esc(inc.customer||'—')}</span></div>
+          <div class="kv"><span class="k">Điểm giao</span><span class="v">${esc(inc.delivery_name||'—')}</span></div>
+          <div class="kv"><span class="k">Xe / tuyến liên quan</span><span class="v">${esc(inc.vehicle)} · ${esc(inc.route_id)}</span></div>
+          ${rv?`<div class="kv"><span class="k">Xe thay thế gần nhất</span><span class="v" style="color:var(--green)">${esc(rv.vehicle)} · cách ${rv.dist_km}km</span></div>`:''}</div>
+        <div class="card"><h3>Xe khả dụng gần điểm sự cố</h3>${cands}
+          <div id="inc-map" style="height:200px;margin-top:10px;border-radius:8px"></div></div>
+        <div class="card"><h3>Hướng xử lý mềm / lưu ý trao đổi</h3>${soft}</div>
+      </div>
+    </div>`;
+  $('#m-apply').disabled=true;$('#m-complete').style.display=(inc.status==='Đang xử lý')?'none':'inline-flex';
+  $('#m-status').textContent=inc.status==='Đang xử lý'?'Bước: chọn phương án → nhập ghi chú → Xác nhận áp dụng':'Sự cố đã chốt phương án — có thể đánh dấu hoàn tất.';
+  openModal();setTimeout(()=>drawIncidentMap(i),150);
+}
+function drawIncidentMap(i){
+  if(!i||!i.incident_lat)return;const el=$('#inc-map');if(!el)return;
+  if(STATE.maps['inc-map']){STATE.maps['inc-map'].remove();delete STATE.maps['inc-map'];}
+  const m=L.map('inc-map',{zoomControl:true}).setView([i.incident_lat,i.incident_lon],12);baseTiles().addTo(m);STATE.maps['inc-map']=m;
+  L.circle([i.incident_lat,i.incident_lon],{radius:(i.radius_max||30)*1000,color:'#1565C0',weight:1,fillOpacity:.05}).addTo(m);
+  L.marker([i.incident_lat,i.incident_lon],{icon:vIcon('#E2231A',12)}).addTo(m).bindPopup('Điểm sự cố: '+esc(i.delivery_name||''));
+  const b=[[i.incident_lat,i.incident_lon]];
+  (i.candidates||[]).forEach(c=>{if(!c.lat)return;const col=c.engine_feasible?'#1B7A2F':'#90A4AE';
+    L.marker([c.lat,c.lon],{icon:vIcon(col,10)}).addTo(m).bindPopup(`${esc(c.vehicle)} · ${esc(c.vehicle_type)}<br>${c.dist_km}km · ETA ${c.eta_min}'`);b.push([c.lat,c.lon]);});
+  if(b.length>1)m.fitBounds(b,{padding:[25,25]});setTimeout(()=>m.invalidateSize(),60);
+}
+function pickOption(idx){
+  STATE.selOption=(STATE.incident.options||[])[idx];
+  $$('#m-body .opt').forEach((e,j)=>e.classList.toggle('sel',j===idx));
+  $('#m-apply').disabled=false;
+  if(STATE.selOption&&STATE.selOption.self_fill){
+    const n=$('#m-note');if(n)n.focus();
+    $('#m-status').textContent='Tự điền: nhập phương án xử lý của bạn vào ô ghi chú rồi “Xác nhận áp dụng”.';
+  }else{
+    $('#m-status').textContent='Đã chọn phương án. Nhập ghi chú nếu cần rồi bấm “Xác nhận áp dụng”.';
+  }
+}
+function applyResolve(){
+  if(!STATE.selOption){toast('Hãy chọn một phương án xử lý','err');return;}
+  confirmBox({title:'Xác nhận áp dụng phương án',
+    msg:'Áp dụng phương án: “'+STATE.selOption.ten+'” cho sự cố '+(STATE.incident?STATE.incident.case_id:'')+'.',
+    danger:false,okText:'Lưu vết',onOK:doResolve});
+}
+async function doResolve(){
+  try{
+    await api('/api/incident/resolve',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({case_id:STATE.incident.case_id,option:STATE.selOption,note:$('#m-note').value})});
+    toast('Đã áp dụng phương án và cập nhật tuyến, P&L, nhật ký.','ok');
+    $('#m-complete').style.display='inline-flex';$('#m-status').textContent='Đã chốt phương án. Có thể đánh dấu hoàn tất để chuyển vào nhật ký.';
+    STATE.incident.status='Đã xử lý sự cố';loadIncidents();loadLog();refreshStatus();
+  }catch(e){toast(e.message,'err');}
+}
+function completeIncident(){
+  if(!STATE.incident)return;
+  confirmBox({title:'Đánh dấu hoàn tất sự cố',msg:'Đóng sự cố '+STATE.incident.case_id+' và chuyển vào nhật ký lưu vết?',
+    warn:'Sự cố sẽ rời danh sách đang theo dõi (vẫn truy được ở Module 7).',danger:false,okText:'Hoàn tất',
+    onOK:async()=>{try{await api('/api/incident/complete',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({case_id:STATE.incident.case_id,reason:'Hoàn tất xử lý'})});
+      toast('Đã đánh dấu hoàn tất. Dữ liệu được lưu vết tại Module 7.','ok');closeModal();loadIncidents();loadLog();refreshStatus();
+    }catch(e){toast(e.message,'err');}}});
+}
+function completeFromList(caseId){
+  confirmBox({title:'Đánh dấu hoàn tất sự cố',msg:'Đóng sự cố '+caseId+' và chuyển vào nhật ký lưu vết?',
+    danger:false,okText:'Hoàn tất',
+    onOK:async()=>{try{await api('/api/incident/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({case_id:caseId})});
+      loadIncidents();loadLog();refreshStatus();toast('Đã hoàn tất '+caseId,'ok');}catch(e){toast(e.message,'err');}}});
+}
+function openModal(){$('#ov').classList.add('show');$('#modal').classList.add('show');trapFocus($('#modal'));}
+function closeModal(){$('#ov').classList.remove('show');$('#modal').classList.remove('show');releaseFocus($('#modal'));}
+
+/* ===== MODULE 7 ===== */
+async function loadOptLog(){
+  try{const d=await api('/api/optimize/log');const log=d.log||[];
+    let h='<thead><tr><th>Thời điểm</th><th>Lý do</th><th>Engine</th><th>Chế độ</th><th class="num">Thời gian</th><th class="num">Đơn tối ưu</th><th class="num">Chưa gán</th><th>Fallback</th><th class="num">Tuyến đổi</th><th class="num">Giữ (khóa)</th></tr></thead><tbody>';
+    log.forEach(e=>{h+=`<tr><td>${esc(e.ts)}</td><td>${esc(e.reason_vi||e.reason)}</td>
+      <td class="mini">${esc((e.engine||'').slice(0,46))}</td><td>${esc(e.mode||'')}</td>
+      <td class="num">${e.elapsed_sec!=null?e.elapsed_sec+'s':'—'}</td>
+      <td class="num">${e.n_orders_optimized}</td><td class="num">${e.n_unassigned}</td>
+      <td>${e.fallback?('<span class="tag red">'+esc(e.fallback)+'</span>'):'<span class="tag" style="background:var(--green-l);color:var(--green)">—</span>'}</td>
+      <td class="num">${(e.routes_changed||[]).length}</td><td class="num">${(e.routes_kept_frozen||[]).length}</td></tr>`;});
+    if(!log.length)h+='<tr><td colspan="10" class="empty">Chưa có lần tối ưu nào. Hãy chạy Kế hoạch tuyến (Module 3).</td></tr>';
+    $('#optlog-tbl').innerHTML=h+'</tbody>';
+  }catch(_){}
+}
+async function loadLog(){
+  try{const d=await api('/api/log');STATE.log=d.log||[];
+    const statuses=[];STATE.log.forEach(e=>{if(e.status&&statuses.indexOf(e.status)<0)statuses.push(e.status);});
+    $('#log-filter').innerHTML='<option value="">Tất cả trạng thái</option>'+statuses.map(s=>`<option>${esc(s)}</option>`).join('');
+    const _nl=$('#nav-log');if(_nl&&STATE.log.length){_nl.style.display='inline-block';_nl.textContent=STATE.log.length;}
+    renderLog();
+  }catch(_){}
+}
+function renderLog(){
+  const q=($('#log-search').value||'').toLowerCase(),f=$('#log-filter').value;
+  const rows=STATE.log.map((e,i)=>({e,i})).filter(o=>(!f||o.e.status===f)&&(!q||
+    [o.e.order_id,o.e.vehicle,o.e.event_type,o.e.case_id].some(x=>String(x||'').toLowerCase().includes(q))));
+  let h='<thead><tr><th>Thời điểm</th><th>Mã sự cố</th><th>Nguồn</th><th>Đơn</th><th>Loại</th><th>Phương án</th><th>Xe</th><th>Trạng thái</th><th>Ghi chú</th><th></th></tr></thead><tbody>';
+  rows.forEach(o=>{const e=o.e;h+=`<tr><td>${esc(e.ts)}</td><td><b style="color:var(--red)">${esc(e.case_id)}</b></td><td>${esc(e.source)}</td>
+    <td>${esc(e.order_id)}</td><td>${esc(e.event_type)}</td><td class="mini">${esc(e.decision)}</td><td>${esc(e.vehicle)}</td>
+    <td><span class="badge ${/Hoàn tất|Đã/.test(e.status||'')?'b-ok':'b-rev'}">${esc(e.status)}</span></td>
+    <td class="mini">${esc(e.note||'')}</td><td><button class="btn btn-line btn-sm" onclick="delLog(${o.i})">Xóa</button></td></tr>`;});
+  if(!rows.length)h+='<tr><td colspan="10" class="empty">Chưa có bản ghi phù hợp.</td></tr>';
+  $('#log-tbl').innerHTML=h+'</tbody>';
+}
+function delLog(index){
+  const snap=STATE.log[index];if(snap===undefined)return;
+  STATE.log.splice(index,1);renderLog();
+  undoToast('Đã xóa 1 dòng nhật ký.',
+    async()=>{try{await api('/api/log/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({index})});refreshStatus();}catch(e){toast('Không xóa được dòng nhật ký: '+e.message,'err');}finally{loadLog();}},
+    ()=>{STATE.log.splice(index,0,snap);renderLog();toast('Đã hoàn tác','ok');});
+}
+/* L4/Q5 — Xóa TOÀN BỘ nhật ký kiểm toán: thao tác NẶNG/không hồi -> confirmBox nêu rõ hậu quả (sửa microcopy yếu cũ) */
+function clearLog(){
+  confirmBox({title:'Xóa toàn bộ nhật ký kiểm toán',
+    msg:'Bạn sắp xóa TẤT CẢ '+((STATE.log||[]).length)+' dòng nhật ký điều phối & sự cố.',
+    warn:'Đây là dữ liệu phục vụ kiểm toán nội bộ / Close-and-Learn — KHÔNG THỂ hoàn tác.',
+    okText:'Xóa toàn bộ',
+    onOK:async()=>{try{await api('/api/log/clear',{method:'POST'});loadLog();refreshStatus();toast('Đã xóa toàn bộ nhật ký','ok');}catch(e){toast(e.message,'err');}}});
+}
+
+/* ===== CONSTRAINTS ===== */
+let CONS=[];
+async function loadConstraints(){try{const d=await api('/api/constraints');CONS=d.items;renderConstraints();}catch(_){}}
+function renderConstraints(){
+  const F=[['khu_vuc','Khu vực'],['loai_xe','Loại xe'],['tai_trong_cam','Tải trọng cấm'],['tuyen','Tuyến'],['gio_bat_dau','Từ'],['gio_ket_thuc','Đến'],['ngay_ap_dung','Ngày áp dụng'],['nguon_quy_dinh','Nguồn quy định'],['ngay_hieu_luc','Ngày hiệu lực'],['ghi_chu','Ghi chú']];
+  let h='<thead><tr>'+F.map(f=>`<th>${esc(f[1])}</th>`).join('')+'<th>Áp dụng</th><th></th></tr></thead><tbody>';
+  CONS.forEach((c,i)=>{h+='<tr>'+F.map(f=>`<td><span class="edit" contenteditable="true" role="textbox" aria-label="${esc(f[1])}" data-i="${i}" data-f="${f[0]}" onblur="editCons(this)">${esc(c[f[0]]||'')}</span></td>`).join('')+
+    `<td style="text-align:center"><input type="checkbox" ${c.hieu_luc!==false?'checked':''} onchange="CONS[${i}].hieu_luc=this.checked"></td>
+     <td><button class="btn btn-line btn-sm" onclick="CONS.splice(${i},1);renderConstraints()">Xóa</button></td></tr>`;});
+  if(!CONS.length)h+=`<tr><td colspan="${F.length+2}" class="empty">Chưa có quy định.</td></tr>`;
+  $('#cons-tbl').innerHTML=h+'</tbody>';
+}
+function editCons(el){CONS[+el.dataset.i][el.dataset.f]=el.textContent.trim();}
+function addConstraint(){CONS.push({id:'RB-'+Date.now(),khu_vuc:'',loai_xe:'',tai_trong_cam:'',tuyen:'',gio_bat_dau:'06:00',gio_ket_thuc:'09:00',ngay_ap_dung:'Tất cả các ngày',nguon_quy_dinh:'',ngay_hieu_luc:'Đang áp dụng',ghi_chu:'',hieu_luc:true});renderConstraints();}
+async function saveConstraints(){try{const d=await api('/api/constraints',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:CONS})});
+  CONS=d.items;renderConstraints();toast('Đã lưu ràng buộc vận hành. Khung giờ cấm tải hiện hành: '+d.window,'ok');}catch(e){toast(e.message,'err');}}
+
+/* ===== MODULE 8: AI dock ===== */
+const QUICK=['Gợi ý cho trang này','Tuyến nào km rỗng cao nhất?','Đơn backhaul nào tăng fill-rate tốt nhất?','Giá Dầu DO 0,05S-II hiện tại?','Có nên dùng xe standby không?','Vì sao đơn chưa được gán?'];
+function toggleDock(open){$('#dock').classList.toggle('show',open);
+  if(open&&!$('#dock-msgs').children.length){
+    $('#dock-quick').innerHTML=QUICK.map(q=>`<span class="qchip" onclick="quickAsk('${esc(q)}')">${esc(q)}</span>`).join('');
+    pushMsg('ai','Xin chào, tôi là Trợ lý AI trực tuyến. Tôi truy cập dữ liệu trong phiên (kế hoạch tuyến, tài chính, sự cố, ghép chiều về…) và Internet — bạn có thể hỏi tất tần tật. Bấm “Gợi ý cho trang này” để xem gợi ý theo module đang mở.','');
+  }}
+function quickAsk(q){if(q==='Gợi ý cho trang này'){aiSuggestCurrent();return;}$('#dock-q').value=q;askAI();}
+async function aiSuggestCurrent(){
+  const m=STATE.view||'plan';
+  const tmp=document.createElement('div');tmp.className='msg ai';tmp.innerHTML='<span class="spin"></span> Đang tạo gợi ý cho trang…';$('#dock-msgs').appendChild(tmp);$('#dock-msgs').scrollTop=1e9;
+  try{const d=await api('/api/ai/suggest?module='+encodeURIComponent(m));
+    tmp.remove();pushMsg('ai','Gợi ý cho trang đang mở:\n'+d.text,'Nguồn: '+d.source);$('#dock-src').textContent='Nguồn: '+d.source;
+  }catch(e){tmp.remove();pushMsg('ai','Lỗi: '+e.message,'');}
+}
+function pushMsg(who,text,src){const d=document.createElement('div');d.className='msg '+who;
+  let badge='';
+  if(src){const off=!/Trực tuyến|Gemini|Claude|Internet/i.test(src);
+    const t=off?'':' · '+new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+    badge=`<span class="srcbadge ${off?'offline':''}"><span class="sd"></span>${esc(src)}${t}</span>`;}
+  d.innerHTML=esc(text)+badge;$('#dock-msgs').appendChild(d);$('#dock-msgs').scrollTop=1e9;}
+async function askAI(){
+  const q=$('#dock-q').value.trim();if(!q)return;$('#dock-q').value='';pushMsg('me',q,'');
+  const tmp=document.createElement('div');tmp.className='msg ai';tmp.innerHTML='<span class="spin"></span>';$('#dock-msgs').appendChild(tmp);$('#dock-msgs').scrollTop=1e9;
+  try{const d=await api('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+    tmp.remove();pushMsg('ai',d.answer,'Nguồn: '+d.source);$('#dock-src').textContent='Nguồn trả lời: '+d.source;
+  }catch(e){tmp.remove();pushMsg('ai','Lỗi: '+e.message,'');}
+}
+
+function exportExcel(){if(!STATE.routes){toast('Hãy chạy Kế hoạch tuyến trước khi xuất','err');return;}
+  toast('<span class="spin"></span> Đang tạo file Excel…');window.location='/api/export';setTimeout(()=>toast('Đã xuất báo cáo Excel','ok'),900);}
+
+/* drag & drop upload — M1 chỉ còn static/dynamic (đã bỏ 'backhaul' theo bẫy hồi quy #2: tránh null.previousElementSibling) */
+['static','dynamic'].forEach(k=>{
+  const inp=document.querySelector(`#f-${k}`); if(!inp) return;
+  const z=inp.previousElementSibling; if(!z) return;
+  ['dragover','dragenter'].forEach(e=>z.addEventListener(e,ev=>{ev.preventDefault();z.classList.add('drag')}));
+  ['dragleave','drop'].forEach(e=>z.addEventListener(e,ev=>{ev.preventDefault();z.classList.remove('drag')}));
+  z.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f){inp.files=ev.dataTransfer.files;upload(inp,k);}});
+});
+/* M4 — drop zone đơn bổ sung (kind='backhaul', input #f-bk4) */
+(function(){const z=document.getElementById('bk-drop'),inp=document.getElementById('f-bk4'); if(!z||!inp) return;
+  ['dragover','dragenter'].forEach(e=>z.addEventListener(e,ev=>{ev.preventDefault();z.classList.add('drag')}));
+  ['dragleave','drop'].forEach(e=>z.addEventListener(e,ev=>{ev.preventDefault();z.classList.remove('drag')}));
+  z.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f){inp.files=ev.dataTransfer.files;upload(inp,'backhaul');}});
+})();
+
+/* init — C13: BỎ loadLog() (M7 tự tải khi mở) · L5: khôi phục UI-preference (module/kịch bản), KHÔNG cache dữ liệu nghiệp vụ */
+renderFinParams({});
+/* §3.3 — P&L tự tính lại NGAY khi đổi bất kỳ chỉ số tài chính (live, debounce) */
+(function(){
+  const recompute=debounce(()=>{if(STATE.routes&&STATE.routes.length)runFinancial(true);},450);
+  const pc=$('#fin-params');if(pc)pc.addEventListener('input',recompute);  // ủy quyền: gồm cả ô giá nhiên liệu (nằm trong lưới)
+})();
+(function(){const p=loadUIPref();if(p.scenario)STATE.scenario=p.scenario;})();
+refreshStatus().then(()=>{
+  if(STATE.scenario&&!(STATE.scenarios||[]).includes(STATE.scenario))STATE.scenario=STATE.scenarios[0];
+  buildScenarioSelects();
+  loadPreview();
+  const p=loadUIPref();
+  if(p.view&&p.view!=='import'&&document.getElementById('view-'+p.view))nav(p.view);
+}).catch(()=>{});
+</script>
+</body>
+</html>
