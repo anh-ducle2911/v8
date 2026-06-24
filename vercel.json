@@ -3,7 +3,21 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "app.py",
+          "hpl_engine.py",
+          "engine_ext.py",
+          "gemini_ai.py",
+          "ai_matcher.py",
+          "fuel_price.py",
+          "excel_report.py",
+          "constraints.json",
+          "templates/**",
+          "data/**"
+        ]
+      }
     }
   ],
   "routes": [
