@@ -870,6 +870,8 @@ const fmtN=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString(uiLocale());
 const fmtPct=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString(uiLocale(),{minimumFractionDigits:2,maximumFractionDigits:2});
 const tr=(key,vars)=>HPLI18N.t(key,vars);
 const tl=value=>HPLI18N.translateLiteral(value);
+const VI_TEXT_RE=/[ăâđêôơưĂÂĐÊÔƠƯáàảãạấầẩẫậắằẳẵặéèẻẽẹếềểễệíìỉĩịóòỏõọốồổỗộớờởỡợúùủũụứừửữựýỳỷỹỵ]/i;
+const translatedOr=(value,fallbackKey)=>{const out=tl(value||'');return uiLang()==='en'&&VI_TEXT_RE.test(out)?tr(fallbackKey):out;};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const REDUCE_MOTION=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 let STATE={view:'import',scenarios:[],scenario:null,routes:null,unassigned:null,preview:[],pvcols:[],validate:[],
@@ -992,8 +994,8 @@ async function ensurePlanThen(cb){
 }
 function financeEmpty(){
   const el=$('#fin-kpis');if(el)el.innerHTML=`<div class="empty-cta" style="grid-column:1/-1"><div class="ei">📊</div>
-    <div>Chưa có kế hoạch tuyến để tính tài chính.</div>
-    <button class="btn btn-navy btn-sm" onclick="nav('plan')">Sang Lập kế hoạch tuyến</button></div>`;
+    <div>${esc(tr('ui.messages.financeEmpty'))}</div>
+    <button class="btn btn-navy btn-sm" onclick="nav('plan')">${esc(tr('ui.messages.goToRoutePlan'))}</button></div>`;
 }
 
 /* ===== Q10/A1.1 — Thanh quy trình (stepper) bấm-được, KHÔNG khóa ===== */
@@ -1288,16 +1290,16 @@ function countUp(el,to,suffix){to=Number(to)||0;suffix=suffix||'';
 }
 function applyPlan(d){
   STATE.routes=d.routes;STATE.unassigned=d.unassigned;STATE.plan=d;STATE.finComputed=false;
-  $('#plan-engine').textContent=(d.engine||'')+' · Bấm “Timeline” để xem ETA; khóa tuyến đã chốt để giữ khi tối ưu lại.';
+  $('#plan-engine').textContent=tl(d.engine||'')+' · '+tr('ui.plan.timelineHint');
   const sbCls=d.standby_ok?'green':'amber',profitNeg=d.profit<0;
   // L2/C3 — MỘT lưới KPI có nhãn cụm + thẻ Lợi nhuận HERO (số tiền hiện tức thì — C8)
   $('#plan-kpis').innerHTML=
-    `<div class="sec-label">Kết quả gán</div>`+
+    `<div class="sec-label">${tr('ui.runtime.assignmentResults')}</div>`+
     kpi('Xe sử dụng',d.n_vehicles_used,'tuyến đang chạy','navy')+
     `<div class="kpi green"><div class="lbl" data-i18n="ui.runtime.assignedOrders">Đơn được gán</div><div class="val"><span id="kpi-assigned">0</span>/${d.n_orders_total}</div><div class="vsub" data-i18n="ui.runtime.ofValidOrders">trên tổng đơn hợp lệ</div></div>`+
     kpi('Đơn chưa gán',d.n_unassigned,d.n_unassigned?'cần xử lý':'tất cả đã gán',d.n_unassigned?'red':'green')+
     kpi('Xe chờ',d.n_standby,'mục tiêu 3–5 xe',sbCls)+
-    `<div class="sec-label">Quãng đường &amp; tải</div>`+
+    `<div class="sec-label">${tr('ui.runtime.distanceAndLoad')}</div>`+
     kpi('Tổng km',fmtN(d.total_km)+' km','có tải + rỗng','navy')+
     kpi('Km rỗng',fmtN(d.empty_km)+' km',(d.empty_km_pct||0)+'% tổng quãng',d.empty_km_pct>20?'amber':'green')+
     kpi('Doanh thu',fmtV(d.revenue_total),'cước + phụ phí','blue')+
@@ -1312,14 +1314,14 @@ function applyPlan(d){
 function renderEngineInfo(d){
   const el=$('#engine-info');if(!el)return;el.style.display='block';
   const fb=d.fallback?`<span class="tag red">fallback: ${esc(d.fallback)}</span>`:'<span class="tag" style="background:var(--green-l);color:var(--green)" data-i18n="ui.runtime.noFallback">không fallback</span>';
-  const modeTag=`<span class="tag blue">chế độ: ${esc(d.engine_mode||'hybrid')}</span>`;
+  const modeTag=`<span class="tag blue">${tr('ui.runtime.mode')}: ${esc(d.engine_mode||'hybrid')}</span>`;
   const auto=d.auto_optimize;
   el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
     <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-      <b style="color:var(--navy)">Engine:</b> ${esc(d.engine||'—')} ${modeTag}
-      <span class="tag">thời gian chạy: ${d.elapsed_sec!=null?d.elapsed_sec+'s':'—'}</span>
-      <span class="tag">giới hạn: ${d.time_limit_sec||'—'}s</span>
-      ${d.improved?'<span class="tag" style="background:var(--green-l);color:var(--green)">OR-Tools đã cải thiện</span>':''} ${fb}
+      <b style="color:var(--navy)">Engine:</b> ${esc(tl(d.engine||'—'))} ${modeTag}
+      <span class="tag">${tr('ui.runtime.runTime')}: ${d.elapsed_sec!=null?d.elapsed_sec+'s':'—'}</span>
+      <span class="tag">${tr('ui.runtime.limit')}: ${d.time_limit_sec||'—'}s</span>
+      ${d.improved?`<span class="tag" style="background:var(--green-l);color:var(--green)">${tr('ui.messages.engineImproved')}</span>`:''} ${fb}
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <label class="lab" style="margin:0" data-i18n="ui.runtime.autoOptimize">Tự tối ưu khi có đơn mới</label>
@@ -1351,7 +1353,7 @@ function renderPlanTable(){
     const rowCls=r.locked?'clickable" style="background:#f1f7ff':'clickable';
     const bh=r.has_backhaul?' <span title="Có ghép chiều về" style="color:var(--green)">●</span>':'';
     h+=`<tr class="${rowCls}" tabindex="0" role="button" aria-label="Mở chi tiết tuyến xe ${esc(r.vehicle_id)}" onclick="openRouteDrawer('${esc(r.vehicle_id)}')" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target.tagName==='TR'){event.preventDefault();openRouteDrawer('${esc(r.vehicle_id)}')}"><td><b>${esc(r.vehicle_id)}</b>${r.locked?' 🔒':''}${bh}</td>
-      <td>${esc(r.vehicle_type)}</td><td>${esc(r.corridor)}</td>
+      <td>${esc(tl(r.vehicle_type))}</td><td>${esc(tl(r.corridor))}</td>
       <td class="num">${r.n_orders}</td><td>${fillBar(r.fill_weight_pct)}</td><td class="num">${fmtN(r.empty_km)}</td>
       <td class="num" style="color:${r.profit<0?'var(--red)':'var(--green)'};font-weight:700">${fmtN(r.profit)}</td>
       <td>${sel}</td></tr>`;
@@ -1402,24 +1404,24 @@ function openRouteDrawer(vid){
 const openRouteTimeline=openRouteDrawer;   // tương thích lời gọi cũ
 function closeRouteModal(){$('#route-modal').classList.remove('show');if(!$('#modal').classList.contains('show'))$('#ov').classList.remove('show');}
 function renderUnassigned(){
-  let h='<thead><tr><th data-i18n="order.code">Mã đơn</th><th data-i18n="order.pickup">Điểm lấy</th><th data-i18n="order.dropoff">Điểm trả</th><th data-i18n="ui.runtime.timeWindow">Khung giờ</th><th class="num">Tải(kg)</th><th data-i18n="ui.backhaul.vehicleType">Loại xe</th><th data-i18n="ui.table.unassignedReason">Lý do chưa gán</th><th data-i18n="ui.runtime.handlingSuggestion">Gợi ý xử lý</th><th></th></tr></thead><tbody>';
+  let h=`<thead><tr><th data-i18n="order.code">${tr('order.code')}</th><th data-i18n="order.pickup">${tr('order.pickup')}</th><th data-i18n="order.dropoff">${tr('order.dropoff')}</th><th data-i18n="ui.runtime.timeWindow">${tr('ui.runtime.timeWindow')}</th><th class="num">${tr('ui.table.loadKg')}</th><th data-i18n="ui.backhaul.vehicleType">${tr('ui.backhaul.vehicleType')}</th><th data-i18n="ui.table.unassignedReason">${tr('ui.table.unassignedReason')}</th><th data-i18n="ui.runtime.handlingSuggestion">${tr('ui.runtime.handlingSuggestion')}</th><th></th></tr></thead><tbody>`;
   (STATE.unassigned||[]).forEach(o=>{
     h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
       <td>${esc(o.tw)}</td><td class="num">${fmtN(o.weight_kg)}</td><td>${esc(o.min_vehicle)}</td>
       <td><span class="tag red">${esc(o.reason)}</span></td><td class="mini">${esc(o.suggestion)}</td>
-      <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick="askWhyUnassigned('${esc(o.order_id)}')" aria-label="Hỏi Trợ lý AI vì sao đơn ${esc(o.order_id)} chưa gán">✨ Hỏi AI lý do</button>
-      <button class="btn btn-line btn-sm" onclick="focusUnassigned('${esc(o.order_id)}')">Xem bản đồ</button>
+      <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick="askWhyUnassigned('${esc(o.order_id)}')" aria-label="${esc(tr('ui.plan.askAIReason'))} ${esc(o.order_id)}">✨ ${tr('ui.plan.askAIReason')}</button>
+      <button class="btn btn-line btn-sm" onclick="focusUnassigned('${esc(o.order_id)}')">${tr('ui.messages.viewMap')}</button>
       <button class="btn btn-soft btn-sm" onclick="editFromUnassigned('${esc(o.order_id)}')" data-i18n="ui.plan.edit">Chỉnh sửa</button>
       <button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint||'')}')" data-i18n="ui.plan.handleIncident">Xử lý sự cố</button></td></tr>`;
   });
-  if(!(STATE.unassigned||[]).length)h+='<tr><td colspan="9" class="empty">Tất cả đơn hợp lệ đã được gán xe.</td></tr>';
+  if(!(STATE.unassigned||[]).length)h+=`<tr><td colspan="9" class="empty">${tr('ui.messages.allValidAssigned')}</td></tr>`;
   $('#una-tbl').innerHTML=h+'</tbody>';
 }
 function editFromUnassigned(id){nav('import');setTimeout(()=>{$('#pv-search').value=id;renderPreview();},120);}
 /* Q13/A5.2 — Hỏi AI lý do đơn chưa gán (mở dock + prefill + gửi) */
 function askWhyUnassigned(id){toggleDock(true);const q='Vì sao đơn '+id+' chưa được gán xe và nên xử lý thế nào?';const inp=$('#dock-q');if(inp)inp.value=q;askAI();}
 function fillMapFilter(){
-  const opts=`<option value="" data-i18n="ui.common.allRoutes">${tr('ui.common.allRoutes')}</option>`+(STATE.routes||[]).map(r=>`<option value="${esc(r.vehicle_id)}">${tr('ui.table.vehicle')} ${esc(r.vehicle_id)} · ${esc(r.corridor||'')}</option>`).join('');
+  const opts=`<option value="" data-i18n="ui.common.allRoutes">${tr('ui.common.allRoutes')}</option>`+(STATE.routes||[]).map(r=>`<option value="${esc(r.vehicle_id)}">${tr('ui.table.vehicle')} ${esc(r.vehicle_id)} · ${esc(tl(r.corridor||''))}</option>`).join('');
   if($('#map-filter'))$('#map-filter').innerHTML=opts;
 }
 
@@ -1513,7 +1515,7 @@ async function loadNoReturn(tblId){
     const rows=(d.orders||[]).filter(o=>!matched.has(String(o.order_id)));
     let h=HEAD+'<tbody>';
     rows.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td><td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td></tr>`);
-    if(!rows.length)h+='<tr><td colspan="5" class="empty">Tất cả đơn bổ sung đã có chuyến quay đầu.</td></tr>';
+    if(!rows.length)h+=`<tr><td colspan="5" class="empty">${tr('ui.messages.noUnmatchedBackhaul')}</td></tr>`;
     el.innerHTML=h+'</tbody>';
   }catch(_){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty" data-i18n="ui.messages.noExtraOrders">Chưa có đơn bổ sung.</td></tr></tbody>';}
 }
@@ -1523,7 +1525,7 @@ async function loadBackhaulOrders(){
     d.orders.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
       <td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td><td>${esc(o.source)}</td>
       <td><button class="btn btn-line btn-sm" onclick="delBackhaul('${esc(o.order_id)}')" data-i18n="ui.common.delete">Xóa</button></td></tr>`);
-    if(!d.orders.length)h+='<tr><td colspan="7" class="empty">Chưa có đơn bổ sung. Nhập tay hoặc “Nhập file 3PL”.</td></tr>';
+    if(!d.orders.length)h+=`<tr><td colspan="7" class="empty">${tr('ui.messages.addBackhaulPrompt')}</td></tr>`;
     $('#bk-orders-tbl').innerHTML=h+'</tbody>';loadNoReturn('noreturn4-tbl');
     try{const s=await api('/api/status');
       $('#bk-status').innerHTML=`Dữ liệu động: <b>${s.dynamic_loaded?'Đã nạp':'Chưa nạp'}</b> · Kịch bản điều phối: <b>${s.dynamic_cases||0} case</b> · Đơn quay đầu khả dụng: <b>${d.orders.length}</b> · Xe giữ standby: <b>${(s.standby||{}).count||0}</b>`;
@@ -1743,26 +1745,26 @@ async function openIncident(caseId){try{const d=await api('/api/incident/'+caseI
 function openIncidentObj(inc){
   STATE.incident=inc;STATE.selOption=null;
   const i=inc.incident||{};const rv=i.recommended_vehicle;
-  $('#m-title').textContent=`Xử lý sự cố · ${inc.case_id} · Đơn ${inc.order_id}`;
+  $('#m-title').textContent=`${tr('ui.plan.handleIncident')} · ${inc.case_id} · ${tr('ui.table.order')} ${inc.order_id}`;
   let cands=(i.candidates||[]).map(c=>{const best=c.engine_feasible;
     return `<div class="kv"><span class="k">${esc(c.vehicle)} · ${esc(c.vehicle_type)} ${best?'<span class="badge b-ok" data-i18n="ui.common.recommended">khuyến nghị</span>':''}</span>
-      <span class="v">cách ${c.dist_km}km · ETA ${c.eta_min}' · ${c.capacity_ok?'đủ tải':'thiếu tải'}</span></div>`;}).join('')||'<div class="mini" style="color:var(--muted)">Loại sự cố này thường không cần điều xe thay thế.</div>';
+      <span class="v">${tr('ui.fragments.distanceFrom')}${c.dist_km}km · ETA ${c.eta_min}' · ${tr(c.capacity_ok?'ui.operations.sufficientCapacity':'ui.operations.insufficientCapacity')}</span></div>`;}).join('')||`<div class="mini" style="color:var(--muted)">${tr('ui.messages.noReplacementNeeded')}</div>`;
   let opts=(inc.options||[]).map((o,idx)=>`<div class="opt" id="opt-${idx}" onclick="pickOption(${idx})">
-    <div class="ot"><span>${esc(o.ten)}</span><span class="badge ${o.khuyen_nghi==='Cao'?'b-ok':o.khuyen_nghi==='Thấp'?'b-gray':'b-rev'}">Khuyến nghị: ${esc(o.khuyen_nghi)}</span></div>
-    <div class="od">${esc(o.mo_ta)}</div>
-    <div class="metrics"><span class="metric">Thời gian: +${o.tac_dong_thoi_gian}'</span><span class="metric">Quãng đường: +${o.tac_dong_quang_duong}km</span>
-      <span class="metric">Chi phí: ${o.tac_dong_chi_phi>0?'+':''}${fmtN(o.tac_dong_chi_phi)} đ</span>
-      <span class="metric">Tác động P&L: ${fmtN(o.tac_dong_pnl)} đ</span><span class="metric">Rủi ro: ${esc(o.rui_ro)}</span></div></div>`).join('');
-  let soft=(inc.soft_skills||[]).map(s=>`<div class="play"><div class="sit">${esc(s.tinh_huong)}</div><div class="act">${esc(s.huong_dan)}</div>
-    ${s.mau_cau?`<div class="script">${esc(s.mau_cau)}</div>`:''}</div>`).join('');
+    <div class="ot"><span>${esc(tl(o.ten))}</span><span class="badge ${o.khuyen_nghi==='Cao'?'b-ok':o.khuyen_nghi==='Thấp'?'b-gray':'b-rev'}">${tr('ui.operations.recommendation')}: ${esc(tl(o.khuyen_nghi))}</span></div>
+    <div class="od">${esc(tl(o.mo_ta))}</div>
+    <div class="metrics"><span class="metric">${tr('ui.operations.timeImpact')}: +${o.tac_dong_thoi_gian}'</span><span class="metric">${tr('ui.operations.distanceImpact')}: +${o.tac_dong_quang_duong}km</span>
+      <span class="metric">${tr('ui.operations.costImpact')}: ${o.tac_dong_chi_phi>0?'+':''}${fmtV(o.tac_dong_chi_phi)}</span>
+      <span class="metric">${tr('ui.operations.pnlImpact')}: ${fmtV(o.tac_dong_pnl)}</span><span class="metric">${tr('ui.operations.risk')}: ${esc(tl(o.rui_ro))}</span></div></div>`).join('');
+  let soft=(inc.soft_skills||[]).map(s=>`<div class="play"><div class="sit">${esc(tl(s.tinh_huong))}</div><div class="act">${esc(tl(s.huong_dan))}</div>
+    ${s.mau_cau?`<div class="script">${esc(tl(s.mau_cau))}</div>`:''}</div>`).join('');
   $('#m-body').innerHTML=`
-    <div class="ai-box" style="margin-bottom:14px"><div class="ai-h">Phân tích tình huống (Trợ lý AI · ${esc(inc.analysis_source||'')})</div><div>${esc(inc.analysis||'')}</div></div>
+    <div class="ai-box" style="margin-bottom:14px"><div class="ai-h">${tr('ui.operations.incidentAnalysis')} (${tr('assistant.label')})</div><div>${esc(translatedOr(inc.analysis,'ui.messages.incidentAnalysisFallback'))}</div></div>
     <div class="split">
       <div>
         <div class="card"><h3 data-i18n="ui.operations.handlingOptions">Phương án xử lý — chọn một phương án</h3>
           <div class="hint" data-i18n="ui.operations.aiAdvisory">AI chỉ đề xuất. Điều phối viên là người quyết định.</div>${opts}</div>
         <div class="card"><label class="lab" data-i18n="ui.operations.dispatchNotes">Ghi chú điều phối</label>
-          <textarea class="field" id="m-note" style="width:100%;min-height:70px" placeholder="Ghi chú, lưu ý xử lý, nguyên nhân…">${esc(inc.note||'')}</textarea></div>
+          <textarea class="field" id="m-note" style="width:100%;min-height:70px" placeholder="${esc(tr('ui.operations.notesPlaceholder'))}">${esc(inc.note||'')}</textarea></div>
       </div>
       <div>
         <div class="card"><h3 data-i18n="ui.operations.incidentDetails">Thông tin sự cố</h3>
@@ -1770,14 +1772,14 @@ function openIncidentObj(inc){
           <div class="kv"><span class="k" data-i18n="order.customer">Khách hàng</span><span class="v">${esc(inc.customer||'—')}</span></div>
           <div class="kv"><span class="k" data-i18n="ui.operations.deliveryLocation">Điểm giao</span><span class="v">${esc(inc.delivery_name||'—')}</span></div>
           <div class="kv"><span class="k" data-i18n="ui.operations.relatedVehicleRoute">Xe / tuyến liên quan</span><span class="v">${esc(inc.vehicle)} · ${esc(inc.route_id)}</span></div>
-          ${rv?`<div class="kv"><span class="k" data-i18n="ui.operations.nearestReplacement">Xe thay thế gần nhất</span><span class="v" style="color:var(--green)">${esc(rv.vehicle)} · cách ${rv.dist_km}km</span></div>`:''}</div>
+          ${rv?`<div class="kv"><span class="k" data-i18n="ui.operations.nearestReplacement">Xe thay thế gần nhất</span><span class="v" style="color:var(--green)">${esc(rv.vehicle)} · ${tr('ui.fragments.distanceFrom')}${rv.dist_km}km</span></div>`:''}</div>
         <div class="card"><h3 data-i18n="ui.operations.availableVehiclesNearby">Xe khả dụng gần điểm sự cố</h3>${cands}
           <div id="inc-map" style="height:200px;margin-top:10px;border-radius:8px"></div></div>
         <div class="card"><h3 data-i18n="ui.operations.softHandling">Hướng xử lý mềm / lưu ý trao đổi</h3>${soft}</div>
       </div>
     </div>`;
   $('#m-apply').disabled=true;$('#m-complete').style.display=(inc.status==='Đang xử lý')?'none':'inline-flex';
-  $('#m-status').textContent=inc.status==='Đang xử lý'?'Bước: chọn phương án → nhập ghi chú → Xác nhận áp dụng':'Sự cố đã chốt phương án — có thể đánh dấu hoàn tất.';
+  $('#m-status').textContent=tr(inc.status==='Đang xử lý'?'ui.messages.chooseIncidentOption':'ui.messages.incidentOptionConfirmed');
   openModal();setTimeout(()=>drawIncidentMap(i),150);
 }
 function drawIncidentMap(i){

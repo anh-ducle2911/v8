@@ -20,9 +20,25 @@
           "data/**"
         ]
       }
+    },
+    {
+      "src": "public/logo-hpl.svg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/logo-hpl.svg",
+      "dest": "/public/logo-hpl.svg"
+    },
+    {
+      "src": "/src/(.*)",
+      "dest": "/src/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/api/index.py"
