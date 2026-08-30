@@ -1,0 +1,43 @@
+/* LanguageSwitcher.css — compact segmented control for the HPL top bar. */
+.hpl-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 4px 3px 7px;
+  border-radius: 999px;
+  border: 1px solid #d3e1f6;
+  background: #f7faff;
+  color: #0b3d91;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  margin-left: 0;
+}
+.hpl-lang__globe { display: inline-flex; margin-right: 4px; opacity: 0.75; }
+.hpl-lang__btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.hpl-lang__btn:hover { color: #072a66; background: #eaf1fb; }
+.hpl-lang__btn[aria-pressed="true"] {
+  background: #0b3d91;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(11, 61, 145, .2);
+}
+.hpl-lang__btn:focus-visible { outline: 2px solid #4c9aff; outline-offset: 2px; }
+
+/* Mobile: keep on one row, globe + active code only */
+@media (max-width: 640px) {
+  .hpl-lang { padding: 3px 4px 3px 6px; margin-left: 0; }
+  .hpl-lang__btn[aria-pressed="false"] { display: none; }
+}

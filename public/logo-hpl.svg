@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="HPL — Hoa Phat Logistics">
+  <defs>
+    <linearGradient id="hplNavy" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b3f79"/>
+      <stop offset="1" stop-color="#102a56"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="30" fill="url(#hplNavy)"/>
+  <rect x="5" y="5" width="118" height="118" rx="30" fill="none" stroke="#a52a2a" stroke-width="9"/>
+  <text x="64" y="64" text-anchor="middle" dominant-baseline="central"
+        font-family="'Segoe UI', Arial, Helvetica, sans-serif"
+        font-size="42" font-weight="700" letter-spacing="1.5" fill="#ffffff">HPL</text>
+</svg>
