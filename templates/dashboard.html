@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hòa Phát Logistics — Trung tâm điều phối & tối ưu tuyến</title>
+<title data-i18n-document-title="app.pageTitle" data-i18n="app.pageTitle">Hòa Phát Logistics — Trung tâm điều phối & tối ưu tuyến</title>
+<link rel="icon" type="image/svg+xml" href="/logo-hpl.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="/src/components/LanguageSwitcher.css">
 <!-- Q12/A4.8: defer Leaflet (chỉ dùng khi mở bản đồ) — bỏ render-blocking khỏi <head> -->
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <!-- Q12/A4.8: Chart.js LAZY-LOAD — chỉ tải khi mở Module 5 (xem ensureChart()) -->
@@ -42,11 +44,13 @@ a{color:var(--blue);text-decoration:none}
 ::-webkit-scrollbar-thumb{background:#c8d3e4;border-radius:8px;border:2px solid var(--bg)}
 ::-webkit-scrollbar-thumb:hover{background:#aebdd6}
 
-.topbar{height:var(--topbar-h);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 clamp(12px,2.5vw,20px);position:sticky;top:0;z-index:60}
+.topbar{height:var(--topbar-h);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 clamp(12px,2.5vw,20px);position:sticky;top:0;z-index:60;flex-wrap:nowrap}
 .nav-toggle{display:none;align-items:center;justify-content:center;width:38px;height:38px;flex-shrink:0;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--navy);cursor:pointer}
 .nav-toggle:hover{background:var(--blue-l)}
 .sidebar-backdrop{display:none}
 .brand{display:flex;align-items:center;gap:11px}
+.topbar__logo{width:32px;height:32px;display:block;flex:0 0 32px}
+#i18n-switcher-anchor{display:inline-flex;align-items:center;flex:0 0 auto;white-space:nowrap}
 /* Logo: nền navy có chiều sâu nhẹ; accent đỏ thương hiệu được làm TRẦM + MẢNH + DỊU lại
    (1.5px, đỏ sẫm ~55% thay cho 2px đỏ tươi) để bớt gắt, sang hơn mà vẫn giữ nhận diện. */
 .logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(145deg,#0e478f,#082c69);display:grid;place-items:center;font-weight:800;color:#fff;font-size:13px;letter-spacing:-.5px;box-shadow:inset 0 0 0 1.5px rgba(201,32,27,.72),0 1px 2px rgba(7,42,102,.22)}
@@ -412,68 +416,69 @@ tbody tr.clickable:hover{background:#eef5ff}
 </style>
 </head>
 <body>
-<a href="#main" class="skip-link">Bỏ qua tới nội dung chính</a>
+<a href="#main" class="skip-link" data-i18n="app.skipToContent">Bỏ qua tới nội dung chính</a>
 
 <div class="topbar">
-  <button class="nav-toggle" aria-label="Mở/đóng menu điều hướng" aria-expanded="false" aria-controls="main-nav" onclick="toggleSidebar()">
+  <button class="nav-toggle" aria-label="Mở/đóng menu điều hướng" data-i18n-aria-label="ui.aria.toggleNavigation" aria-expanded="false" aria-controls="main-nav" onclick="toggleSidebar()">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
   </button>
   <div class="brand">
-    <div class="logo">HPL</div>
+    <img src="/logo-hpl.svg" alt="HPL" width="32" height="32" class="topbar__logo">
     <div>
-      <h1>Hòa Phát Logistics — Trung tâm điều phối</h1>
-      <div class="sub">Hệ thống điều phối &amp; tối ưu tuyến vận tải</div>
+      <h1 data-i18n="app.title">Hòa Phát Logistics — Trung tâm điều phối</h1>
+      <div class="sub" data-i18n="app.subtitle">Hệ thống điều phối &amp; tối ưu tuyến vận tải</div>
     </div>
   </div>
   <div class="spacer"></div>
-  <span class="chip" id="chip-ai"><span class="dot"></span> Trợ lý AI: đang kiểm tra…</span>
-  <button class="btn btn-line btn-sm" onclick="loadDemo()">Nạp dữ liệu mẫu</button>
-  <button class="btn btn-line btn-sm" onclick="exportExcel()" aria-label="Xuất báo cáo Excel">Xuất Excel</button>
+  <span class="chip" id="chip-ai" data-i18n-runtime><span class="dot"></span> <span data-i18n="assistant.label">Trợ lý AI</span>: <span data-i18n="assistant.checking">đang kiểm tra…</span></span>
+  <span id="i18n-switcher-anchor"></span>
+  <button class="btn btn-line btn-sm" onclick="loadDemo()" data-i18n="actions.loadSample">Nạp dữ liệu mẫu</button>
+  <button class="btn btn-line btn-sm" onclick="exportExcel()" aria-label="Xuất báo cáo Excel" data-i18n="actions.exportExcel" data-i18n-aria-label="ui.aria.exportReport">Xuất Excel</button>
 </div>
 
 <div class="app">
   <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebar()" aria-hidden="true"></div>
-  <nav class="sidebar" id="main-nav" aria-label="Điều hướng module">
-    <div class="nav-group">Lập kế hoạch</div>
-    <div class="nav-item active" data-view="import" role="button" tabindex="0" aria-current="page"><span class="num">1</span> Nhập dữ liệu &amp; ánh xạ</div>
-    <div class="nav-item" data-view="validate" role="button" tabindex="0"><span class="num">2</span> Kiểm định dữ liệu</div>
-    <div class="nav-item" data-view="plan" role="button" tabindex="0"><span class="num">3</span> Kế hoạch tuyến &amp; bản đồ</div>
-    <div class="nav-item" data-view="backhaul" role="button" tabindex="0"><span class="num">4</span> Ghép chuyến quay đầu</div>
-    <div class="nav-item" data-view="finance" role="button" tabindex="0"><span class="num">5</span> Tài chính P&amp;L</div>
-    <div class="nav-group">Điều phối trong ngày</div>
-    <div class="nav-item" data-view="ops" role="button" tabindex="0"><span class="num">6</span> Vận hành trong ngày <span class="nav-badge" id="nav-inc" style="display:none">0</span></div>
-    <div class="nav-group">Cài đặt</div>
-    <div class="nav-item" data-view="constraints" role="button" tabindex="0"><span class="num">⚙</span> Ràng buộc vận hành</div>
+  <nav class="sidebar" id="main-nav" aria-label="Điều hướng module" data-i18n-aria-label="ui.aria.moduleNavigation">
+    <div class="nav-group" data-i18n="nav.planningGroup">Lập kế hoạch</div>
+    <div class="nav-item active" data-view="import" role="button" tabindex="0" aria-current="page"><span class="num">1</span> <span data-i18n="nav.step1">Nhập dữ liệu &amp; ánh xạ</span></div>
+    <div class="nav-item" data-view="validate" role="button" tabindex="0"><span class="num">2</span> <span data-i18n="nav.step2">Kiểm định dữ liệu</span></div>
+    <div class="nav-item" data-view="plan" role="button" tabindex="0"><span class="num">3</span> <span data-i18n="nav.step3">Kế hoạch tuyến &amp; bản đồ</span></div>
+    <div class="nav-item" data-view="backhaul" role="button" tabindex="0"><span class="num">4</span> <span data-i18n="nav.step4">Ghép chuyến quay đầu</span></div>
+    <div class="nav-item" data-view="finance" role="button" tabindex="0"><span class="num">5</span> <span data-i18n="nav.step5">Tài chính P&amp;L</span></div>
+    <div class="nav-group" data-i18n="nav.dispatchGroup">Điều phối trong ngày</div>
+    <div class="nav-item" data-view="ops" role="button" tabindex="0"><span class="num">6</span> <span data-i18n="nav.step6">Vận hành trong ngày</span> <span class="nav-badge" id="nav-inc" data-i18n-runtime style="display:none">0</span></div>
+    <div class="nav-group" data-i18n="ui.common.settings">Cài đặt</div>
+    <div class="nav-item" data-view="constraints" role="button" tabindex="0"><span class="num">⚙</span> <span data-i18n="actions.constraints">Ràng buộc vận hành</span></div>
   </nav>
 
   <main class="content" id="main">
-  <div class="stepper" id="stepper" role="navigation" aria-label="Quy trình điều phối — bấm để nhảy bước"></div>
+  <div class="stepper" id="stepper" role="navigation" aria-label="Quy trình điều phối — bấm để nhảy bước" data-i18n-aria-label="ui.aria.dispatchProcess"></div>
 
   <!-- ===== MODULE 1: IMPORT ===== -->
   <section class="view show" id="view-import">
     <div class="page-head"><div>
-      <span class="step-tag">Bước 1 · Nạp dữ liệu</span>
-      <h2>Nhập dữ liệu &amp; ánh xạ</h2>
-      <div class="desc">Tải Excel (tĩnh · động · đơn bổ sung), ánh xạ cột tự động, xem trước &amp; sửa trực tiếp.</div>
+      <span class="step-tag" data-i18n="ui.steps.step1">Bước 1 · Nạp dữ liệu</span>
+      <h2 data-i18n="nav.step1">Nhập dữ liệu &amp; ánh xạ</h2>
+      <div class="desc" data-i18n="ui.importView.description">Tải Excel (tĩnh · động · đơn bổ sung), ánh xạ cột tự động, xem trước &amp; sửa trực tiếp.</div>
     </div></div>
 
     <div class="grid g2">
       <div class="card">
-        <h3>Dữ liệu lập kế hoạch</h3>
-        <div class="hint">Đơn hàng · đội xe · tài xế · depot · chi phí · ràng buộc.</div>
+        <h3 data-i18n="ui.importView.planningData">Dữ liệu lập kế hoạch</h3>
+        <div class="hint" data-i18n="ui.importView.planningHint">Đơn hàng · đội xe · tài xế · depot · chi phí · ràng buộc.</div>
         <div class="drop tall" onclick="document.getElementById('f-static').click()">
-          <div style="font-weight:700">Kéo thả hoặc bấm để chọn file .xlsx</div>
-          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Định dạng .xlsx hoặc .xlsm</div>
+          <div style="font-weight:700" data-i18n="actions.dropzone">Kéo thả hoặc bấm để chọn file .xlsx</div>
+          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px" data-i18n="actions.fileFormat">Định dạng .xlsx hoặc .xlsm</div>
         </div>
         <input type="file" id="f-static" accept=".xlsx,.xlsm" hidden onchange="upload(this,'static')">
         <div id="info-static"></div>
       </div>
       <div class="card">
-        <h3>Dữ liệu điều phối trong ngày</h3>
-        <div class="hint">Case sự cố · xe đang hoạt động · ứng viên thay thế.</div>
+        <h3 data-i18n="ui.importView.dispatchData">Dữ liệu điều phối trong ngày</h3>
+        <div class="hint" data-i18n="ui.importView.dispatchHint">Case sự cố · xe đang hoạt động · ứng viên thay thế.</div>
         <div class="drop tall" onclick="document.getElementById('f-dynamic').click()">
-          <div style="font-weight:700">Kéo thả hoặc bấm để chọn file .xlsx</div>
-          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Định dạng .xlsx hoặc .xlsm</div>
+          <div style="font-weight:700" data-i18n="actions.dropzone">Kéo thả hoặc bấm để chọn file .xlsx</div>
+          <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px" data-i18n="actions.fileFormat">Định dạng .xlsx hoặc .xlsm</div>
         </div>
         <input type="file" id="f-dynamic" accept=".xlsx,.xlsm" hidden onchange="upload(this,'dynamic')">
         <div id="info-dynamic"></div>
@@ -481,30 +486,30 @@ tbody tr.clickable:hover{background:#eef5ff}
     </div>
     <div class="card" id="card-pv" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h3>Xem trước &amp; chỉnh sửa dữ liệu đơn hàng</h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-pv',this)" aria-label="Mở rộng bảng dữ liệu đơn hàng">⤢ Mở rộng</button>
+        <h3 data-i18n="ui.importView.previewTitle">Xem trước &amp; chỉnh sửa dữ liệu đơn hàng</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-pv',this)" aria-label="Mở rộng bảng dữ liệu đơn hàng" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandOrderData">⤢ Mở rộng</button>
       </div>
-      <div class="hint">Sửa trực tiếp từng ô (bấm vào ô để sửa), không cần chỉnh lại Excel rồi tải lên.</div>
+      <div class="hint" data-i18n="ui.importView.previewHint">Sửa trực tiếp từng ô (bấm vào ô để sửa), không cần chỉnh lại Excel rồi tải lên.</div>
       <div class="toolbar">
-        <input class="field" id="pv-search" placeholder="Nhập mã đơn" oninput="dPreview()" aria-label="Nhập mã đơn">
-        <button class="btn btn-soft btn-sm" onclick="toggleAddForm()">Thêm đơn thủ công</button>
+        <input class="field" id="pv-search" placeholder="Nhập mã đơn" data-i18n-placeholder="ui.importView.orderPlaceholder" oninput="dPreview()" aria-label="Nhập mã đơn" data-i18n-aria-label="ui.importView.orderPlaceholder">
+        <button class="btn btn-soft btn-sm" onclick="toggleAddForm()" data-i18n="actions.addOrderManual">Thêm đơn thủ công</button>
       </div>
       <div id="add-form" style="display:none" class="card">
         <div class="grid g4">
-          <div><label class="lab">Mã đơn</label><input class="field" id="ad-id" style="width:100%"></div>
-          <div><label class="lab">Khách hàng</label><input class="field" id="ad-cust" style="width:100%"></div>
-          <div><label class="lab">Tuyến</label><input class="field" id="ad-cor" style="width:100%"></div>
-          <div><label class="lab">Loại xe yêu cầu</label><input class="field" id="ad-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
-          <div><label class="lab">Điểm lấy</label><input class="field" id="ad-pn" style="width:100%"></div>
-          <div><label class="lab">Vĩ độ / kinh độ lấy</label><div style="display:flex;gap:6px"><input class="field" id="ad-plat" placeholder="lat" style="width:50%"><input class="field" id="ad-plon" placeholder="lon" style="width:50%"></div></div>
-          <div><label class="lab">Điểm trả</label><input class="field" id="ad-dn" style="width:100%"></div>
-          <div><label class="lab">Vĩ độ / kinh độ trả</label><div style="display:flex;gap:6px"><input class="field" id="ad-dlat" placeholder="lat" style="width:50%"><input class="field" id="ad-dlon" placeholder="lon" style="width:50%"></div></div>
-          <div><label class="lab">Khối lượng (kg)</label><input class="field" id="ad-w" type="number" style="width:100%"></div>
-          <div><label class="lab">Thể tích (m³)</label><input class="field" id="ad-vol" type="number" style="width:100%"></div>
-          <div><label class="lab">Giao từ - đến</label><div style="display:flex;gap:6px"><input class="field" id="ad-tws" placeholder="08:00" style="width:50%"><input class="field" id="ad-twe" placeholder="12:00" style="width:50%"></div></div>
-          <div><label class="lab">Doanh thu (đ)</label><input class="field" id="ad-rev" type="number" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.code">Mã đơn</label><input class="field" id="ad-id" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.customer">Khách hàng</label><input class="field" id="ad-cust" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.lane">Tuyến</label><input class="field" id="ad-cor" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.vehicleType">Loại xe yêu cầu</label><input class="field" id="ad-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.pickup">Điểm lấy</label><input class="field" id="ad-pn" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.pickupLatLng">Vĩ độ / kinh độ lấy</label><div style="display:flex;gap:6px"><input class="field" id="ad-plat" placeholder="lat" style="width:50%"><input class="field" id="ad-plon" placeholder="lon" style="width:50%"></div></div>
+          <div><label class="lab" data-i18n="order.dropoff">Điểm trả</label><input class="field" id="ad-dn" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.dropoffLatLng">Vĩ độ / kinh độ trả</label><div style="display:flex;gap:6px"><input class="field" id="ad-dlat" placeholder="lat" style="width:50%"><input class="field" id="ad-dlon" placeholder="lon" style="width:50%"></div></div>
+          <div><label class="lab" data-i18n="order.weightKg">Khối lượng (kg)</label><input class="field" id="ad-w" type="number" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.volumeM3">Thể tích (m³)</label><input class="field" id="ad-vol" type="number" style="width:100%"></div>
+          <div><label class="lab" data-i18n="order.deliveryWindow">Giao từ - đến</label><div style="display:flex;gap:6px"><input class="field" id="ad-tws" placeholder="08:00" style="width:50%"><input class="field" id="ad-twe" placeholder="12:00" style="width:50%"></div></div>
+          <div><label class="lab" data-i18n="order.revenue">Doanh thu (đ)</label><input class="field" id="ad-rev" type="number" style="width:100%"></div>
         </div>
-        <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addOrder()">Lưu đơn mới</button></div>
+        <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addOrder()" data-i18n="actions.saveNewOrder">Lưu đơn mới</button></div>
       </div>
       <div class="tbl-wrap"><table id="pv-tbl"></table></div>
     </div>
@@ -513,8 +518,8 @@ tbody tr.clickable:hover{background:#eef5ff}
   <!-- ===== MODULE 2: VALIDATE ===== -->
   <section class="view" id="view-validate">
     <div class="page-head"><div>
-      <span class="step-tag">Bước 2 · Kiểm định</span>
-      <h2>Kiểm định dữ liệu &amp; năng lực</h2>
+      <span class="step-tag" data-i18n="ui.steps.step2">Bước 2 · Kiểm định</span>
+      <h2 data-i18n="ui.validation.title">Kiểm định dữ liệu &amp; năng lực</h2>
     </div>
       <div><select class="field" id="sel-scenario" onchange="loadValidate()"></select></div>
     </div>
@@ -523,15 +528,15 @@ tbody tr.clickable:hover{background:#eef5ff}
     <div class="card" id="card-val">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
         <h3>Danh sách đơn — Kịch bản <span id="val-sid"></span></h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-val',this)" aria-label="Mở rộng bảng danh sách đơn">⤢ Mở rộng</button>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-val',this)" aria-label="Mở rộng bảng danh sách đơn" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandOrderList">⤢ Mở rộng</button>
       </div>
       <div class="toolbar">
-        <input class="field" id="val-search" placeholder="Tìm theo mã đơn" oninput="dValidate()" aria-label="Tìm đơn theo mã">
-        <select class="field" id="val-filter" onchange="renderValidate();saveUIPref()" aria-label="Lọc theo trạng thái kiểm định">
-          <option value="">Tất cả trạng thái</option>
-          <option value="Hợp lệ">Hợp lệ</option>
-          <option value="Cần rà soát">Cần rà soát</option>
-          <option value="Không thể xử lý">Không thể xử lý</option>
+        <input class="field" id="val-search" placeholder="Tìm theo mã đơn" data-i18n-placeholder="ui.importView.searchOrderPlaceholder" oninput="dValidate()" aria-label="Tìm đơn theo mã" data-i18n-aria-label="ui.aria.searchOrder">
+        <select class="field" id="val-filter" onchange="renderValidate();saveUIPref()" aria-label="Lọc theo trạng thái kiểm định" data-i18n-aria-label="ui.aria.filterValidation">
+          <option value="" data-i18n="status.all">Tất cả trạng thái</option>
+          <option value="Hợp lệ" data-i18n="status.valid">Hợp lệ</option>
+          <option value="Cần rà soát" data-i18n="status.needsReview">Cần rà soát</option>
+          <option value="Không thể xử lý" data-i18n="status.unprocessable">Không thể xử lý</option>
         </select>
       </div>
       <div class="tbl-wrap" style="max-height:560px"><table id="val-tbl"></table></div>
@@ -542,12 +547,12 @@ tbody tr.clickable:hover{background:#eef5ff}
   <section class="view" id="view-plan">
     <div class="page-head">
       <div>
-        <span class="step-tag">Bước 3 · Lập tuyến</span>
-        <h2>Kế hoạch tuyến &amp; bản đồ</h2>
+        <span class="step-tag" data-i18n="ui.steps.step3">Bước 3 · Lập tuyến</span>
+        <h2 data-i18n="nav.step3">Kế hoạch tuyến &amp; bản đồ</h2>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <select class="field" id="plan-scenario" onchange="onPlanScenario(this.value)"></select>
-        <button class="btn btn-navy" onclick="runOptimize()">Chạy kế hoạch tuyến</button>
+        <button class="btn btn-navy" onclick="runOptimize()" data-i18n="actions.runRoutePlan">Chạy kế hoạch tuyến</button>
       </div>
     </div>
 
@@ -556,26 +561,26 @@ tbody tr.clickable:hover{background:#eef5ff}
     <div class="grid g2">
       <div class="card" id="card-plan-tbl">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Kế hoạch tuyến</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-tbl',this)" aria-label="Mở rộng bảng kế hoạch toàn màn hình">⤢ Mở rộng</button>
+          <h3 data-i18n="ui.plan.routePlan">Kế hoạch tuyến</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-tbl',this)" aria-label="Mở rộng bảng kế hoạch toàn màn hình" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandPlan">⤢ Mở rộng</button>
         </div>
-        <div class="hint" id="plan-engine">Bấm “Timeline” để xem trình tự thời gian; bấm dòng để xem trên bản đồ. Khóa tuyến đã chốt để giữ nguyên khi tối ưu lại.</div>
+        <div class="hint" id="plan-engine" data-i18n="ui.plan.timelineHint">Bấm “Timeline” để xem trình tự thời gian; bấm dòng để xem trên bản đồ. Khóa tuyến đã chốt để giữ nguyên khi tối ưu lại.</div>
         <div class="tbl-wrap" style="max-height:470px"><table id="plan-tbl"></table></div>
       </div>
       <div class="card" id="card-plan-map">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Bản đồ tuyến · toàn mạng</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-map',this,'map')" aria-label="Mở rộng bản đồ toàn màn hình">⤢ Mở rộng</button>
+          <h3 data-i18n="ui.plan.mapTitle">Bản đồ tuyến · toàn mạng</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-plan-map',this,'map')" aria-label="Mở rộng bản đồ toàn màn hình" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandMap">⤢ Mở rộng</button>
         </div>
-        <div class="toolbar"><select class="field" id="map-filter" onchange="drawPlanMap()"><option value="">Tất cả tuyến</option></select>
-          <button class="btn btn-line btn-sm" onclick="document.getElementById('map-filter').value='';drawPlanMap()">Toàn bộ</button></div>
+        <div class="toolbar"><select class="field" id="map-filter" onchange="drawPlanMap()"><option value="" data-i18n="ui.common.allRoutes">Tất cả tuyến</option></select>
+          <button class="btn btn-line btn-sm" onclick="document.getElementById('map-filter').value='';drawPlanMap()" data-i18n="ui.common.wholeNetwork">Toàn bộ</button></div>
         <div id="map"></div>
         <div class="map-legend">
           <span class="leg"><span class="sw" style="background:#0B3D91;border-radius:3px"></span>Depot</span>
           <span class="leg"><span class="sw" style="background:#1565C0"></span>Điểm lấy</span>
           <span class="leg"><span class="sw" style="background:#E2231A"></span>Điểm trả</span>
           <span class="leg"><span class="sw" style="background:#9AA7BD"></span>Đơn chưa gán</span>
-          <span class="leg" style="color:var(--muted)">Số trên điểm = thứ tự dừng</span>
+          <span class="leg" style="color:var(--muted)" data-i18n="hints.stopOrder">Số trên điểm = thứ tự dừng</span>
         </div>
       </div>
     </div>
@@ -583,17 +588,17 @@ tbody tr.clickable:hover{background:#eef5ff}
     <div>
       <div class="card" id="card-una">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Đơn chưa gán</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-una',this)" aria-label="Mở rộng bảng đơn chưa gán">⤢ Mở rộng</button>
+          <h3 data-i18n="ui.plan.unassignedOrders">Đơn chưa gán</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-una',this)" aria-label="Mở rộng bảng đơn chưa gán" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandUnassigned">⤢ Mở rộng</button>
         </div>
         <div class="tbl-wrap"><table id="una-tbl"></table></div>
       </div>
       <div class="card" id="card-noreturn3">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Đơn chưa có chuyến quay đầu</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn3',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu">⤢ Mở rộng</button>
+          <h3 data-i18n="ui.plan.noBackhaul">Đơn chưa có chuyến quay đầu</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn3',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandNoBackhaul">⤢ Mở rộng</button>
         </div>
-        <div class="hint">Đơn bổ sung chưa được ghép chiều về — sang Module 4 để ghép.</div>
+        <div class="hint" data-i18n="ui.plan.noBackhaulHint">Đơn bổ sung chưa được ghép chiều về — sang Module 4 để ghép.</div>
         <div class="tbl-wrap"><table id="noreturn3-tbl"></table></div>
       </div>
     </div>
@@ -603,12 +608,12 @@ tbody tr.clickable:hover{background:#eef5ff}
   <section class="view" id="view-backhaul">
     <div class="page-head">
       <div>
-        <span class="step-tag">Bước 4 · Ghép chiều về</span>
-        <h2>Ghép chuyến quay đầu</h2>
-        <div class="desc">Ghép đơn chiều về sau chiều đi: giảm chạy rỗng · tăng fill-rate · ưu tiên backhaul.</div>
+        <span class="step-tag" data-i18n="ui.steps.step4">Bước 4 · Ghép chiều về</span>
+        <h2 data-i18n="nav.step4">Ghép chuyến quay đầu</h2>
+        <div class="desc" data-i18n="ui.backhaul.description">Ghép đơn chiều về sau chiều đi: giảm chạy rỗng · tăng fill-rate · ưu tiên backhaul.</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn btn-navy" onclick="runBackhaul()">Tối ưu ghép chuyến</button>
+        <button class="btn btn-navy" onclick="runBackhaul()" data-i18n="actions.optimizeBackhaul">Tối ưu ghép chuyến</button>
       </div>
     </div>
     <div id="bk-status" class="hint" style="margin:-4px 0 12px"></div>
@@ -616,46 +621,46 @@ tbody tr.clickable:hover{background:#eef5ff}
     <div class="grid g2">
       <div>
         <div class="card">
-          <h3>Nguồn đơn bổ sung (chiều về)</h3>
-          <div class="hint">Đơn mới để ghép chiều về — chống chạy rỗng. Chọn <b>1 trong 3 cách</b>:</div>
-          <div class="mini" style="font-weight:700;color:var(--navy);margin:10px 0 5px">Cách 1 — Nhập file 3PL</div>
+          <h3 data-i18n="ui.backhaul.sourceTitle">Nguồn đơn bổ sung (chiều về)</h3>
+          <div class="hint">Đơn mới để ghép chiều về — chống chạy rỗng. Chọn <b data-i18n="ui.runtime.oneOfThree">1 trong 3 cách</b>:</div>
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:10px 0 5px" data-i18n="ui.backhaul.methodUpload">Cách 1 — Nhập file 3PL</div>
           <div class="drop" id="bk-drop" onclick="document.getElementById('f-bk4').click()">
-            <div style="font-weight:700">Kéo thả / bấm để chọn file .xlsx</div>
-            <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px">Mẫu: data/module4_backhaul_orders_template.xlsx · bắt buộc có vĩ độ/kinh độ lấy &amp; trả</div>
+            <div style="font-weight:700" data-i18n="ui.backhaul.dropzone">Kéo thả / bấm để chọn file .xlsx</div>
+            <div style="color:var(--muted);font-size:var(--fs-sm);margin-top:3px" data-i18n="ui.backhaul.templateHint">Mẫu: data/module4_backhaul_orders_template.xlsx · bắt buộc có vĩ độ/kinh độ lấy &amp; trả</div>
           </div>
           <input type="file" id="f-bk4" accept=".xlsx,.xlsm" hidden onchange="upload(this,'backhaul')">
-          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px">Cách 2 — Dùng đơn mẫu</div>
-          <button class="btn btn-soft btn-sm" onclick="loadBackhaulSample()">Nạp đơn quay đầu mẫu (bám kế hoạch hiện tại)</button>
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px" data-i18n="ui.backhaul.methodSample">Cách 2 — Dùng đơn mẫu</div>
+          <button class="btn btn-soft btn-sm" onclick="loadBackhaulSample()" data-i18n="ui.backhaul.sampleButton">Nạp đơn quay đầu mẫu (bám kế hoạch hiện tại)</button>
           <div id="info-backhaul"></div>
-          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px">Cách 3 — Nhập tay một đơn</div>
+          <div class="mini" style="font-weight:700;color:var(--navy);margin:14px 0 5px" data-i18n="ui.backhaul.methodManual">Cách 3 — Nhập tay một đơn</div>
           <details>
-            <summary style="cursor:pointer;font-weight:600;color:var(--blue);font-size:var(--fs-sm)">⤢ Mở rộng / thu gọn</summary>
+            <summary style="cursor:pointer;font-weight:600;color:var(--blue);font-size:var(--fs-sm)">⤢ <span data-i18n="ui.common.expandCollapse">Mở rộng / thu gọn</span></summary>
             <div class="grid g2" style="margin-top:10px">
-              <div><label class="lab">Mã đơn</label><input class="field" id="bk-id" style="width:100%"></div>
-              <div><label class="lab">Khách hàng</label><input class="field" id="bk-cust" style="width:100%"></div>
-              <div><label class="lab">Điểm lấy</label><input class="field" id="bk-pn" style="width:100%"></div>
-              <div><label class="lab">Lat/Lon lấy</label><div style="display:flex;gap:6px"><input class="field" id="bk-plat" placeholder="lat" style="width:50%"><input class="field" id="bk-plon" placeholder="lon" style="width:50%"></div></div>
-              <div><label class="lab">Điểm trả</label><input class="field" id="bk-dn" style="width:100%"></div>
-              <div><label class="lab">Lat/Lon trả</label><div style="display:flex;gap:6px"><input class="field" id="bk-dlat" placeholder="lat" style="width:50%"><input class="field" id="bk-dlon" placeholder="lon" style="width:50%"></div></div>
-              <div><label class="lab">Khối lượng (kg)</label><input class="field" id="bk-w" type="number" style="width:100%"></div>
-              <div><label class="lab">Doanh thu (đ)</label><input class="field" id="bk-rev" type="number" style="width:100%"></div>
-              <div><label class="lab">Loại xe</label><input class="field" id="bk-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
+              <div><label class="lab" data-i18n="order.code">Mã đơn</label><input class="field" id="bk-id" style="width:100%"></div>
+              <div><label class="lab" data-i18n="order.customer">Khách hàng</label><input class="field" id="bk-cust" style="width:100%"></div>
+              <div><label class="lab" data-i18n="order.pickup">Điểm lấy</label><input class="field" id="bk-pn" style="width:100%"></div>
+              <div><label class="lab" data-i18n="ui.backhaul.pickupLatLng">Lat/Lon lấy</label><div style="display:flex;gap:6px"><input class="field" id="bk-plat" placeholder="lat" style="width:50%"><input class="field" id="bk-plon" placeholder="lon" style="width:50%"></div></div>
+              <div><label class="lab" data-i18n="order.dropoff">Điểm trả</label><input class="field" id="bk-dn" style="width:100%"></div>
+              <div><label class="lab" data-i18n="ui.backhaul.deliveryLatLng">Lat/Lon trả</label><div style="display:flex;gap:6px"><input class="field" id="bk-dlat" placeholder="lat" style="width:50%"><input class="field" id="bk-dlon" placeholder="lon" style="width:50%"></div></div>
+              <div><label class="lab" data-i18n="order.weightKg">Khối lượng (kg)</label><input class="field" id="bk-w" type="number" style="width:100%"></div>
+              <div><label class="lab" data-i18n="order.revenue">Doanh thu (đ)</label><input class="field" id="bk-rev" type="number" style="width:100%"></div>
+              <div><label class="lab" data-i18n="ui.backhaul.vehicleType">Loại xe</label><input class="field" id="bk-veh" placeholder="1.25T / 5T…" style="width:100%"></div>
             </div>
-            <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addBackhaul()">Thêm đơn bổ sung</button></div>
+            <div style="margin-top:10px"><button class="btn btn-navy btn-sm" onclick="addBackhaul()" data-i18n="actions.addExtraOrder">Thêm đơn bổ sung</button></div>
           </details>
           <div id="card-bkorders"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px">
-            <div class="hint" style="margin:0">Danh sách đơn bổ sung đang có:</div>
-            <button class="btn btn-line btn-sm" onclick="toggleFs('card-bkorders',this)" aria-label="Mở rộng bảng đơn bổ sung">⤢ Mở rộng</button></div>
+            <div class="hint" style="margin:0" data-i18n="ui.backhaul.availableOrders">Danh sách đơn bổ sung đang có:</div>
+            <button class="btn btn-line btn-sm" onclick="toggleFs('card-bkorders',this)" aria-label="Mở rộng bảng đơn bổ sung" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandAddOn">⤢ Mở rộng</button></div>
           <div class="tbl-wrap" style="max-height:220px;margin-top:6px"><table id="bk-orders-tbl"></table></div></div>
         </div>
       </div>
       <div>
         <div class="card" id="card-bktbl"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Gợi ý ghép chiều về</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-bktbl',this)" aria-label="Mở rộng bảng gợi ý ghép chiều về">⤢ Mở rộng</button></div>
-          <div class="hint">Xét khoảng cách · khung giờ · tải · loại xe · cấm tải · lợi nhuận · km rỗng.</div>
+          <h3 data-i18n="ui.backhaul.suggestions">Gợi ý ghép chiều về</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-bktbl',this)" aria-label="Mở rộng bảng gợi ý ghép chiều về" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandSuggestions">⤢ Mở rộng</button></div>
+          <div class="hint" data-i18n="ui.backhaul.suggestionHint">Xét khoảng cách · khung giờ · tải · loại xe · cấm tải · lợi nhuận · km rỗng.</div>
           <div class="tbl-wrap" style="max-height:320px"><table id="bk-tbl"></table></div></div>
-        <div class="card"><h3>Bản đồ chiều đi &amp; chiều về</h3>
+        <div class="card"><h3 data-i18n="ui.backhaul.mapTitle">Bản đồ chiều đi &amp; chiều về</h3>
           <div id="bk-map" style="height:300px"></div>
           <div class="map-legend">
             <span class="leg"><span class="sw" style="background:#E2231A"></span>Xe rảnh cuối chiều đi</span>
@@ -666,10 +671,10 @@ tbody tr.clickable:hover{background:#eef5ff}
     </div>
     <div class="card" id="card-noreturn4">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h3>Đơn chưa có chuyến quay đầu</h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn4',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu">⤢ Mở rộng</button>
+        <h3 data-i18n="ui.plan.noBackhaul">Đơn chưa có chuyến quay đầu</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-noreturn4',this)" aria-label="Mở rộng bảng đơn chưa có chuyến quay đầu" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandNoBackhaul">⤢ Mở rộng</button>
       </div>
-      <div class="hint">Đơn bổ sung chưa ghép được vẫn ở lại đây để tiếp tục tìm/ghép ở lượt sau.</div>
+        <div class="hint" data-i18n="ui.backhaul.unmatchedHint">Đơn bổ sung chưa ghép được vẫn ở lại đây để tiếp tục tìm/ghép ở lượt sau.</div>
       <div class="tbl-wrap" style="max-height:260px"><table id="noreturn4-tbl"></table></div>
     </div>
   </section>
@@ -678,78 +683,78 @@ tbody tr.clickable:hover{background:#eef5ff}
   <section class="view" id="view-finance">
     <div class="page-head">
       <div>
-        <span class="step-tag">Bước 5 · Tài chính</span>
-        <h2>Tài chính P&amp;L</h2>
-        <div class="desc">Doanh thu · chi phí theo hạng mục · biên lợi nhuận; tự cập nhật theo giá nhiên liệu, sự cố &amp; ghép chiều về.</div>
+        <span class="step-tag" data-i18n="ui.steps.step5">Bước 5 · Tài chính</span>
+        <h2 data-i18n="nav.step5">Tài chính P&amp;L</h2>
+        <div class="desc" data-i18n="ui.finance.description">Doanh thu · chi phí theo hạng mục · biên lợi nhuận; tự cập nhật theo giá nhiên liệu, sự cố &amp; ghép chiều về.</div>
       </div>
-      <div><button class="btn btn-navy" onclick="runFinancial()">Tính tài chính</button></div>
+      <div><button class="btn btn-navy" onclick="runFinancial()" data-i18n="actions.computeFinance">Tính tài chính</button></div>
     </div>
     <div class="grid g4" id="fin-kpis"></div>
     <div class="card">
-      <h3>Chỉ báo biên lợi nhuận</h3>
+      <h3 data-i18n="ui.finance.marginIndicator">Chỉ báo biên lợi nhuận</h3>
       <div id="indicator-wrap"></div>
       <div id="uplift-line" style="margin-top:14px"></div>
     </div>
     <div class="grid g2">
-      <div class="card"><h3>Công thức tài chính</h3>
+      <div class="card"><h3 data-i18n="ui.finance.formula">Công thức tài chính</h3>
         <div class="formula" id="formula"></div></div>
-      <div class="card"><h3>Cơ cấu chi phí kế hoạch</h3>
+      <div class="card"><h3 data-i18n="ui.finance.costStructure">Cơ cấu chi phí kế hoạch</h3>
         <div style="max-width:420px;margin:0 auto"><canvas id="costChart" height="130"></canvas></div></div>
     </div>
-    <div class="card"><h3>P&amp;L từng tuyến</h3>
+    <div class="card"><h3 data-i18n="ui.finance.routePnl">P&amp;L từng tuyến</h3>
       <div class="tbl-wrap" style="max-height:430px"><table id="fin-tbl"></table></div></div>
-    <div class="card"><h3>Chi phí vận hành &amp; nhiên liệu</h3>
-      <div class="hint">Giá nhiên liệu &amp; các đơn giá vận hành — chỉnh tay, P&amp;L tự tính lại ngay.</div>
+    <div class="card"><h3 data-i18n="ui.finance.operatingCosts">Chi phí vận hành &amp; nhiên liệu</h3>
+      <div class="hint" data-i18n="ui.finance.operatingHint">Giá nhiên liệu &amp; các đơn giá vận hành — chỉnh tay, P&amp;L tự tính lại ngay.</div>
       <div id="fin-params"></div></div>
   </section>
 
   <!-- ===== MODULE 6+7: VẬN HÀNH TRONG NGÀY (L3 — gộp Sự cố + Nhật ký, tab nội bộ) ===== -->
   <section class="view" id="view-ops">
     <div class="page-head"><div>
-      <span class="step-tag">Điều phối trong ngày</span>
-      <h2>Vận hành trong ngày</h2>
+      <span class="step-tag" data-i18n="nav.dispatchGroup">Điều phối trong ngày</span>
+      <h2 data-i18n="nav.step6">Vận hành trong ngày</h2>
     </div></div>
 
-    <div class="tabbar" role="tablist" aria-label="Vận hành trong ngày" onkeydown="opsTabKey(event)">
-      <button class="tabbtn active" id="tab-incident" role="tab" aria-selected="true" aria-controls="ops-incident" tabindex="0" onclick="logTab('incident')">Xử lý sự cố</button>
-      <button class="tabbtn" id="tab-log" role="tab" aria-selected="false" aria-controls="ops-log" tabindex="-1" onclick="logTab('log')">Nhật ký &amp; lưu vết</button>
+    <div class="tabbar" role="tablist" aria-label="Vận hành trong ngày" onkeydown="opsTabKey(event)" data-i18n-aria-label="nav.step6">
+      <button class="tabbtn active" id="tab-incident" role="tab" aria-selected="true" aria-controls="ops-incident" tabindex="0" onclick="logTab('incident')" data-i18n="ui.operations.incidentHandling">Xử lý sự cố</button>
+      <button class="tabbtn" id="tab-log" role="tab" aria-selected="false" aria-controls="ops-log" tabindex="-1" onclick="logTab('log')" data-i18n="ui.operations.auditLog">Nhật ký &amp; lưu vết</button>
     </div>
 
     <div id="ops-incident" role="tabpanel" aria-labelledby="tab-incident" tabindex="0">
       <div class="card">
-        <h3>Mở phiên xử lý sự cố</h3>
+        <h3 data-i18n="ui.operations.openSession">Mở phiên xử lý sự cố</h3>
         <div class="toolbar">
-          <select class="field" id="inc-type" aria-label="Loại sự cố"></select>
-          <input class="field" id="inc-order" placeholder="Mã đơn (tùy chọn)" aria-label="Mã đơn (tùy chọn)">
-          <button class="btn btn-red btn-sm" onclick="createIncident()">Mở xử lý sự cố</button>
+          <select class="field" id="inc-type" aria-label="Loại sự cố" data-i18n-aria-label="ui.aria.incidentType"></select>
+          <input class="field" id="inc-order" placeholder="Mã đơn (tùy chọn)" data-i18n-placeholder="ui.operations.optionalOrder" aria-label="Mã đơn (tùy chọn)" data-i18n-aria-label="ui.operations.optionalOrder">
+          <button class="btn btn-red btn-sm" onclick="createIncident()" data-i18n="actions.openIncident">Mở xử lý sự cố</button>
         </div>
       </div>
       <div class="card" id="card-inc">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-          <h3>Danh sách sự cố đang theo dõi</h3>
-          <button class="btn btn-line btn-sm" onclick="toggleFs('card-inc',this)" aria-label="Mở rộng bảng sự cố">⤢ Mở rộng</button>
+          <h3 data-i18n="ui.operations.trackedIncidents">Danh sách sự cố đang theo dõi</h3>
+          <button class="btn btn-line btn-sm" onclick="toggleFs('card-inc',this)" aria-label="Mở rộng bảng sự cố" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandIncidents">⤢ Mở rộng</button>
         </div>
-        <div class="hint" id="inc-note">Tải toàn bộ sự cố từ file Excel đã nhập; nếu file chưa có sự cố, hệ thống tự sinh.</div>
+        <div class="hint" id="inc-note" data-i18n="ui.operations.incidentHint">Tải toàn bộ sự cố từ file Excel đã nhập; nếu file chưa có sự cố, hệ thống tự sinh.</div>
         <div class="tbl-wrap"><table id="inc-tbl"></table></div>
       </div>
     </div>
 
     <div id="ops-log" role="tabpanel" aria-labelledby="tab-log" tabindex="0" style="display:none">
       <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px">
-        <button class="btn btn-line btn-sm" onclick="loadLog();loadOptLog()">Làm mới</button>
-        <button class="btn btn-soft btn-sm" onclick="clearLog()">Xóa toàn bộ</button>
+        <button class="btn btn-line btn-sm" onclick="loadLog();loadOptLog()" data-i18n="actions.refresh">Làm mới</button>
+        <button class="btn btn-soft btn-sm" onclick="clearLog()" data-i18n="actions.clearAll">Xóa toàn bộ</button>
       </div>
       <div class="card" id="card-optlog"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h3>Nhật ký tối ưu</h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-optlog',this)" aria-label="Mở rộng bảng nhật ký tối ưu">⤢ Mở rộng</button></div>
+        <h3 data-i18n="ui.operations.optimizationLog">Nhật ký tối ưu</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-optlog',this)" aria-label="Mở rộng bảng nhật ký tối ưu" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandOptimizationLog">⤢ Mở rộng</button></div>
         <div class="tbl-wrap" style="max-height:280px"><table id="optlog-tbl"></table></div>
       </div>
       <div class="card" id="card-log"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h3>Nhật ký điều phối &amp; sự cố</h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-log',this)" aria-label="Mở rộng bảng nhật ký điều phối">⤢ Mở rộng</button></div>
+        <h3 data-i18n="ui.operations.dispatchLog">Nhật ký điều phối &amp; sự cố</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-log',this)" aria-label="Mở rộng bảng nhật ký điều phối" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandDispatchLog">⤢ Mở rộng</button></div>
         <div class="toolbar">
-          <input class="field" id="log-search" placeholder="Mã đơn" oninput="dLog()" aria-label="Tìm nhật ký theo mã đơn">
-          <select class="field" id="log-filter" onchange="renderLog();saveUIPref()" aria-label="Lọc nhật ký theo trạng thái"><option value="">Tất cả trạng thái</option></select>
+          <input class="field" id="log-search" placeholder="Mã đơn" oninput="dLog()" aria-label="Tìm nhật ký theo mã đơn" data-i18n-placeholder="order.code" data-i18n-aria-label="ui.aria.searchLog">
+          <select class="field" id="log-filter" onchange="renderLog();saveUIPref()" aria-label="Lọc nhật ký theo trạng thái" data-i18n-aria-label="ui.aria.filterLog"><option value="" data-i18n="status.all">Tất cả trạng thái</option></select>
         </div>
         <div class="tbl-wrap" style="max-height:520px"><table id="log-tbl"></table></div>
       </div>
@@ -759,15 +764,15 @@ tbody tr.clickable:hover{background:#eef5ff}
   <!-- ===== CONSTRAINTS ===== -->
   <section class="view" id="view-constraints">
     <div class="page-head"><div>
-      <h2>Quy định cấm đường / cấm tải</h2>
-      <div class="desc">Cập nhật ràng buộc theo khu vực · loại xe · tải trọng · khung giờ · nguồn quy định; áp dụng ngay cho kiểm định &amp; lập tuyến.</div>
+      <h2 data-i18n="ui.constraints.title">Quy định cấm đường / cấm tải</h2>
+      <div class="desc" data-i18n="ui.constraints.description">Cập nhật ràng buộc theo khu vực · loại xe · tải trọng · khung giờ · nguồn quy định; áp dụng ngay cho kiểm định &amp; lập tuyến.</div>
     </div>
-      <div style="display:flex;gap:8px"><button class="btn btn-soft btn-sm" onclick="addConstraint()">Thêm quy định</button><button class="btn btn-navy btn-sm" onclick="saveConstraints()">Lưu thay đổi</button></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-soft btn-sm" onclick="addConstraint()" data-i18n="actions.addRule">Thêm quy định</button><button class="btn btn-navy btn-sm" onclick="saveConstraints()" data-i18n="actions.saveChanges">Lưu thay đổi</button></div>
     </div>
     <div class="card" id="card-cons">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <h3>Quy định cấm đường / cấm tải</h3>
-        <button class="btn btn-line btn-sm" onclick="toggleFs('card-cons',this)" aria-label="Mở rộng bảng quy định cấm tải">⤢ Mở rộng</button>
+        <h3 data-i18n="ui.constraints.title">Quy định cấm đường / cấm tải</h3>
+        <button class="btn btn-line btn-sm" onclick="toggleFs('card-cons',this)" aria-label="Mở rộng bảng quy định cấm tải" data-i18n="ui.fragments.expandIcon" data-i18n-aria-label="ui.aria.expandRestrictions">⤢ Mở rộng</button>
       </div>
       <div class="tbl-wrap"><table id="cons-tbl"></table></div>
     </div>
@@ -779,15 +784,15 @@ tbody tr.clickable:hover{background:#eef5ff}
 <!-- Incident modal -->
 <div class="ov" id="ov" onclick="closeModal();closeRouteModal();closeDrawer();closePalette()"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
-  <div class="modal-head"><div class="mt" id="m-title">Xử lý sự cố</div>
-    <button class="modal-x" onclick="closeModal()" aria-label="Đóng cửa sổ xử lý sự cố">×</button></div>
+  <div class="modal-head"><div class="mt" id="m-title" data-i18n="ui.plan.handleIncident">Xử lý sự cố</div>
+    <button class="modal-x" onclick="closeModal()" aria-label="Đóng cửa sổ xử lý sự cố" data-i18n-aria-label="ui.aria.closeIncident">×</button></div>
   <div class="modal-body" id="m-body"></div>
   <div class="modal-foot">
     <div class="mini" id="m-status" style="color:var(--muted)"></div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-line btn-sm" onclick="closeModal()">Đóng</button>
-      <button class="btn btn-navy btn-sm" id="m-apply" onclick="applyResolve()" disabled>Xác nhận áp dụng</button>
-      <button class="btn btn-soft btn-sm" id="m-complete" onclick="completeIncident()" style="display:none">Đánh dấu hoàn tất</button>
+      <button class="btn btn-line btn-sm" onclick="closeModal()" data-i18n="actions.close">Đóng</button>
+      <button class="btn btn-navy btn-sm" id="m-apply" onclick="applyResolve()" disabled data-i18n="actions.confirmApply">Xác nhận áp dụng</button>
+      <button class="btn btn-soft btn-sm" id="m-complete" onclick="completeIncident()" style="display:none" data-i18n="actions.markComplete">Đánh dấu hoàn tất</button>
     </div>
   </div>
 </div>
@@ -795,31 +800,31 @@ tbody tr.clickable:hover{background:#eef5ff}
 <!-- Route timeline modal -->
 <div class="modal" id="route-modal" role="dialog" aria-modal="true" aria-labelledby="rm-title">
   <div class="modal-head"><div class="mt" id="rm-title">Chi tiết tuyến</div>
-    <button class="modal-x" onclick="closeRouteModal()" aria-label="Đóng cửa sổ chi tiết tuyến">×</button></div>
+    <button class="modal-x" onclick="closeRouteModal()" aria-label="Đóng cửa sổ chi tiết tuyến" data-i18n-aria-label="ui.aria.closeRoute">×</button></div>
   <div class="modal-body" id="rm-body"></div>
 </div>
 
 <!-- L1: Drawer chi tiết trượt phải (dùng chung cho tuyến & P&L) -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dw-title" aria-hidden="true">
-  <div class="dw-head"><div class="t" id="dw-title">Chi tiết</div>
-    <button class="modal-x" onclick="closeDrawer()" aria-label="Đóng bảng chi tiết">×</button></div>
+  <div class="dw-head"><div class="t" id="dw-title" data-i18n="ui.common.detail">Chi tiết</div>
+    <button class="modal-x" onclick="closeDrawer()" aria-label="Đóng bảng chi tiết" data-i18n-aria-label="ui.aria.closeDetails">×</button></div>
   <div class="dw-body" id="dw-body"></div>
 </aside>
 
 <!-- L6: Command palette ⌘/Ctrl+K -->
-<div class="modal" id="palette" role="dialog" aria-modal="true" aria-label="Bảng lệnh nhanh" style="top:78px;width:min(560px,94vw)">
+<div class="modal" id="palette" role="dialog" aria-modal="true" aria-label="Bảng lệnh nhanh" style="top:78px;width:min(560px,94vw)" data-i18n-aria-label="ui.aria.commandPalette">
   <div style="padding:12px 14px;border-bottom:1px solid var(--line)">
     <input id="pal-input" class="field" style="width:100%;border:0;font-size:var(--fs-lg)" placeholder="Tìm module · xe · đơn · lệnh…  (Esc để đóng)" oninput="buildPalette(this.value)" onkeydown="palKey(event)" role="combobox" aria-expanded="true" aria-controls="pal-list" autocomplete="off">
   </div>
-  <div class="modal-body" id="pal-list" role="listbox" aria-label="Kết quả lệnh" style="max-height:52vh;padding:4px 0"></div>
+  <div class="modal-body" id="pal-list" role="listbox" aria-label="Kết quả lệnh" style="max-height:52vh;padding:4px 0" data-i18n-aria-label="ui.aria.commandResults"></div>
   <div class="modal-foot" style="justify-content:flex-end"><span class="mini" style="color:var(--muted)">↑↓ chọn · Enter mở · phím 1–7 nhảy module · ⌘/Ctrl+K mở bảng lệnh</span></div>
 </div>
 
 <!-- L4: Confirm modal RIÊNG cho thao tác NẶNG/không hoàn tác -->
 <div class="ov" id="cov" onclick="closeConfirm()"></div>
 <div class="modal" id="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="cm-title" aria-describedby="cm-msg">
-  <div class="modal-head"><div class="mt" id="cm-title">Xác nhận</div>
-    <button class="modal-x" onclick="closeConfirm()" aria-label="Hủy thao tác">×</button></div>
+  <div class="modal-head"><div class="mt" id="cm-title" data-i18n="actions.confirm">Xác nhận</div>
+    <button class="modal-x" onclick="closeConfirm()" aria-label="Hủy thao tác" data-i18n-aria-label="ui.aria.cancelAction">×</button></div>
   <div class="modal-body">
     <div class="cm-msg" id="cm-msg"></div>
     <div class="cm-warn" id="cm-warn"></div>
@@ -827,30 +832,44 @@ tbody tr.clickable:hover{background:#eef5ff}
   <div class="modal-foot">
     <div></div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-line btn-sm" onclick="closeConfirm()">Hủy</button>
-      <button class="btn btn-red btn-sm" id="cm-ok" onclick="confirmOK()">Xác nhận</button>
+      <button class="btn btn-line btn-sm" onclick="closeConfirm()" data-i18n="actions.cancel">Hủy</button>
+      <button class="btn btn-red btn-sm" id="cm-ok" onclick="confirmOK()" data-i18n="actions.confirm">Xác nhận</button>
     </div>
   </div>
 </div>
 
 <!-- AI dock (cửa sổ nổi, trực tuyến) -->
-<div class="dock"><button class="dock-btn" onclick="toggleDock(true)"><span class="pulse"></span> Trợ lý AI</button></div>
+<div class="dock"><button class="dock-btn" onclick="toggleDock(true)"><span class="pulse"></span> <span data-i18n="assistant.label">Trợ lý AI</span></button></div>
 <div class="dock-panel" id="dock">
-  <div class="dock-head"><div><div class="t">Trợ lý AI · Trực tuyến</div><div class="s" id="dock-src">Truy cập dữ liệu phiên &amp; Internet — hỏi mọi chủ đề</div></div>
-    <button class="modal-x" onclick="toggleDock(false)" aria-label="Đóng trợ lý AI">×</button></div>
+  <div class="dock-head"><div><div class="t">Trợ lý AI · Trực tuyến</div><div class="s" id="dock-src" data-i18n="assistant.tagline">Truy cập dữ liệu phiên &amp; Internet — hỏi mọi chủ đề</div></div>
+    <button class="modal-x" onclick="toggleDock(false)" aria-label="Đóng trợ lý AI" data-i18n-aria-label="ui.aria.closeAssistant">×</button></div>
   <div class="dock-msgs" id="dock-msgs"></div>
   <div class="dock-quick" id="dock-quick"></div>
-  <div class="dock-input"><input id="dock-q" placeholder="Hỏi bất cứ điều gì…" onkeydown="if(event.key==='Enter')askAI()">
-    <button class="btn btn-navy btn-sm" onclick="askAI()">Gửi</button></div>
+  <div class="dock-input"><input id="dock-q" placeholder="Hỏi bất cứ điều gì…" data-i18n-placeholder="ui.assistant.askAnything" onkeydown="if(event.key==='Enter')askAI()">
+    <button class="btn btn-navy btn-sm" onclick="askAI()" data-i18n="ui.common.send">Gửi</button></div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="/src/i18n/i18n-vanilla.js"></script>
+<script>
+window.HPLI18N_READY = Promise.all([
+  fetch('/src/i18n/vi.json').then(r=>{if(!r.ok)throw new Error('vi');return r.json();}),
+  fetch('/src/i18n/en.json').then(r=>{if(!r.ok)throw new Error('en');return r.json();})
+]).then(([vi,en])=>{
+  HPLI18N.init({vi,en});
+  HPLI18N.mountSwitcher('#i18n-switcher-anchor');
+});
+</script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
-const fmtV=n=>(n==null||isNaN(n))?'—':Math.round(n).toLocaleString('vi-VN')+' đ';
-const fmtN=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString('vi-VN');
-const fmtPct=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const uiLang=()=>HPLI18N.lang==='en'?'en':'vi';
+const uiLocale=()=>uiLang()==='en'?'en-US':'vi-VN';
+const fmtV=n=>(n==null||isNaN(n))?'—':Math.round(n).toLocaleString(uiLocale())+(uiLang()==='en'?' VND':' đ');
+const fmtN=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString(uiLocale());
+const fmtPct=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString(uiLocale(),{minimumFractionDigits:2,maximumFractionDigits:2});
+const tr=(key,vars)=>HPLI18N.t(key,vars);
+const tl=value=>HPLI18N.translateLiteral(value);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const REDUCE_MOTION=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 let STATE={view:'import',scenarios:[],scenario:null,routes:null,unassigned:null,preview:[],pvcols:[],validate:[],
@@ -858,7 +877,7 @@ let STATE={view:'import',scenarios:[],scenario:null,routes:null,unassigned:null,
 
 /* Q5/A6.4 — toast: ok/info=polite, err=assertive; hỗ trợ nút Hoàn tác (L4) */
 function toast(msg,type,opt){opt=opt||{};const t=$('#toast');t.setAttribute('aria-live',type==='err'?'assertive':'polite');
-  let html=msg;if(opt.undo)html+=`<button class="undo" type="button">Hoàn tác</button>`;
+  let html=tl(msg);if(opt.undo)html+=`<button class="undo" type="button">${tr('ui.common.undo')}</button>`;
   t.className='toast show '+(type||'');t.innerHTML=html;clearTimeout(t._t);
   if(opt.undo){const u=t.querySelector('.undo');if(u)u.onclick=()=>{clearTimeout(t._t);t.className='toast';opt.undo();};}
   const dur=opt.undo?5200:3400;t._t=setTimeout(()=>{t.className='toast';if(opt.onTimeout)opt.onTimeout();},dur);}
@@ -868,7 +887,7 @@ async function api(url,opt){let r;
   try{r=await fetch(url,opt);}catch(_){throw new Error('Mất kết nối máy chủ. Kiểm tra mạng rồi thử lại.');}
   if(!r.ok){let e='Máy chủ trả lỗi ('+r.status+').';try{e=(await r.json()).error||e}catch(_){}throw new Error(e);}
   return r.json();}
-function kpi(l,v,sub,cls){return `<div class="kpi ${cls||''}"><div class="lbl">${esc(l)}</div><div class="val">${v}</div><div class="vsub">${esc(sub||'')}</div></div>`;}
+function kpi(l,v,sub,cls){return `<div class="kpi ${cls||''}"><div class="lbl">${esc(tl(l))}</div><div class="val">${v}</div><div class="vsub">${esc(tl(sub||''))}</div></div>`;}
 const debounce=(fn,ms)=>{let h;return(...a)=>{clearTimeout(h);h=setTimeout(()=>fn(...a),ms);};};
 var dPreview=debounce(()=>renderPreview(),120),dValidate=debounce(()=>renderValidate(),120),dLog=debounce(()=>renderLog(),120);
 
@@ -914,10 +933,10 @@ function releaseFocus(modal){if(modal&&modal._trap)modal.removeEventListener('ke
 /* L4 — confirmBox: thao tác NẶNG / không hoàn tác (custom modal RIÊNG) */
 let _confirmCb=null;
 function confirmBox(opt){_confirmCb=opt.onOK||null;
-  $('#cm-title').textContent=opt.title||'Xác nhận';
-  $('#cm-msg').textContent=opt.msg||'';
-  $('#cm-warn').textContent=opt.warn||'';
-  const ok=$('#cm-ok');ok.textContent=opt.okText||'Xác nhận';ok.className='btn btn-sm '+(opt.danger===false?'btn-navy':'btn-red');
+  $('#cm-title').textContent=tl(opt.title||tr('actions.confirm'));
+  $('#cm-msg').textContent=tl(opt.msg||'');
+  $('#cm-warn').textContent=tl(opt.warn||'');
+  const ok=$('#cm-ok');ok.textContent=tl(opt.okText||tr('actions.confirm'));ok.className='btn btn-sm '+(opt.danger===false?'btn-navy':'btn-red');
   $('#cov').classList.add('show');$('#confirm-modal').classList.add('show');trapFocus($('#confirm-modal'));}
 function closeConfirm(){$('#cov').classList.remove('show');$('#confirm-modal').classList.remove('show');releaseFocus($('#confirm-modal'));_confirmCb=null;}
 function confirmOK(){const cb=_confirmCb;closeConfirm();if(cb)cb();}
@@ -979,16 +998,16 @@ function financeEmpty(){
 
 /* ===== Q10/A1.1 — Thanh quy trình (stepper) bấm-được, KHÔNG khóa ===== */
 const STEPS=[
-  {k:'import',name:'Nạp dữ liệu'},{k:'validate',name:'Kiểm định'},{k:'plan',name:'Lập tuyến'},
-  {k:'backhaul',name:'Ghép chiều về'},{k:'finance',name:'Tài chính'},{k:'export',name:'Xuất báo cáo'},
+  {k:'import',key:'ui.steps.import'},{k:'validate',key:'ui.steps.validate'},{k:'plan',key:'ui.steps.route'},
+  {k:'backhaul',key:'ui.steps.backhaul'},{k:'finance',key:'ui.steps.finance'},{k:'export',key:'ui.steps.export'},
 ];
 function renderStepper(){
   const el=$('#stepper');if(!el)return;
-  el.innerHTML=STEPS.map((st,i)=>{const cur=STATE.view===st.k;
+  el.innerHTML=STEPS.map((st,i)=>{const cur=STATE.view===st.k,name=tr(st.key);
     return `<div class="step ${cur?'cur':''}" role="button" tabindex="0"
-      aria-label="${esc(st.name)}${cur?' (đang xem)':''}" onclick="stepGo('${st.k}')"
+      aria-label="${esc(name)}${cur?' ('+tr('ui.common.currentView')+')':''}" data-i18n-runtime onclick="stepGo('${st.k}')"
       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();stepGo('${st.k}')}">
-      <span class="sdot">${i+1}</span><span class="stxt"><span class="sname">${esc(st.name)}</span></span></div>`;
+      <span class="sdot">${i+1}</span><span class="stxt"><span class="sname">${esc(name)}</span></span></div>`;
   }).join('');
 }
 function stepGo(k){if(k==='export'){exportExcel();return;}nav(k);}
@@ -1042,7 +1061,7 @@ function buildPalette(q){
 }
 function renderPalette(){
   const el=$('#pal-list');if(!el)return;
-  el.innerHTML=PAL.slice(0,40).map((it,i)=>`<div class="pal-item${i===palIdx?' sel':''}" id="pal-opt-${i}" role="option" aria-selected="${i===palIdx}" onmousedown="event.preventDefault();palRun(${i})"><span class="pk">${esc(it.k)}</span><span>${esc(it.label)}</span></div>`).join('')||'<div class="empty">Không có kết quả.</div>';
+  el.innerHTML=PAL.slice(0,40).map((it,i)=>`<div class="pal-item${i===palIdx?' sel':''}" id="pal-opt-${i}" role="option" aria-selected="${i===palIdx}" onmousedown="event.preventDefault();palRun(${i})"><span class="pk">${esc(it.k)}</span><span>${esc(it.label)}</span></div>`).join('')||'<div class="empty" data-i18n="ui.common.noResults">Không có kết quả.</div>';
   const inp=$('#pal-input');if(inp)inp.setAttribute('aria-activedescendant',PAL.length?('pal-opt-'+palIdx):'');
   const sel=el.querySelector('.pal-item.sel');if(sel)sel.scrollIntoView({block:'nearest'});   // WCAG: giữ mục đang chọn trong tầm nhìn
 }
@@ -1073,11 +1092,11 @@ async function refreshStatus(){
   const chip=$('#chip-ai');chip.classList.toggle('on',s.ai_online);
   // Chỉ hiển thị trạng thái gọn (vd "Trực tuyến"), bỏ phần nhà cung cấp sau dấu "·".
   const _prov=String(s.ai_provider||'Trực tuyến').split('·')[0].trim()||'Trực tuyến';
-  chip.innerHTML=`<span class="dot"></span> Trợ lý AI: ${esc(_prov)}`;
-  chip.setAttribute('aria-label','Trợ lý AI: '+_prov);
+  chip.innerHTML=`<span class="dot"></span> ${esc(tr('assistant.label'))}: ${esc(tl(_prov))}`;
+  chip.setAttribute('aria-label',tr('assistant.label')+': '+tl(_prov));
   STATE.scenarios=s.scenarios||[];
   buildScenarioSelects();
-  const _ni=$('#nav-inc');if(_ni){if(s.incident_count){_ni.style.display='inline-block';_ni.textContent=s.incident_count;_ni.setAttribute('aria-label',s.incident_count+' sự cố cần xử lý');}else _ni.style.display='none';}
+  const _ni=$('#nav-inc');if(_ni){if(s.incident_count){_ni.style.display='inline-block';_ni.textContent=s.incident_count;_ni.setAttribute('aria-label',tr('ui.aria.incidentsNeedHandling',{count:s.incident_count}));}else _ni.style.display='none';}
   const _nl=$('#nav-log');if(_nl&&s.log_count){_nl.style.display='inline-block';_nl.textContent=s.log_count;}
   if(s.backhaul_orders)$('#info-backhaul').innerHTML=pill('Đã nạp đơn quay đầu',`${s.backhaul_orders} đơn ghép chiều về`);
   renderStepper();
@@ -1115,7 +1134,7 @@ async function loadDemo(){
 }
 async function loadPreview(){
   const _pc=$('#card-pv');if(_pc)_pc.style.display=STATE.dataLoaded?'':'none';  // ẩn tới khi nạp dữ liệu
-  if(!STATE.scenarios.length){$('#pv-tbl').innerHTML='<tbody><tr><td class="empty">Chưa có dữ liệu. Hãy nạp dữ liệu tĩnh hoặc bấm “Nạp dữ liệu mẫu”.</td></tr></tbody>';return;}
+  if(!STATE.scenarios.length){$('#pv-tbl').innerHTML='<tbody><tr><td class="empty" data-i18n="ui.importView.noData">Chưa có dữ liệu. Hãy nạp dữ liệu tĩnh hoặc bấm “Nạp dữ liệu mẫu”.</td></tr></tbody>';return;}
   const sid=STATE.scenario||STATE.scenarios[0];
   try{const d=await api('/api/preview?scenario='+sid);STATE.preview=d.rows;STATE.pvcols=d.columns;renderPreview();}
   catch(e){$('#pv-tbl').innerHTML='<tbody><tr><td class="empty">'+esc(e.message)+'</td></tr></tbody>';}
@@ -1131,7 +1150,7 @@ function renderPreview(){
       const val=r[k]==null?'':r[k];
       if(!editable)return `<td>${esc(val)}</td>`;
       return `<td><span class="edit" contenteditable="true" role="textbox" aria-label="Sửa ${esc(c[1])} đơn ${esc(r.order_id)}" data-id="${esc(r.order_id)}" data-field="${k}" onblur="saveCell(this)">${esc(val)}</span></td>`;
-    }).join('')+`<td><button class="btn btn-line btn-sm" onclick="delOrder('${esc(r.order_id)}')">Xóa</button></td></tr>`;
+    }).join('')+`<td><button class="btn btn-line btn-sm" onclick="delOrder('${esc(r.order_id)}')" data-i18n="ui.common.delete">Xóa</button></td></tr>`;
   });
   if(!rows.length)h+='<tr><td colspan="'+(cols.length+1)+'" class="empty">Không có đơn phù hợp.</td></tr>';
   $('#pv-tbl').innerHTML=h+'</tbody>';
@@ -1203,13 +1222,13 @@ async function loadValidate(){
 function renderValidate(){
   const q=($('#val-search').value||'').toLowerCase(),f=$('#val-filter').value;
   const rows=STATE.validate.filter(o=>(!q||String(o.order_id).toLowerCase().includes(q))&&(!f||o.status===f));
-  let h='<thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tuyến</th><th class="num">KL(kg)</th><th>Loại xe</th><th>Khung giao</th><th class="num">Doanh thu</th><th>Trạng thái</th><th>Lý do cần xem xét</th><th>Ghi chú điều phối</th><th></th></tr></thead><tbody>';
+  let h='<thead><tr><th data-i18n="order.code">Mã đơn</th><th data-i18n="order.customer">Khách hàng</th><th data-i18n="order.lane">Tuyến</th><th class="num">KL(kg)</th><th data-i18n="ui.backhaul.vehicleType">Loại xe</th><th data-i18n="ui.table.deliveryWindow">Khung giao</th><th class="num" data-i18n="ui.finance.revenue">Doanh thu</th><th data-i18n="ui.common.status">Trạng thái</th><th data-i18n="ui.validation.reviewReasonsColumn">Lý do cần xem xét</th><th data-i18n="ui.operations.dispatchNotes">Ghi chú điều phối</th><th></th></tr></thead><tbody>';
   rows.forEach(o=>{
     const rc=o.status==='Không thể xử lý'?'row-err':o.status==='Cần rà soát'?'row-rev':'';
     const bd=o.status==='Không thể xử lý'?'b-err':o.status==='Cần rà soát'?'b-rev':'b-ok';
-    const issues=(o.issues||[]).length?(o.issues||[]).map(i=>`<span class="tag red">${esc(i)}</span>`).join(''):'<span class="tag" style="background:var(--green-l);color:var(--green)">Hợp lệ</span>';
-    const act=o.status!=='Hợp lệ'?`<button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint)}')">Xử lý sự cố</button>`:'';
-    h+=`<tr class="${rc}"><td><b>${esc(o.order_id)}</b>${o.inner_city?' <span class="tag">nội đô</span>':''}</td>
+    const issues=(o.issues||[]).length?(o.issues||[]).map(i=>`<span class="tag red">${esc(i)}</span>`).join(''):'<span class="tag" style="background:var(--green-l);color:var(--green)" data-i18n="status.valid">Hợp lệ</span>';
+    const act=o.status!=='Hợp lệ'?`<button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint)}')" data-i18n="ui.plan.handleIncident">Xử lý sự cố</button>`:'';
+    h+=`<tr class="${rc}"><td><b>${esc(o.order_id)}</b>${o.inner_city?' <span class="tag" data-i18n="ui.runtime.innerCity">nội đô</span>':''}</td>
       <td>${esc(o.customer)}</td><td>${esc(o.corridor)}</td><td class="num">${fmtN(o.weight_kg)}</td>
       <td>${esc(o.min_vehicle)}</td><td>${esc(o.drop_tw)}</td><td class="num">${fmtN(o.revenue)}</td>
       <td><span class="badge ${bd}">${esc(o.status)}</span></td><td>${issues}</td>
@@ -1275,7 +1294,7 @@ function applyPlan(d){
   $('#plan-kpis').innerHTML=
     `<div class="sec-label">Kết quả gán</div>`+
     kpi('Xe sử dụng',d.n_vehicles_used,'tuyến đang chạy','navy')+
-    `<div class="kpi green"><div class="lbl">Đơn được gán</div><div class="val"><span id="kpi-assigned">0</span>/${d.n_orders_total}</div><div class="vsub">trên tổng đơn hợp lệ</div></div>`+
+    `<div class="kpi green"><div class="lbl" data-i18n="ui.runtime.assignedOrders">Đơn được gán</div><div class="val"><span id="kpi-assigned">0</span>/${d.n_orders_total}</div><div class="vsub" data-i18n="ui.runtime.ofValidOrders">trên tổng đơn hợp lệ</div></div>`+
     kpi('Đơn chưa gán',d.n_unassigned,d.n_unassigned?'cần xử lý':'tất cả đã gán',d.n_unassigned?'red':'green')+
     kpi('Xe chờ',d.n_standby,'mục tiêu 3–5 xe',sbCls)+
     `<div class="sec-label">Quãng đường &amp; tải</div>`+
@@ -1283,8 +1302,8 @@ function applyPlan(d){
     kpi('Km rỗng',fmtN(d.empty_km)+' km',(d.empty_km_pct||0)+'% tổng quãng',d.empty_km_pct>20?'amber':'green')+
     kpi('Doanh thu',fmtV(d.revenue_total),'cước + phụ phí','blue')+
     kpi('Chi phí',fmtV(d.total_cost),'tổng vận hành','amber')+
-    `<div class="sec-label">Lợi nhuận</div>`+
-    `<div class="kpi hero${profitNeg?' neg':''}" style="grid-column:span 2"><div class="lbl">Lợi nhuận kế hoạch</div><div class="val">${fmtV(d.profit)}</div><div class="vsub">biên ${fmtPct(d.margin||0)}% · hiển thị tức thì</div></div>`+
+    `<div class="sec-label" data-i18n="ui.finance.profit">Lợi nhuận</div>`+
+    `<div class="kpi hero${profitNeg?' neg':''}" style="grid-column:span 2"><div class="lbl" data-i18n="ui.plan.plannedProfit">Lợi nhuận kế hoạch</div><div class="val">${fmtV(d.profit)}</div><div class="vsub">biên ${fmtPct(d.margin||0)}% · hiển thị tức thì</div></div>`+
     kpi('Biên lợi nhuận',fmtPct(d.margin||0)+'%','',profitNeg?'red':'green');
   const ka=$('#kpi-assigned');if(ka)countUp(ka,d.n_orders_assigned,'');
   renderEngineInfo(d);
@@ -1292,7 +1311,7 @@ function applyPlan(d){
 }
 function renderEngineInfo(d){
   const el=$('#engine-info');if(!el)return;el.style.display='block';
-  const fb=d.fallback?`<span class="tag red">fallback: ${esc(d.fallback)}</span>`:'<span class="tag" style="background:var(--green-l);color:var(--green)">không fallback</span>';
+  const fb=d.fallback?`<span class="tag red">fallback: ${esc(d.fallback)}</span>`:'<span class="tag" style="background:var(--green-l);color:var(--green)" data-i18n="ui.runtime.noFallback">không fallback</span>';
   const modeTag=`<span class="tag blue">chế độ: ${esc(d.engine_mode||'hybrid')}</span>`;
   const auto=d.auto_optimize;
   el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
@@ -1303,9 +1322,9 @@ function renderEngineInfo(d){
       ${d.improved?'<span class="tag" style="background:var(--green-l);color:var(--green)">OR-Tools đã cải thiện</span>':''} ${fb}
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <label class="lab" style="margin:0">Tự tối ưu khi có đơn mới</label>
+      <label class="lab" style="margin:0" data-i18n="ui.runtime.autoOptimize">Tự tối ưu khi có đơn mới</label>
       <button class="btn btn-sm ${auto?'btn-navy':'btn-line'}" onclick="toggleAuto(${auto?'false':'true'})">${auto?'ĐANG BẬT':'ĐANG TẮT'}</button>
-      <button class="btn btn-line btn-sm" onclick="nav('ops');logTab('log')">Nhật ký tối ưu</button>
+      <button class="btn btn-line btn-sm" onclick="nav('ops');logTab('log')" data-i18n="ui.operations.optimizationLog">Nhật ký tối ưu</button>
     </div>
   </div>`;
 }
@@ -1324,7 +1343,7 @@ function fillBar(p){p=Number(p)||0;const cls=p>=80?'':p>=50?'mid':'low';
   return `<div style="display:flex;align-items:center;gap:6px"><div class="barwrap" style="flex:1;min-width:40px"><div class="bar ${cls}" style="width:${Math.min(100,p)}%"></div></div><span style="font-variant-numeric:tabular-nums;font-size:var(--fs-xs);color:var(--muted)">${p}%</span></div>`;}
 function renderPlanTable(){
   // L1: thu còn 8 cột thiết yếu; bấm dòng mở DRAWER chi tiết (tài xế/km/ETA/biên/timeline/hành động)
-  let h='<thead><tr><th>Mã xe</th><th>Loại</th><th>Tuyến</th><th class="num">Đơn</th><th>Tải%</th><th class="num">Km rỗng</th><th class="num">Lợi nhuận</th><th>Trạng thái</th></tr></thead><tbody>';
+  let h='<thead><tr><th data-i18n="ui.table.vehicleId">Mã xe</th><th data-i18n="ui.table.type">Loại</th><th data-i18n="order.lane">Tuyến</th><th class="num" data-i18n="ui.table.order">Đơn</th><th data-i18n="ui.table.loadPercent">Tải%</th><th class="num" data-i18n="ui.plan.emptyKm">Km rỗng</th><th class="num" data-i18n="ui.finance.profit">Lợi nhuận</th><th data-i18n="ui.common.status">Trạng thái</th></tr></thead><tbody>';
   const ST=[['assigned','Đã gán'],['locked','Đã khóa'],['in_progress','Đang chạy'],['completed','Hoàn thành']];
   STATE.routes.forEach(r=>{
     const sel=`<select class="field" style="padding:4px 6px;font-size:var(--fs-xs)" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" onchange="setRouteStatus('${esc(r.vehicle_id)}',this.value)">`+
@@ -1370,28 +1389,28 @@ function openRouteDrawer(vid){
        ${kpi('Số đơn',r.n_orders,'','navy')}${kpi('Lợi nhuận',fmtV(r.profit),'biên '+fmtPct(r.margin)+'%',r.profit<0?'red':'green')}
        ${kpi('Quãng đường',fmtN(r.distance_km)+' km','rỗng '+fmtN(r.empty_km)+' km','blue')}${kpi('Tỷ lệ tải',r.fill_weight_pct+'%','thể tích '+(r.fill_volume_pct||0)+'%','green')}
      </div>
-     <div class="dw-sec">Thông tin tuyến</div>
-     <div class="kv"><span class="k">Tài xế</span><span class="v">${esc(r.driver||'—')}</span></div>
-     <div class="kv"><span class="k">Tuyến / hành lang</span><span class="v">${esc(r.corridor||'—')}</span></div>
-     <div class="kv"><span class="k">Điểm kết thúc</span><span class="v">${esc(r.end_name||'—')} → ${esc(r.depot_end||'depot')}</span></div>
-     <div class="kv"><span class="k">Đơn trong tuyến</span><span class="v">${(r.orders||[]).join(', ')||'—'}</span></div>
-     <div class="kv"><span class="k">Ghép chiều về</span><span class="v">${r.has_backhaul?'Có':'Chưa — xem Module 4'}</span></div>
-     <div class="dw-sec">Trạng thái tuyến</div>${sel}
-     <div class="dw-sec">Trình tự thời gian (ETA)</div>${tl}
-     <div style="margin-top:16px;display:flex;gap:8px"><button class="btn btn-navy btn-sm" onclick="closeDrawer();focusRoute('${esc(vid)}')">Xem trên bản đồ</button></div>`);
+     <div class="dw-sec" data-i18n="ui.plan.routeInformation">Thông tin tuyến</div>
+     <div class="kv"><span class="k" data-i18n="ui.plan.driver">Tài xế</span><span class="v">${esc(r.driver||'—')}</span></div>
+     <div class="kv"><span class="k" data-i18n="ui.plan.routeCorridor">Tuyến / hành lang</span><span class="v">${esc(r.corridor||'—')}</span></div>
+     <div class="kv"><span class="k" data-i18n="ui.plan.endPoint">Điểm kết thúc</span><span class="v">${esc(r.end_name||'—')} → ${esc(r.depot_end||'depot')}</span></div>
+     <div class="kv"><span class="k" data-i18n="ui.plan.ordersOnRoute">Đơn trong tuyến</span><span class="v">${(r.orders||[]).join(', ')||'—'}</span></div>
+     <div class="kv"><span class="k" data-i18n="ui.steps.backhaul">Ghép chiều về</span><span class="v">${r.has_backhaul?'Có':'Chưa — xem Module 4'}</span></div>
+     <div class="dw-sec" data-i18n="ui.plan.routeStatus">Trạng thái tuyến</div>${sel}
+     <div class="dw-sec" data-i18n="ui.plan.timeSequence">Trình tự thời gian (ETA)</div>${tl}
+     <div style="margin-top:16px;display:flex;gap:8px"><button class="btn btn-navy btn-sm" onclick="closeDrawer();focusRoute('${esc(vid)}')" data-i18n="ui.plan.viewOnMap">Xem trên bản đồ</button></div>`);
 }
 const openRouteTimeline=openRouteDrawer;   // tương thích lời gọi cũ
 function closeRouteModal(){$('#route-modal').classList.remove('show');if(!$('#modal').classList.contains('show'))$('#ov').classList.remove('show');}
 function renderUnassigned(){
-  let h='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th>Khung giờ</th><th class="num">Tải(kg)</th><th>Loại xe</th><th>Lý do chưa gán</th><th>Gợi ý xử lý</th><th></th></tr></thead><tbody>';
+  let h='<thead><tr><th data-i18n="order.code">Mã đơn</th><th data-i18n="order.pickup">Điểm lấy</th><th data-i18n="order.dropoff">Điểm trả</th><th data-i18n="ui.runtime.timeWindow">Khung giờ</th><th class="num">Tải(kg)</th><th data-i18n="ui.backhaul.vehicleType">Loại xe</th><th data-i18n="ui.table.unassignedReason">Lý do chưa gán</th><th data-i18n="ui.runtime.handlingSuggestion">Gợi ý xử lý</th><th></th></tr></thead><tbody>';
   (STATE.unassigned||[]).forEach(o=>{
     h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
       <td>${esc(o.tw)}</td><td class="num">${fmtN(o.weight_kg)}</td><td>${esc(o.min_vehicle)}</td>
       <td><span class="tag red">${esc(o.reason)}</span></td><td class="mini">${esc(o.suggestion)}</td>
       <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick="askWhyUnassigned('${esc(o.order_id)}')" aria-label="Hỏi Trợ lý AI vì sao đơn ${esc(o.order_id)} chưa gán">✨ Hỏi AI lý do</button>
       <button class="btn btn-line btn-sm" onclick="focusUnassigned('${esc(o.order_id)}')">Xem bản đồ</button>
-      <button class="btn btn-soft btn-sm" onclick="editFromUnassigned('${esc(o.order_id)}')">Chỉnh sửa</button>
-      <button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint||'')}')">Xử lý sự cố</button></td></tr>`;
+      <button class="btn btn-soft btn-sm" onclick="editFromUnassigned('${esc(o.order_id)}')" data-i18n="ui.plan.edit">Chỉnh sửa</button>
+      <button class="btn btn-red btn-sm" onclick="quickIncident('${esc(o.order_id)}','${esc(o.incident_hint||'')}')" data-i18n="ui.plan.handleIncident">Xử lý sự cố</button></td></tr>`;
   });
   if(!(STATE.unassigned||[]).length)h+='<tr><td colspan="9" class="empty">Tất cả đơn hợp lệ đã được gán xe.</td></tr>';
   $('#una-tbl').innerHTML=h+'</tbody>';
@@ -1400,7 +1419,7 @@ function editFromUnassigned(id){nav('import');setTimeout(()=>{$('#pv-search').va
 /* Q13/A5.2 — Hỏi AI lý do đơn chưa gán (mở dock + prefill + gửi) */
 function askWhyUnassigned(id){toggleDock(true);const q='Vì sao đơn '+id+' chưa được gán xe và nên xử lý thế nào?';const inp=$('#dock-q');if(inp)inp.value=q;askAI();}
 function fillMapFilter(){
-  const opts='<option value="">Tất cả tuyến</option>'+(STATE.routes||[]).map(r=>`<option value="${esc(r.vehicle_id)}">Xe ${esc(r.vehicle_id)} · ${esc(r.corridor||'')}</option>`).join('');
+  const opts=`<option value="" data-i18n="ui.common.allRoutes">${tr('ui.common.allRoutes')}</option>`+(STATE.routes||[]).map(r=>`<option value="${esc(r.vehicle_id)}">${tr('ui.table.vehicle')} ${esc(r.vehicle_id)} · ${esc(r.corridor||'')}</option>`).join('');
   if($('#map-filter'))$('#map-filter').innerHTML=opts;
 }
 
@@ -1486,8 +1505,8 @@ async function focusUnassigned(id){if(STATE.view!=='plan')nav('plan');const mc=d
 /* Bảng "Đơn chưa có chuyến quay đầu" — đơn bổ sung chưa được ghép chiều về (dùng ở Module 3 & 4) */
 async function loadNoReturn(tblId){
   const el=$('#'+tblId);if(!el)return;
-  const HEAD='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Tải</th><th class="num">Doanh thu</th></tr></thead>';
-  if(!STATE.routes||!STATE.routes.length){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty">Chưa có kế hoạch tuyến — hãy chạy Module 3 để có đơn ghép chiều về.</td></tr></tbody>';return;}
+  const HEAD='<thead><tr><th data-i18n="order.code">Mã đơn</th><th data-i18n="order.pickup">Điểm lấy</th><th data-i18n="order.dropoff">Điểm trả</th><th class="num" data-i18n="ui.runtime.load">Tải</th><th class="num" data-i18n="ui.finance.revenue">Doanh thu</th></tr></thead>';
+  if(!STATE.routes||!STATE.routes.length){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty" data-i18n="ui.runtime.noPlanForBackhaul">Chưa có kế hoạch tuyến — hãy chạy Module 3 để có đơn ghép chiều về.</td></tr></tbody>';return;}
   try{
     const d=await api('/api/backhaul/orders');
     const matched=new Set();((STATE.backhaul&&STATE.backhaul.results)||[]).forEach(r=>{if(r&&r.match)matched.add(String(r.match.order_id));});
@@ -1496,14 +1515,14 @@ async function loadNoReturn(tblId){
     rows.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td><td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td></tr>`);
     if(!rows.length)h+='<tr><td colspan="5" class="empty">Tất cả đơn bổ sung đã có chuyến quay đầu.</td></tr>';
     el.innerHTML=h+'</tbody>';
-  }catch(_){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty">Chưa có đơn bổ sung.</td></tr></tbody>';}
+  }catch(_){el.innerHTML=HEAD+'<tbody><tr><td colspan="5" class="empty" data-i18n="ui.messages.noExtraOrders">Chưa có đơn bổ sung.</td></tr></tbody>';}
 }
 async function loadBackhaulOrders(){
   try{const d=await api('/api/backhaul/orders');
-    let h='<thead><tr><th>Mã đơn</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Tải</th><th class="num">Doanh thu</th><th>Nguồn</th><th></th></tr></thead><tbody>';
+    let h='<thead><tr><th data-i18n="order.code">Mã đơn</th><th data-i18n="order.pickup">Điểm lấy</th><th data-i18n="order.dropoff">Điểm trả</th><th class="num" data-i18n="ui.runtime.load">Tải</th><th class="num" data-i18n="ui.finance.revenue">Doanh thu</th><th data-i18n="ui.common.source">Nguồn</th><th></th></tr></thead><tbody>';
     d.orders.forEach(o=>h+=`<tr><td><b>${esc(o.order_id)}</b></td><td>${esc(o.pickup_name)}</td><td>${esc(o.delivery_name)}</td>
       <td class="num">${fmtN(o.weight_kg)}</td><td class="num">${fmtN(o.revenue)}</td><td>${esc(o.source)}</td>
-      <td><button class="btn btn-line btn-sm" onclick="delBackhaul('${esc(o.order_id)}')">Xóa</button></td></tr>`);
+      <td><button class="btn btn-line btn-sm" onclick="delBackhaul('${esc(o.order_id)}')" data-i18n="ui.common.delete">Xóa</button></td></tr>`);
     if(!d.orders.length)h+='<tr><td colspan="7" class="empty">Chưa có đơn bổ sung. Nhập tay hoặc “Nhập file 3PL”.</td></tr>';
     $('#bk-orders-tbl').innerHTML=h+'</tbody>';loadNoReturn('noreturn4-tbl');
     try{const s=await api('/api/status');
@@ -1545,7 +1564,7 @@ async function runBackhaul(){
       kpi('Đơn quay đầu khả dụng',d.n_new_orders,'để xét ghép','amber')+
       kpi('Km rỗng giảm',fmtN(d.empty_km_avoided)+' km','chống chạy rỗng','blue')+
       kpi('Lợi nhuận bổ sung',fmtV(d.total_gain),'sau khi trừ chi phí','navy');
-    let h='<thead><tr><th>Xe</th><th>Tuyến</th><th>Đơn ghép</th><th>Điểm lấy</th><th>Điểm trả</th><th class="num">Lệch tuyến</th><th class="num">Chờ</th><th>Fill về</th><th class="num">Km rỗng giảm</th><th class="num">Lợi nhuận thêm</th><th class="num">Điểm</th><th>Quyết định</th><th></th></tr></thead><tbody>';
+    let h='<thead><tr><th data-i18n="ui.table.vehicle">Xe</th><th data-i18n="order.lane">Tuyến</th><th>Đơn ghép</th><th data-i18n="order.pickup">Điểm lấy</th><th data-i18n="order.dropoff">Điểm trả</th><th class="num" data-i18n="ui.runtime.deviation">Lệch tuyến</th><th class="num" data-i18n="ui.runtime.waiting">Chờ</th><th data-i18n="ui.runtime.returnFill">Fill về</th><th class="num" data-i18n="ui.backhaul.emptyKmReduced">Km rỗng giảm</th><th class="num">Lợi nhuận thêm</th><th class="num" data-i18n="ui.runtime.score">Điểm</th><th data-i18n="ui.table.decision">Quyết định</th><th></th></tr></thead><tbody>';
     (d.results||[]).forEach(x=>{const m=x.match;
       h+=`<tr title="${esc(m.reason||'')}"><td><b>${esc(x.vehicle_id)}</b></td><td>${esc(x.corridor||'')}</td><td><span class="tag blue">${esc(m.order_id)}</span></td>
         <td>${esc(m.pickup_name||'')}</td><td>${esc(m.delivery_name||'')}</td>
@@ -1553,7 +1572,7 @@ async function runBackhaul(){
         <td class="num">${m.fill_before}%→${m.fill_after}%</td>
         <td class="num">${fmtN(m.empty_km_reduced)}</td><td class="num" style="color:var(--green)">+${fmtV(m.profit_add)}</td>
         <td class="num"><b>${m.score}</b></td><td><span class="tag" style="background:var(--green-l);color:var(--green)">${esc(m.decision)}</span></td>
-        <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick='showReturn(${JSON.stringify(x).replace(/'/g,"&#39;")})'>Xem tuyến</button>
+        <td style="white-space:nowrap"><button class="btn btn-soft btn-sm" onclick='showReturn(${JSON.stringify(x).replace(/'/g,"&#39;")})' data-i18n="ui.backhaul.viewRoute">Xem tuyến</button>
         <button class="btn btn-navy btn-sm" onclick='acceptBackhaul(${JSON.stringify({vehicle_id:x.vehicle_id,order_id:m.order_id,gain:m.profit_add}).replace(/'/g,"&#39;")})'>Chấp nhận</button></td></tr>`;});
     if(!(d.results||[]).length)h+=`<tr><td colspan="13" class="empty">Chưa có cặp ghép phù hợp. Hãy thêm đơn bổ sung hoặc “Nhập file 3PL”.</td></tr>`;
     $('#bk-tbl').innerHTML=h+'</tbody>';
@@ -1619,10 +1638,10 @@ async function runFinancial(live){
       kpi('Sau xử lý sự cố',fmtV(t.profit_after),'biên '+fmtPct(t.margin_after)+'%',(t.margin_after>=17?'green':'amber'));
     drawIndicator(t.margin_after,band);
     $('#uplift-line').innerHTML=`
-      <div class="kv"><span class="k">Biên sau tối ưu gom đơn theo tuyến</span><span class="v" style="color:var(--green)">${fmtPct(t.margin)}%</span></div>
-      <div class="kv"><span class="k">Tỷ lệ chạy rỗng</span><span class="v">${t.empty_km_pct}%</span></div>
-      <div class="kv"><span class="k">Lợi nhuận bổ sung từ ghép chiều về</span><span class="v" style="color:var(--green)">+${fmtV(t.backhaul_gain)}</span></div>
-      <div class="kv"><span class="k">Lợi nhuận trên mỗi km</span><span class="v" style="color:var(--navy)">${fmtV(t.profit_per_km)}</span></div>`;
+      <div class="kv"><span class="k" data-i18n="ui.runtime.optimizedMargin">Biên sau tối ưu gom đơn theo tuyến</span><span class="v" style="color:var(--green)">${fmtPct(t.margin)}%</span></div>
+      <div class="kv"><span class="k" data-i18n="ui.runtime.emptyRunningRate">Tỷ lệ chạy rỗng</span><span class="v">${t.empty_km_pct}%</span></div>
+      <div class="kv"><span class="k" data-i18n="ui.runtime.backhaulProfit">Lợi nhuận bổ sung từ ghép chiều về</span><span class="v" style="color:var(--green)">+${fmtV(t.backhaul_gain)}</span></div>
+      <div class="kv"><span class="k" data-i18n="ui.runtime.profitPerKm">Lợi nhuận trên mỗi km</span><span class="v" style="color:var(--navy)">${fmtV(t.profit_per_km)}</span></div>`;
     drawCostChart(t);renderFormula(r.params,t);renderFinTable(r.financial);
     STATE.finComputed=true;renderStepper();
     if(!live)toast('Biên lợi nhuận sau xử lý: '+fmtPct(t.margin_after)+'%','ok');
@@ -1641,35 +1660,35 @@ let _costChart;
 async function drawCostChart(t){
   try{await ensureChart();}catch(_){return;}   // Q12 — chỉ tải Chart.js khi cần
   const ctx=$('#costChart');if(!ctx)return;if(_costChart)_costChart.destroy();
-  _costChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nhiên liệu','Cầu đường','Tài xế','Chi phí xe','Bốc xếp','Chạy rỗng','Quản lý'],
+  _costChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nhiên liệu','Cầu đường','Tài xế','Chi phí xe','Bốc xếp','Chạy rỗng','Quản lý'].map(tl),
     datasets:[{data:[t.fuel,t.toll,t.driver_cost,t.vehicle_cost,t.handling,t.empty_cost,t.overhead],
     backgroundColor:['#0B3D91','#1565C0','#4F86D6','#9DBDEA','#B07A00','#E2231A','#9AA7BD'],borderWidth:2,borderColor:'#fff'}]},
     options:{animation:REDUCE_MOTION?false:{duration:500},plugins:{legend:{position:'right',labels:{font:{family:'Be Vietnam Pro',size:11},boxWidth:12}}},cutout:'58%'}});
 }
 function renderFormula(p,t){
   $('#formula').innerHTML=
-    `<div class="row"><span class="lbl"><b>Doanh thu tuyến</b> = tổng cước vận chuyển các đơn trên tuyến</span><span>${fmtV(t.revenue_total)}</span></div>
-     <div class="row"><span class="lbl">− Nhiên liệu = km có tải × ${fmtN(p.tieu_hao_lit_km)} lít/km × ${fmtN(p.gia_nhien_lieu)} đ</span><span>${fmtV(t.fuel)}</span></div>
+    `<div class="row"><span class="lbl"><b data-i18n="ui.fragments.routeRevenuePrefix">Doanh thu tuyến</b> = tổng cước vận chuyển các đơn trên tuyến</span><span>${fmtV(t.revenue_total)}</span></div>
+     <div class="row"><span class="lbl">− Nhiên liệu = km có tải × ${fmtN(p.tieu_hao_lit_km)} lít/km × ${fmtN(p.gia_nhien_lieu)} ${tr('ui.common.currencyShort')}</span><span>${fmtV(t.fuel)}</span></div>
      <div class="row"><span class="lbl">− Cầu đường = km liên tỉnh × ${fmtN(p.phi_cau_duong_km)} đ/km</span><span>${fmtV(t.toll)}</span></div>
      <div class="row"><span class="lbl">− Tài xế = lương phân bổ + phụ cấp + tăng ca</span><span>${fmtV(t.driver_cost)}</span></div>
      <div class="row"><span class="lbl">− Chi phí xe = khấu hao + bảo dưỡng + bảo hiểm</span><span>${fmtV(t.vehicle_cost)}</span></div>
      <div class="row"><span class="lbl">− Bốc xếp = bốc + dỡ theo đơn</span><span>${fmtV(t.handling)}</span></div>
      <div class="row"><span class="lbl">− Chạy rỗng (ngoài quãng điều xe miễn phí)</span><span>${fmtV(t.empty_cost)}</span></div>
      <div class="row"><span class="lbl">− Chi phí quản lý phân bổ = ${(p.ty_le_quan_ly*100).toFixed(0)}% × doanh thu</span><span>${fmtV(t.overhead)}</span></div>
-     <div class="row"><span class="lbl"><b>Lợi nhuận gộp</b> = doanh thu − tổng chi phí</span><span class="res">${fmtV(t.profit)} · ${fmtPct(t.margin)}%</span></div>`;
+     <div class="row"><span class="lbl"><b data-i18n="ui.finance.grossProfit">Lợi nhuận gộp</b> = doanh thu − tổng chi phí</span><span class="res">${fmtV(t.profit)} · ${fmtPct(t.margin)}%</span></div>`;
 }
 function renderFinTable(fin){
   STATE.financial=fin;   // lưu để drawer P&L tra cứu cơ cấu chi phí
   const t=fin.totals;
   // L1: thu còn 6 cột; bấm dòng mở DRAWER cơ cấu chi phí đầy đủ
-  let h='<thead><tr><th>Mã xe</th><th>Loại</th><th class="num">Doanh thu</th><th class="num">Tổng CP</th><th class="num">Lợi nhuận</th><th class="num">Biên%</th></tr></thead><tbody>';
+  let h='<thead><tr><th data-i18n="ui.table.vehicleId">Mã xe</th><th data-i18n="ui.table.type">Loại</th><th class="num" data-i18n="ui.finance.revenue">Doanh thu</th><th class="num" data-i18n="ui.table.totalCost">Tổng CP</th><th class="num" data-i18n="ui.finance.profit">Lợi nhuận</th><th class="num" data-i18n="ui.table.marginPercent">Biên%</th></tr></thead><tbody>';
   fin.per_route.forEach(p=>{const neg=p.profit<0;
     h+=`<tr class="clickable" tabindex="0" role="button" aria-label="Chi tiết tài chính xe ${esc(p.vehicle_id)}" onclick="openPnlDrawer('${esc(p.vehicle_id)}')" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target.tagName==='TR'){event.preventDefault();openPnlDrawer('${esc(p.vehicle_id)}')}">
       <td><b>${esc(p.vehicle_id)}</b></td><td>${esc(p.vehicle_type)}</td><td class="num">${fmtN(p.revenue_total)}</td>
       <td class="num">${fmtN(p.total_cost)}</td>
       <td class="num" style="color:${neg?'var(--red)':'var(--green)'};font-weight:700">${fmtN(p.profit)}</td>
       <td class="num" style="color:${neg?'var(--red)':'var(--green)'};font-weight:700">${fmtPct(p.margin)}%</td></tr>`;});
-  h+=`</tbody><tfoot><tr><td colspan="2">TỔNG</td><td class="num">${fmtN(t.revenue_total)}</td><td class="num">${fmtN(t.total_cost)}</td><td class="num">${fmtN(t.profit)}</td><td class="num">${fmtPct(t.margin)}%</td></tr></tfoot>`;
+  h+=`</tbody><tfoot><tr><td colspan="2">${tr('ui.runtime.totalUpper')}</td><td class="num">${fmtN(t.revenue_total)}</td><td class="num">${fmtN(t.total_cost)}</td><td class="num">${fmtN(t.profit)}</td><td class="num">${fmtPct(t.margin)}%</td></tr></tfoot>`;
   $('#fin-tbl').innerHTML=h;
 }
 function openPnlDrawer(vid){
@@ -1683,27 +1702,27 @@ function openPnlDrawer(vid){
      <div class="dw-sec">Cơ cấu chi phí</div>
      ${row('Nhiên liệu',p.fuel)}${row('Cầu đường',p.toll)}${row('Tài xế',p.driver_cost)}${row('Chi phí xe',p.vehicle_cost)}
      ${row('Bốc xếp',p.handling)}${row('Chạy rỗng',p.empty_cost)}${row('Quản lý',p.overhead)}
-     <div class="kv" style="border-top:2px solid var(--line);margin-top:4px;padding-top:8px"><span class="k" style="font-weight:700">Tổng chi phí</span><span class="v">${fmtV(p.total_cost)}</span></div>
+     <div class="kv" style="border-top:2px solid var(--line);margin-top:4px;padding-top:8px"><span class="k" style="font-weight:700" data-i18n="ui.finance.totalCost">Tổng chi phí</span><span class="v">${fmtV(p.total_cost)}</span></div>
      ${p.risk_late?('<div class="dw-sec">Cảnh báo</div><span class="tag red">Rủi ro trễ giờ — tăng ca '+fmtV(p.overtime||0)+'</span>'):''}`);
 }
 
 /* ===== MODULE 6 ===== */
 async function loadIncidents(){
   try{const d=await api('/api/incidents');
-    if($('#inc-type')&&!$('#inc-type').options.length)$('#inc-type').innerHTML=d.types.map(t=>`<option>${esc(t)}</option>`).join('');
+    if($('#inc-type')&&!$('#inc-type').options.length)$('#inc-type').innerHTML=d.types.map(type=>`<option value="${esc(type)}">${esc(tl(type))}</option>`).join('');
     if($('#inc-note')){const ex=d.excel_total||0;$('#inc-note').textContent=
-      (ex?`Đang hiển thị ${d.shown} sự cố (gồm ${Math.min(ex,d.seed_cap||ex)}/${ex} sự cố từ file Excel).`
-         :`Đang hiển thị ${d.shown} sự cố (file chưa có sự cố — hệ thống tự sinh để xử lý).`)
-      +' Chọn “Tất cả” để hệ thống tự nhận loại sự cố theo đơn.';}
-    let h='<thead><tr><th>Mã sự cố</th><th>Mã đơn</th><th>Loại sự cố</th><th>Ưu tiên</th><th>Thời điểm</th><th>Xe</th><th>Tài xế</th><th>Tuyến</th><th>Trạng thái</th><th>Người phụ trách</th><th>Phương án</th><th></th></tr></thead><tbody>';
+      (ex?tr('ui.messages.incidentsShowingExcel',{shown:d.shown,seed:Math.min(ex,d.seed_cap||ex),total:ex})
+         :tr('ui.messages.incidentsShowingGenerated',{shown:d.shown}))
+      +' '+tr('ui.messages.incidentAutoDetect');}
+    let h='<thead><tr><th data-i18n="ui.table.incidentId">Mã sự cố</th><th data-i18n="order.code">Mã đơn</th><th data-i18n="ui.aria.incidentType">Loại sự cố</th><th data-i18n="ui.table.priority">Ưu tiên</th><th data-i18n="ui.table.time">Thời điểm</th><th data-i18n="ui.table.vehicle">Xe</th><th data-i18n="ui.plan.driver">Tài xế</th><th data-i18n="order.lane">Tuyến</th><th data-i18n="ui.common.status">Trạng thái</th><th data-i18n="ui.table.assignee">Người phụ trách</th><th data-i18n="ui.table.option">Phương án</th><th></th></tr></thead><tbody>';
     d.incidents.forEach(i=>{
       const bd=i.status==='Đang xử lý'?'b-rev':'b-ok';
       h+=`<tr><td><b>${esc(i.case_id)}</b></td><td>${esc(i.order_id)}</td><td>${esc(i.event_type)}</td>
         <td><span class="tag ${i.priority==='Cao'?'red':''}">${esc(i.priority)}</span></td><td>${esc(i.ts)}</td>
         <td>${esc(i.vehicle)}</td><td>${esc(i.driver||'—')}</td><td>${esc(i.route_id)}</td><td><span class="badge ${bd}">${esc(i.status)}</span></td>
-        <td>Điều phối viên</td><td class="mini">${esc(i.decision||'—')}</td>
-        <td style="white-space:nowrap"><button class="btn btn-navy btn-sm" onclick="openIncident('${esc(i.case_id)}')">Xem chi tiết</button>
-        <button class="btn btn-line btn-sm" onclick="completeFromList('${esc(i.case_id)}')">Hoàn tất</button></td></tr>`;});
+        <td data-i18n="ui.runtime.dispatcher">Điều phối viên</td><td class="mini">${esc(i.decision||'—')}</td>
+        <td style="white-space:nowrap"><button class="btn btn-navy btn-sm" onclick="openIncident('${esc(i.case_id)}')" data-i18n="ui.runtime.viewDetails">Xem chi tiết</button>
+        <button class="btn btn-line btn-sm" onclick="completeFromList('${esc(i.case_id)}')" data-i18n="ui.operations.complete">Hoàn tất</button></td></tr>`;});
     if(!d.incidents.length)h+='<tr><td colspan="12" class="empty">Chưa có sự cố nào đang theo dõi. Tạo sự cố từ một đơn ở trên, hoặc từ Module 2/3.</td></tr>';
     $('#inc-tbl').innerHTML=h+'</tbody>';
   }catch(_){}
@@ -1726,7 +1745,7 @@ function openIncidentObj(inc){
   const i=inc.incident||{};const rv=i.recommended_vehicle;
   $('#m-title').textContent=`Xử lý sự cố · ${inc.case_id} · Đơn ${inc.order_id}`;
   let cands=(i.candidates||[]).map(c=>{const best=c.engine_feasible;
-    return `<div class="kv"><span class="k">${esc(c.vehicle)} · ${esc(c.vehicle_type)} ${best?'<span class="badge b-ok">khuyến nghị</span>':''}</span>
+    return `<div class="kv"><span class="k">${esc(c.vehicle)} · ${esc(c.vehicle_type)} ${best?'<span class="badge b-ok" data-i18n="ui.common.recommended">khuyến nghị</span>':''}</span>
       <span class="v">cách ${c.dist_km}km · ETA ${c.eta_min}' · ${c.capacity_ok?'đủ tải':'thiếu tải'}</span></div>`;}).join('')||'<div class="mini" style="color:var(--muted)">Loại sự cố này thường không cần điều xe thay thế.</div>';
   let opts=(inc.options||[]).map((o,idx)=>`<div class="opt" id="opt-${idx}" onclick="pickOption(${idx})">
     <div class="ot"><span>${esc(o.ten)}</span><span class="badge ${o.khuyen_nghi==='Cao'?'b-ok':o.khuyen_nghi==='Thấp'?'b-gray':'b-rev'}">Khuyến nghị: ${esc(o.khuyen_nghi)}</span></div>
@@ -1740,21 +1759,21 @@ function openIncidentObj(inc){
     <div class="ai-box" style="margin-bottom:14px"><div class="ai-h">Phân tích tình huống (Trợ lý AI · ${esc(inc.analysis_source||'')})</div><div>${esc(inc.analysis||'')}</div></div>
     <div class="split">
       <div>
-        <div class="card"><h3>Phương án xử lý — chọn một phương án</h3>
-          <div class="hint">AI chỉ đề xuất. Điều phối viên là người quyết định.</div>${opts}</div>
-        <div class="card"><label class="lab">Ghi chú điều phối</label>
+        <div class="card"><h3 data-i18n="ui.operations.handlingOptions">Phương án xử lý — chọn một phương án</h3>
+          <div class="hint" data-i18n="ui.operations.aiAdvisory">AI chỉ đề xuất. Điều phối viên là người quyết định.</div>${opts}</div>
+        <div class="card"><label class="lab" data-i18n="ui.operations.dispatchNotes">Ghi chú điều phối</label>
           <textarea class="field" id="m-note" style="width:100%;min-height:70px" placeholder="Ghi chú, lưu ý xử lý, nguyên nhân…">${esc(inc.note||'')}</textarea></div>
       </div>
       <div>
-        <div class="card"><h3>Thông tin sự cố</h3>
-          <div class="kv"><span class="k">Loại sự cố</span><span class="v">${esc(inc.event_type)}</span></div>
-          <div class="kv"><span class="k">Khách hàng</span><span class="v">${esc(inc.customer||'—')}</span></div>
-          <div class="kv"><span class="k">Điểm giao</span><span class="v">${esc(inc.delivery_name||'—')}</span></div>
-          <div class="kv"><span class="k">Xe / tuyến liên quan</span><span class="v">${esc(inc.vehicle)} · ${esc(inc.route_id)}</span></div>
-          ${rv?`<div class="kv"><span class="k">Xe thay thế gần nhất</span><span class="v" style="color:var(--green)">${esc(rv.vehicle)} · cách ${rv.dist_km}km</span></div>`:''}</div>
-        <div class="card"><h3>Xe khả dụng gần điểm sự cố</h3>${cands}
+        <div class="card"><h3 data-i18n="ui.operations.incidentDetails">Thông tin sự cố</h3>
+          <div class="kv"><span class="k" data-i18n="ui.aria.incidentType">Loại sự cố</span><span class="v">${esc(inc.event_type)}</span></div>
+          <div class="kv"><span class="k" data-i18n="order.customer">Khách hàng</span><span class="v">${esc(inc.customer||'—')}</span></div>
+          <div class="kv"><span class="k" data-i18n="ui.operations.deliveryLocation">Điểm giao</span><span class="v">${esc(inc.delivery_name||'—')}</span></div>
+          <div class="kv"><span class="k" data-i18n="ui.operations.relatedVehicleRoute">Xe / tuyến liên quan</span><span class="v">${esc(inc.vehicle)} · ${esc(inc.route_id)}</span></div>
+          ${rv?`<div class="kv"><span class="k" data-i18n="ui.operations.nearestReplacement">Xe thay thế gần nhất</span><span class="v" style="color:var(--green)">${esc(rv.vehicle)} · cách ${rv.dist_km}km</span></div>`:''}</div>
+        <div class="card"><h3 data-i18n="ui.operations.availableVehiclesNearby">Xe khả dụng gần điểm sự cố</h3>${cands}
           <div id="inc-map" style="height:200px;margin-top:10px;border-radius:8px"></div></div>
-        <div class="card"><h3>Hướng xử lý mềm / lưu ý trao đổi</h3>${soft}</div>
+        <div class="card"><h3 data-i18n="ui.operations.softHandling">Hướng xử lý mềm / lưu ý trao đổi</h3>${soft}</div>
       </div>
     </div>`;
   $('#m-apply').disabled=true;$('#m-complete').style.display=(inc.status==='Đang xử lý')?'none':'inline-flex';
@@ -1819,21 +1838,21 @@ function closeModal(){$('#ov').classList.remove('show');$('#modal').classList.re
 /* ===== MODULE 7 ===== */
 async function loadOptLog(){
   try{const d=await api('/api/optimize/log');const log=d.log||[];
-    let h='<thead><tr><th>Thời điểm</th><th>Lý do</th><th>Engine</th><th>Chế độ</th><th class="num">Thời gian</th><th class="num">Đơn tối ưu</th><th class="num">Chưa gán</th><th>Fallback</th><th class="num">Tuyến đổi</th><th class="num">Giữ (khóa)</th></tr></thead><tbody>';
+    let h='<thead><tr><th data-i18n="ui.table.time">Thời điểm</th><th data-i18n="ui.table.reason">Lý do</th><th data-i18n="ui.table.engine">Engine</th><th data-i18n="ui.table.mode">Chế độ</th><th class="num" data-i18n="ui.table.duration">Thời gian</th><th class="num" data-i18n="ui.table.optimizedOrders">Đơn tối ưu</th><th class="num" data-i18n="ui.table.unassigned">Chưa gán</th><th data-i18n="ui.table.fallback">Fallback</th><th class="num" data-i18n="ui.table.changedRoutes">Tuyến đổi</th><th class="num" data-i18n="ui.table.lockedRoutes">Giữ (khóa)</th></tr></thead><tbody>';
     log.forEach(e=>{h+=`<tr><td>${esc(e.ts)}</td><td>${esc(e.reason_vi||e.reason)}</td>
       <td class="mini">${esc((e.engine||'').slice(0,46))}</td><td>${esc(e.mode||'')}</td>
       <td class="num">${e.elapsed_sec!=null?e.elapsed_sec+'s':'—'}</td>
       <td class="num">${e.n_orders_optimized}</td><td class="num">${e.n_unassigned}</td>
       <td>${e.fallback?('<span class="tag red">'+esc(e.fallback)+'</span>'):'<span class="tag" style="background:var(--green-l);color:var(--green)">—</span>'}</td>
       <td class="num">${(e.routes_changed||[]).length}</td><td class="num">${(e.routes_kept_frozen||[]).length}</td></tr>`;});
-    if(!log.length)h+='<tr><td colspan="10" class="empty">Chưa có lần tối ưu nào. Hãy chạy Kế hoạch tuyến (Module 3).</td></tr>';
+    if(!log.length)h+='<tr><td colspan="10" class="empty" data-i18n="ui.messages.noOptimization">Chưa có lần tối ưu nào. Hãy chạy Kế hoạch tuyến (Module 3).</td></tr>';
     $('#optlog-tbl').innerHTML=h+'</tbody>';
   }catch(_){}
 }
 async function loadLog(){
   try{const d=await api('/api/log');STATE.log=d.log||[];
     const statuses=[];STATE.log.forEach(e=>{if(e.status&&statuses.indexOf(e.status)<0)statuses.push(e.status);});
-    $('#log-filter').innerHTML='<option value="">Tất cả trạng thái</option>'+statuses.map(s=>`<option>${esc(s)}</option>`).join('');
+    $('#log-filter').innerHTML=`<option value="" data-i18n="status.all">${tr('status.all')}</option>`+statuses.map(status=>`<option value="${esc(status)}">${esc(tl(status))}</option>`).join('');
     const _nl=$('#nav-log');if(_nl&&STATE.log.length){_nl.style.display='inline-block';_nl.textContent=STATE.log.length;}
     renderLog();
   }catch(_){}
@@ -1842,12 +1861,12 @@ function renderLog(){
   const q=($('#log-search').value||'').toLowerCase(),f=$('#log-filter').value;
   const rows=STATE.log.map((e,i)=>({e,i})).filter(o=>(!f||o.e.status===f)&&(!q||
     [o.e.order_id,o.e.vehicle,o.e.event_type,o.e.case_id].some(x=>String(x||'').toLowerCase().includes(q))));
-  let h='<thead><tr><th>Thời điểm</th><th>Mã sự cố</th><th>Nguồn</th><th>Đơn</th><th>Loại</th><th>Phương án</th><th>Xe</th><th>Trạng thái</th><th>Ghi chú</th><th></th></tr></thead><tbody>';
+  let h='<thead><tr><th data-i18n="ui.table.time">Thời điểm</th><th data-i18n="ui.table.incidentId">Mã sự cố</th><th data-i18n="ui.common.source">Nguồn</th><th data-i18n="ui.table.order">Đơn</th><th data-i18n="ui.table.type">Loại</th><th data-i18n="ui.table.option">Phương án</th><th data-i18n="ui.table.vehicle">Xe</th><th data-i18n="ui.common.status">Trạng thái</th><th data-i18n="ui.common.notes">Ghi chú</th><th></th></tr></thead><tbody>';
   rows.forEach(o=>{const e=o.e;h+=`<tr><td>${esc(e.ts)}</td><td><b style="color:var(--red)">${esc(e.case_id)}</b></td><td>${esc(e.source)}</td>
     <td>${esc(e.order_id)}</td><td>${esc(e.event_type)}</td><td class="mini">${esc(e.decision)}</td><td>${esc(e.vehicle)}</td>
     <td><span class="badge ${/Hoàn tất|Đã/.test(e.status||'')?'b-ok':'b-rev'}">${esc(e.status)}</span></td>
-    <td class="mini">${esc(e.note||'')}</td><td><button class="btn btn-line btn-sm" onclick="delLog(${o.i})">Xóa</button></td></tr>`;});
-  if(!rows.length)h+='<tr><td colspan="10" class="empty">Chưa có bản ghi phù hợp.</td></tr>';
+    <td class="mini">${esc(e.note||'')}</td><td><button class="btn btn-line btn-sm" onclick="delLog(${o.i})" data-i18n="ui.common.delete">Xóa</button></td></tr>`;});
+  if(!rows.length)h+='<tr><td colspan="10" class="empty" data-i18n="ui.common.noMatchingRecords">Chưa có bản ghi phù hợp.</td></tr>';
   $('#log-tbl').innerHTML=h+'</tbody>';
 }
 function delLog(index){
@@ -1871,11 +1890,11 @@ let CONS=[];
 async function loadConstraints(){try{const d=await api('/api/constraints');CONS=d.items;renderConstraints();}catch(_){}}
 function renderConstraints(){
   const F=[['khu_vuc','Khu vực'],['loai_xe','Loại xe'],['tai_trong_cam','Tải trọng cấm'],['tuyen','Tuyến'],['gio_bat_dau','Từ'],['gio_ket_thuc','Đến'],['ngay_ap_dung','Ngày áp dụng'],['nguon_quy_dinh','Nguồn quy định'],['ngay_hieu_luc','Ngày hiệu lực'],['ghi_chu','Ghi chú']];
-  let h='<thead><tr>'+F.map(f=>`<th>${esc(f[1])}</th>`).join('')+'<th>Áp dụng</th><th></th></tr></thead><tbody>';
+  let h='<thead><tr>'+F.map(f=>`<th>${esc(f[1])}</th>`).join('')+'<th data-i18n="ui.common.apply">Áp dụng</th><th></th></tr></thead><tbody>';
   CONS.forEach((c,i)=>{h+='<tr>'+F.map(f=>`<td><span class="edit" contenteditable="true" role="textbox" aria-label="${esc(f[1])}" data-i="${i}" data-f="${f[0]}" onblur="editCons(this)">${esc(c[f[0]]||'')}</span></td>`).join('')+
     `<td style="text-align:center"><input type="checkbox" ${c.hieu_luc!==false?'checked':''} onchange="CONS[${i}].hieu_luc=this.checked"></td>
-     <td><button class="btn btn-line btn-sm" onclick="CONS.splice(${i},1);renderConstraints()">Xóa</button></td></tr>`;});
-  if(!CONS.length)h+=`<tr><td colspan="${F.length+2}" class="empty">Chưa có quy định.</td></tr>`;
+     <td><button class="btn btn-line btn-sm" onclick="CONS.splice(${i},1);renderConstraints()" data-i18n="ui.common.delete">Xóa</button></td></tr>`;});
+  if(!CONS.length)h+=`<tr><td colspan="${F.length+2}" class="empty" data-i18n="ui.constraints.noRules">Chưa có quy định.</td></tr>`;
   $('#cons-tbl').innerHTML=h+'</tbody>';
 }
 function editCons(el){CONS[+el.dataset.i][el.dataset.f]=el.textContent.trim();}
@@ -1901,7 +1920,7 @@ async function aiSuggestCurrent(){
 function pushMsg(who,text,src){const d=document.createElement('div');d.className='msg '+who;
   let badge='';
   if(src){const off=!/Trực tuyến|Gemini|Claude|Internet/i.test(src);
-    const t=off?'':' · '+new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+    const t=off?'':' · '+new Date().toLocaleTimeString(uiLocale(),{hour:'2-digit',minute:'2-digit'});
     badge=`<span class="srcbadge ${off?'offline':''}"><span class="sd"></span>${esc(src)}${t}</span>`;}
   d.innerHTML=esc(text)+badge;$('#dock-msgs').appendChild(d);$('#dock-msgs').scrollTop=1e9;}
 async function askAI(){
@@ -1912,8 +1931,8 @@ async function askAI(){
   }catch(e){tmp.remove();pushMsg('ai','Lỗi: '+e.message,'');}
 }
 
-function exportExcel(){if(!STATE.routes){toast('Hãy chạy Kế hoạch tuyến trước khi xuất','err');return;}
-  toast('<span class="spin"></span> Đang tạo file Excel…');window.location='/api/export';setTimeout(()=>toast('Đã xuất báo cáo Excel','ok'),900);}
+function exportExcel(){if(!STATE.routes){toast(tr('ui.messages.runPlanBeforeExport'),'err');return;}
+  toast('<span class="spin"></span> '+tr('ui.messages.creatingExcel'));window.location='/api/export?lang='+uiLang();setTimeout(()=>toast(tr('ui.messages.excelExported'),'ok'),900);}
 
 /* drag & drop upload — M1 chỉ còn static/dynamic (đã bỏ 'backhaul' theo bẫy hồi quy #2: tránh null.previousElementSibling) */
 ['static','dynamic'].forEach(k=>{
@@ -1930,21 +1949,32 @@ function exportExcel(){if(!STATE.routes){toast('Hãy chạy Kế hoạch tuyến
   z.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f){inp.files=ev.dataTransfer.files;upload(inp,'backhaul');}});
 })();
 
-/* init — C13: BỎ loadLog() (M7 tự tải khi mở) · L5: khôi phục UI-preference (module/kịch bản), KHÔNG cache dữ liệu nghiệp vụ */
-renderFinParams({});
-/* §3.3 — P&L tự tính lại NGAY khi đổi bất kỳ chỉ số tài chính (live, debounce) */
-(function(){
+document.addEventListener('hpl:languagechange',()=>{
+  renderStepper();buildScenarioSelects();refreshStatus();
+  if(STATE.view==='import')renderPreview();
+  if(STATE.view==='validate')renderValidate();
+  if(STATE.view==='plan'&&STATE.plan)applyPlan(STATE.plan);
+  if(STATE.view==='backhaul'&&STATE.routes)runBackhaul();
+  if(STATE.view==='finance'&&STATE.routes)runFinancial(true);
+  if(STATE.view==='ops')logTab(STATE.opsTab||'incident');
+  if(STATE.view==='constraints'&&CONS.length)renderConstraints();
+  requestAnimationFrame(()=>HPLI18N.apply(document));
+});
+
+/* init — wait for translations so runtime-rendered strings use the selected locale immediately. */
+window.HPLI18N_READY.then(()=>{
+  renderFinParams({});
   const recompute=debounce(()=>{if(STATE.routes&&STATE.routes.length)runFinancial(true);},450);
-  const pc=$('#fin-params');if(pc)pc.addEventListener('input',recompute);  // ủy quyền: gồm cả ô giá nhiên liệu (nằm trong lưới)
-})();
-(function(){const p=loadUIPref();if(p.scenario)STATE.scenario=p.scenario;})();
-refreshStatus().then(()=>{
-  if(STATE.scenario&&!(STATE.scenarios||[]).includes(STATE.scenario))STATE.scenario=STATE.scenarios[0];
-  buildScenarioSelects();
-  loadPreview();
-  const p=loadUIPref();
-  if(p.view&&p.view!=='import'&&document.getElementById('view-'+p.view))nav(p.view);
-}).catch(()=>{});
+  const pc=$('#fin-params');if(pc)pc.addEventListener('input',recompute);
+  const initialPref=loadUIPref();if(initialPref.scenario)STATE.scenario=initialPref.scenario;
+  refreshStatus().then(()=>{
+    if(STATE.scenario&&!(STATE.scenarios||[]).includes(STATE.scenario))STATE.scenario=STATE.scenarios[0];
+    buildScenarioSelects();
+    loadPreview();
+    const p=loadUIPref();
+    if(p.view&&p.view!=='import'&&document.getElementById('view-'+p.view))nav(p.view);
+  }).catch(()=>{});
+});
 </script>
 </body>
 </html>

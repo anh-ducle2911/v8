@@ -1,0 +1,24 @@
+name: i18n parity
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify-i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify locale key parity (INTEGRATION.md §E)
+        run: >-
+          node -e "const a=require('./src/i18n/vi.json'),b=require('./src/i18n/en.json');const f=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?f(v,p+k+'.'):[p+k]);const A=f(a).sort(),B=f(b).sort();const d=[...A.filter(k=>!B.includes(k)).map(k=>'EN missing '+k),...B.filter(k=>!A.includes(k)).map(k=>'VI missing '+k)];if(d.length){console.error(d.join('\n'));process.exit(1)}console.log('i18n keys OK:',A.length)"
+      - run: node scripts/check-ui-i18n.mjs
+      - run: node scripts/check-dashboard-js.mjs
+      - run: python -m py_compile app.py excel_report.py

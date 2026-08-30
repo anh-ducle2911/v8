@@ -43,7 +43,7 @@ def _load_dotenv():
 
 _load_dotenv()
 
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 
 import hpl_engine as eng
 import engine_ext as ext
@@ -225,6 +225,17 @@ _autoload()
 @app.route("/")
 def index():
     return render_template("dashboard.html")
+
+
+@app.route("/src/<path:filename>")
+def i18n_asset(filename):
+    """Serve the zero-dependency i18n bundle from its integration path."""
+    return send_from_directory(os.path.join(BASE, "src"), filename)
+
+
+@app.route("/logo-hpl.svg")
+def logo_asset():
+    return send_from_directory(os.path.join(BASE, "public"), "logo-hpl.svg")
 
 
 @app.route("/api/status")
@@ -1441,8 +1452,10 @@ def _build_export_payload():
 def api_export():
     try:
         payload = _build_export_payload()
-        buf = report.build_report(payload)
-        fname = f"HPL_Dashboard_DieuPhoi_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        lang = "en" if request.args.get("lang") == "en" else "vi"
+        buf = report.build_report(payload, lang=lang)
+        label = "Dispatch" if lang == "en" else "DieuPhoi"
+        fname = f"HPL_Dashboard_{label}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
         return send_file(buf, as_attachment=True, download_name=fname,
                          mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     except Exception as e:
